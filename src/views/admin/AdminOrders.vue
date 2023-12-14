@@ -1,0 +1,71 @@
+<template>
+  <h1 class="fs-3 fw-bold">訂單管理</h1>
+  <table class="table table-hover mt-4 align-middle w-100">
+    <thead>
+      <tr>
+        <th width="30%">訂單編號</th>
+        <th width="20%">付款日期</th>
+        <th width="10%">付款狀態</th>
+        <th width="20%">客戶姓名</th>
+        <th width="10%">合計</th>
+        <th width="10%">編輯</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="order in orderList">
+        <td>{{ order.id }}</td>
+        <td class="text-right">{{ order.create_at }}</td>
+        <td>
+          <span class="badge text-bg-success" v-if="order.is_paid">已付款</span>
+          <span class="badge text-bg-warning">未付款</span>
+        </td>
+        <td>{{ order.user.name }}</td>
+        <td>{{ order.total }}</td>
+
+        <td>
+          <div>
+            <button class="btn btn-success btn-sm me-1" @click="openModal(false, order)">
+              <font-awesome-icon :icon="['fas', 'pen']" />
+            </button>
+            <button class="btn btn-danger btn-sm" @click.prevent="delOrder(order)">
+              <font-awesome-icon :icon="['fas', 'trash-can']" />
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</template>
+
+<script>
+import { adminGetOrder } from '../../utils/apis'
+import { deleteOrder } from '../../utils/apis'
+
+import { timeFormat } from '../../utils/timeFormat'
+
+export default {
+  data() {
+    return {
+      orderList: []
+    }
+  },
+  methods: {
+    getOrderAll() {
+      adminGetOrder().then((res) => {
+        // console.log(res)
+        this.orderList = res.data.orders
+        timeFormat(this.orderList)
+      })
+    },
+    delOrder(order) {
+      deleteOrder(order.id).then((res) => {
+        // console.log(res)
+        this.getOrderAll()
+      })
+    }
+  },
+  created() {
+    this.getOrderAll()
+  }
+}
+</script>

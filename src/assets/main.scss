@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Noto+Serif+TC:wght@400;500;700&display=swap');
+
+// Required
+@import '../node_modules/bootstrap/scss/functions';
+
+// Required
+@import '../assets/variable';
+@import '../node_modules/bootstrap/scss/variables';
+// @import '../node_modules/bootstrap/scss/variables-dark';
+// @import '../node_modules/bootstrap/scss/maps';
+// @import '../node_modules/bootstrap/scss/mixins';
+// @import '../node_modules/bootstrap/scss/root';
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import '../assets/base.scss';
+@import '../assets/btn.scss';
+@import '../assets/loading.scss';
+
+@import '../node_modules/sweetalert2/src/sweetalert2.scss';
