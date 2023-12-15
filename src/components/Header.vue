@@ -12,43 +12,40 @@
             <li>
               <RouterLink to="/user/products" class="pe-2">書籍類別</RouterLink>
             </li>
-            <li><a href="/user/article" class="px-2">編輯推薦</a></li>
+            <li><RouterLink to="/user/article" class="px-2">編輯推薦</RouterLink></li>
           </ul>
 
           <div class="col-6 d-none d-lg-block">
             <ul class="py-3 list-unstyled d-flex gap-4 mb-0 justify-content-end">
               <li>
-                <a
-                  href="/user/orderlist"
-                  class="px-2 btn rounded-pill border-0"
-                  @click.prevent="toggleCollapse"
-                >
-                  <font-awesome-icon :icon="['fas', 'magnifying-glass']" class="me-1" />搜尋</a
+                <a href="#" class="px-2 btn rounded-pill border-0" @click.prevent="toggleCollapse">
+                  <font-awesome-icon :icon="['fas', 'magnifying-glass']" class="me-2" />搜尋</a
                 >
               </li>
               <li>
-                <a href="/user/orderlist" class="px-2 btn rounded-pill"
-                  ><font-awesome-icon :icon="['far', 'clipboard']" class="me-2 fs-5" />訂單</a
+                <RouterLink to="/user/orderlist" class="px-2 btn rounded-pill border-0">
+                  <font-awesome-icon :icon="['far', 'clipboard']" class="me-1 fs-5" />
+                  訂單</RouterLink
                 >
               </li>
               <li>
-                <a href="/user/like" class="ps-1 position-relative"
+                <RouterLink to="/user/like" class="ps-1 position-relative"
                   ><font-awesome-icon :icon="['fas', 'heart']" class="fa-lg" />
                   <span
                     class="px-1 ms-1 text-white rounded bg-primary fs-8 position-absolute start-100 top-0 translate-middle-x d-inline-block"
                     >{{ 10 }}</span
-                  ></a
+                  ></RouterLink
                 >
               </li>
               <li>
-                <a href="/user/cart" class="ps-1 position-relative"
+                <RouterLink to="/user/cart" class="ps-1 position-relative"
                   ><font-awesome-icon :icon="['fas', 'cart-shopping']" class="fa-lg" /><span
                     class="px-1 ms-1 text-white rounded bg-primary fs-8 position-absolute start-100 top-0 translate-middle-x d-inline-block"
                     >{{ cartNum }}</span
-                  ></a
+                  ></RouterLink
                 >
               </li>
-              <li><a href="/admin/products">後台</a></li>
+              <li><router-link to="/admin/products">後台</router-link></li>
             </ul>
           </div>
         </div>

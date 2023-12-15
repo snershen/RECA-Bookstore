@@ -137,7 +137,7 @@ h1 span::after {
 .bookstore-bg {
   padding-top: 100px;
   padding-bottom: 100px;
-  background: url('../@/assets/img/bookstore-bg.png');
+  background: url('../../assets/img/bookstore-bg.png');
   background-attachment: fixed;
 }
 

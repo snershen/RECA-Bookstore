@@ -15,7 +15,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "^3.0.5",
-    "@vee-validate/i18n": "^4.12.2",
     "@vee-validate/rules": "^4.12.2",
     "axios": "^1.6.0",
     "bootstrap": "^5.3.2",

@@ -98,6 +98,7 @@ export default {
   width: 100%;
   height: 50vh;
   perspective: 1000px;
+  overflow: hidden;
 }
 
 .box {
