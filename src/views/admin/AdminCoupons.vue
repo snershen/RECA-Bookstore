@@ -42,7 +42,11 @@
       </tr>
     </tbody>
   </table>
-  <Pagination :inner-pagination="pagination" @emit-page="getCoupons"></Pagination>
+  <Pagination
+    :inner-pagination="pagination"
+    @emit-page="getCoupons"
+    v-if="pagination.total_pages !== 1"
+  ></Pagination>
   <CouponModal
     ref="CouponModal"
     :inner-coupon="tempCoupon"
@@ -70,7 +74,7 @@ export default {
     return {
       coupons: [],
       pagination: {},
-      tempCoupon: {},
+      tempCoupon: { is_enabled: 0 },
       isLoading: false,
       isNew: true
     }
@@ -99,7 +103,7 @@ export default {
       adminDeleteCoupon(coupon.id).then((res) => {
         console.log(res)
         this.getCoupons()
-        this.showAlert({ icon: 'success', title: res })
+        this.showAlert({ icon: 'success', title: res.data.message })
       })
     },
     updateCoupon(coupon) {
@@ -126,7 +130,7 @@ export default {
     },
     openModal(isNew, coupon) {
       if (isNew) {
-        this.tempCoupon = {}
+        this.tempCoupon = { is_enabled: 0 }
       } else {
         this.tempCoupon = { ...coupon }
         let percent = parseInt(this.tempCoupon.percent)

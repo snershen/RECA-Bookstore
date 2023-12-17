@@ -126,8 +126,8 @@
 <script>
 import { userGetCart } from '../../utils/apis'
 import { userPostOrder } from '../../utils/apis'
-import { validate } from 'vee-validate'
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import toastMixin from '../../mixins/toastMixin'
 
 export default {
   data() {
@@ -142,6 +142,7 @@ export default {
     Field,
     ErrorMessage
   },
+  mixins: [toastMixin],
   methods: {
     getCart() {
       userGetCart().then((res) => {
@@ -168,10 +169,10 @@ export default {
       const isValid = await this.$refs.form.validate()
       if (isValid.valid) {
         // 所有字段通过验证，执行提交逻辑
-        console.log('驗證通過')
+        this.sendOrder()
       } else {
         // 有字段未通过验证
-        console.log('驗證未通過')
+        this.showToast({ icon: 'info', title: '請填入正確的訂購資料' })
       }
     }
   },

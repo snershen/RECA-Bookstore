@@ -7,7 +7,7 @@
           href="#"
           aria-label="Previous"
           :class="{ 'd-none': !pagination.has_pre }"
-          @click="updatePage(pagination.current_page - 1)"
+          @click.prevent="updatePage(pagination.current_page - 1)"
         >
           <span aria-hidden="true">&laquo;</span>
         </a>
@@ -18,7 +18,7 @@
         :key="page"
         :class="{ active: pagination.current_page === page }"
       >
-        <a class="page-link border-0" href="#" @click="updatePage(page)">{{ page }}</a>
+        <a class="page-link border-0" href="#" @click.prevent="updatePage(page)">{{ page }}</a>
       </li>
       <li class="page-item">
         <a
@@ -26,7 +26,7 @@
           href="#"
           aria-label="Next"
           :class="{ 'd-none': !pagination.has_next }"
-          @click="updatePage(pagination.current_page + 1)"
+          @click.prevent="updatePage(pagination.current_page + 1)"
         >
           <span aria-hidden="true">&raquo;</span>
         </a>

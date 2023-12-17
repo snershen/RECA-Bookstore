@@ -20,7 +20,7 @@
       </ul>
     </div>
   </div>
-  <div class="container">
+  <section class="container py-5 my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h2 class="fs-2 fw-bold">最新出版</h2>
@@ -34,10 +34,46 @@
           /></svg
       ></a>
     </div>
-    <productCard
+    <swiper
+      :modules="modules"
+      :slides-per-view="6"
+      :space-between="20"
+      navigation
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
+      class="h-100"
+      :autoplay="true"
+    >
+      <swiper-slide v-for="item in products" class="h-auto">
+        <product-card :item="item"></product-card>
+      </swiper-slide>
+    </swiper>
+
+    <!-- <productCard
       :colConfig="{ colClass: 'col-lg-2 col-md-4 col-6', products: products }"
-    ></productCard>
-  </div>
+    ></productCard> -->
+  </section>
+  <section class="bg-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <h2 class="fw-bold fs-1 pt-4">編輯精選</h2>
+        </div>
+        <div class="col-lg-8">
+          <article-card :colConfig="{ article: articles, titleFont: 'fs-4' }"></article-card>
+          <div class="text-end d-block">
+            <router-link to="/user/article" class="rounded-0 more-btn my-5"
+              >more
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                <path
+                  d="M7.78651 0.189649C7.81654 -0.0632164 8.18346 -0.0632164 8.21349 0.189649L8.4652 2.31096C8.79021 5.05015 10.9499 7.20979 13.689 7.53481L15.8103 7.78651C16.0632 7.81654 16.0632 8.18346 15.8103 8.21349L13.689 8.4652C10.9499 8.79021 8.79021 10.9499 8.4652 13.689L8.21349 15.8103C8.18346 16.0632 7.81654 16.0632 7.78651 15.8103L7.53481 13.689C7.20979 10.9499 5.05015 8.79021 2.31096 8.4652L0.189649 8.21349C-0.0632164 8.18346 -0.0632164 7.81654 0.189649 7.78651L2.31096 7.53481C5.05015 7.20979 7.20979 5.05015 7.53481 2.31096L7.78651 0.189649Z"
+                /></svg
+            ></router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <div class="bookstore-bg text-center">
     <h3 class="fs-1 text-white mb-4">開啟屬於你的閱讀旅程</h3>
     <router-link to="/user/products" class="btn btn-outline-light rounded-pill fs-5 px-5"
@@ -50,18 +86,35 @@
 import ProductCard from '../../components/ProductCard.vue'
 import Banner from '../../components/Banner.vue'
 import { userGetProduct } from '../../utils/apis'
+import { userGetArticles } from '../../utils/apis'
 import loadingMixin from '../../mixins/loadingMixin'
+import ArticleCard from '../../components/ArticleCard.vue'
+import { timeFormat } from '../../utils/timeFormat'
+
+import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+import 'swiper/css'
 
 export default {
   data() {
     return {
       categoryList: [],
-      products: []
+      products: [],
+      newestProduct: [],
+      articles: [],
+      modules: [Navigation, Pagination, Scrollbar, A11y, Autoplay]
     }
   },
   components: {
     ProductCard,
-    Banner
+    Banner,
+    ArticleCard,
+    Swiper,
+    SwiperSlide
   },
   mixins: [loadingMixin],
   methods: {
@@ -73,19 +126,27 @@ export default {
         const category = {}
         const productList = res.data.products
         productList.forEach((item) => {
-          // console.log(item)
           if (!category[item.category]) {
             category[item.category] = 1
           }
         })
-        console.log(category)
         this.products = productList
         this.categoryList = Object.keys(category)
+      })
+      // this.newestProduct = this.products.sort((item) => {
+      //   return item.createat
+      // })
+    },
+    getArticles() {
+      userGetArticles().then((res) => {
+        this.articles = res.data.articles
+        timeFormat(this.articles, 'create_at')
       })
     }
   },
   created() {
     this.getProduct()
+    this.getArticles()
   }
 }
 </script>

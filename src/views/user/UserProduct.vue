@@ -40,9 +40,11 @@
   <div class="bg-light py-5" v-if="products.length !== 0">
     <h2 class="text-center fw-bold mb-4">瀏覽更多書籍</h2>
     <div class="container">
-      <product-card
-        :colConfig="{ colClass: 'col-lg-2 col-md-4 col-6', products: products }"
-      ></product-card>
+      <ul class="row g-3">
+        <li v-for="item in products" class="col-2 d-flex">
+          <product-card :item="item"></product-card>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

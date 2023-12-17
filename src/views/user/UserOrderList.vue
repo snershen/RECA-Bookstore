@@ -5,9 +5,24 @@
         <div>
           <div>
             <h1 class="mb-4 fw-bold">所有訂單</h1>
-            <div class="mb-5">
-              <label for="" class="me-2">搜尋訂單</label>
-              <input type="text" placeholder="輸入訂單編號" class="px-2" />
+            <div class="mb-5 row align-items-center gx-3">
+              <div class="col-auto">
+                <label for="orderInput" class="form-label mb-0 pb-0">搜尋訂單</label>
+              </div>
+              <div class="col-auto">
+                <input
+                  type="text"
+                  placeholder="請輸入訂單編號"
+                  class="form-control px-2 me-2 rounded-0 col-lg-4"
+                  id="orderInput"
+                  v-model="searchStr"
+                />
+              </div>
+              <div class="col-auto">
+                <button type="button" class="btn btn-dark" @click.prevent="findOrder(searchStr)">
+                  搜尋
+                </button>
+              </div>
             </div>
           </div>
           <table class="table table-hover align-middle">
@@ -19,7 +34,7 @@
               <td width="10%">訂單狀態</td>
               <td width="12%"></td>
             </tr>
-            <tbody>
+            <tbody v-if="!orderResult.length">
               <tr v-for="(item, index) in orderList" :key="item.id" class="border-bottom">
                 <td>{{ index + 1 }}</td>
                 <td>{{ item.create_at }}</td>
@@ -29,7 +44,28 @@
                   <span v-if="item.is_paid" class="text-success">已付款</span>
                   <span v-if="!item.is_paid" class="text-danger">未付款</span>
                 </td>
-                <td><a href="#" class="btn btn-outline-dark">檢視</a></td>
+                <td>
+                  <a href="#" class="btn btn-outline-dark" @click.prevent="orderDetail(item.id)"
+                    >檢視</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr v-for="(item, index) in orderResult" :key="item.id" class="border-bottom">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.create_at }}</td>
+                <td class="d-none d-lg-table-cell">{{ item.id }}</td>
+                <td>${{ item.total }}</td>
+                <td>
+                  <span v-if="item.is_paid" class="text-success">已付款</span>
+                  <span v-if="!item.is_paid" class="text-danger">未付款</span>
+                </td>
+                <td>
+                  <a href="#" class="btn btn-outline-dark" @click.prevent="orderDetail(item.id)"
+                    >檢視</a
+                  >
+                </td>
               </tr>
             </tbody>
           </table>
@@ -41,11 +77,14 @@
 
 <script>
 import { userGetOrder } from '../../utils/apis'
+import { userSingleOrder } from '../../utils/apis'
 import { timeFormat } from '../../utils/timeFormat'
 export default {
   data() {
     return {
-      orderList: []
+      orderList: [],
+      orderResult: [],
+      searchStr: ''
     }
   },
   methods: {
@@ -53,8 +92,23 @@ export default {
       userGetOrder().then((res) => {
         console.log(res)
         this.orderList = res.data.orders
-        timeFormat(this.orderList)
+        timeFormat(this.orderList, 'create_at')
+        this.orderResult = {}
       })
+    },
+    orderDetail(id) {
+      userSingleOrder(id).then((res) => {
+        console.log(res)
+        this.$router.push(`/user/order/${id}`)
+      })
+    },
+    findOrder(str) {
+      const newStr = str.trim()
+      const result = this.orderList.filter((item) => {
+        return item.id === newStr
+      })
+      this.orderResult = result
+      console.log(this.orderResult)
     }
   },
   created() {

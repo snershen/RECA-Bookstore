@@ -1,8 +1,10 @@
 <template>
   <div class="d-flex">
     <AdminNav></AdminNav>
-    <div class="container p-4">
-      <RouterView />
+    <div class="view-area ms-auto">
+      <div class="container p-4">
+        <RouterView />
+      </div>
     </div>
   </div>
 </template>
@@ -24,3 +26,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.view-area {
+  width: calc(100% - 250px);
+}
+</style>

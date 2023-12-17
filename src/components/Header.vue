@@ -23,7 +23,7 @@
                 >
               </li>
               <li>
-                <RouterLink to="/user/orderlist" class="px-2 btn rounded-pill border-0">
+                <RouterLink to="/user/order" class="px-2 btn rounded-pill border-0">
                   <font-awesome-icon :icon="['far', 'clipboard']" class="me-1 fs-5" />
                   訂單</RouterLink
                 >

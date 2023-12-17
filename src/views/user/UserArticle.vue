@@ -34,9 +34,7 @@
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <h3 class="fs-2 fw-bold">更多文章</h3>
-            <ul>
-              <li></li>
-            </ul>
+            <article-card :colConfig="{ article: articles, titleFont: 'fs-5' }"></article-card>
           </div>
         </div>
       </div>
@@ -48,13 +46,17 @@
 import { userGetSingleArticle } from '../../utils/apis'
 import breadcrumb from '../../components/Breadcrumb.vue'
 import { timeFormat } from '../../utils/timeFormat'
+import { userGetArticles } from '../../utils/apis'
+import ArticleCard from '../../components/ArticleCard.vue'
+
 export default {
   data() {
     return {
-      article: {}
+      article: {},
+      articles: []
     }
   },
-  components: { breadcrumb },
+  components: { breadcrumb, ArticleCard },
   methods: {
     getSingleArticle() {
       const path = this.$route.fullPath.split('/')
@@ -65,6 +67,12 @@ export default {
         timeFormat(this.article, 'create_at')
       })
     },
+    getArticles() {
+      userGetArticles().then((res) => {
+        this.articles = res.data.articles
+        timeFormat(this.articles, 'create_at')
+      })
+    },
     isValidURL(str) {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
       return urlPattern.test(str) ? true : false
@@ -72,6 +80,7 @@ export default {
   },
   created() {
     this.getSingleArticle()
+    this.getArticles()
   }
 }
 </script>

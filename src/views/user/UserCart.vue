@@ -136,40 +136,41 @@ export default {
       cartLength: 0,
       couponCode: '',
       discountTotal: 0,
-      saveMoney: 0
+      saveMoney: 0,
+      count: 0
     }
   },
   mixins: [alertMixin, toastMixin, loadingMixin],
   methods: {
     getCart() {
-      this.startLoading()
       userGetCart().then((res) => {
-        this.stopLoading()
-        console.log(res)
         this.cartInfo = res.data.data
         this.cartLength = res.data.data.carts.length
         this.saveMoney = Math.round(res.data.data.total - res.data.data.final_total)
         this.cartInfo.final_total = Math.round(this.cartInfo.final_total)
       })
     },
+
     deleteCart(id) {
       userDeleteCart(id).then((res) => {
-        console.log(res)
         this.getCart()
       })
     },
+
     editCart(item, isPlus) {
-      let count = item.qty
+      this.count = item.qty
       if (isPlus) {
-        count++
+        this.count++
       } else {
-        count--
+        this.count--
       }
-      console.log(item)
       this.isPlus = isPlus
-      const info = { data: { product_id: item.id, qty: count } }
+      const info = { data: { product_id: item.id, qty: this.count } }
       userPutCart(item.id, info).then((res) => {
-        console.log(res)
+        item.qty = this.count
+        if (item.qty === 0) {
+          this.deleteCart(item.id)
+        }
         this.getCart()
       })
     },

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-dark vh-100 d-flex flex-column">
+  <nav class="navbar navbar-expand-lg bg-dark vh-100 d-flex flex-column position-fixed start-0">
     <a class="navbar-brand fw-bold mb-4 px-4 pt-4 text-white" href="#">RECA 書店後台管理</a>
     <button
       class="navbar-toggler"

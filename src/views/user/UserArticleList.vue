@@ -3,7 +3,7 @@
     <h1 class="fw-bold">編輯推薦</h1>
     <div class="row">
       <div class="col-12 col-lg-8 order-1 order-lg-0">
-        <ul class="list-unstyled">
+        <ul>
           <li v-for="article in articleList" class="row border-bottom py-5 position-relative">
             <div class="col-5">
               <img :src="article.image" alt="" class="h-100 w-100 object-fit-cover" />

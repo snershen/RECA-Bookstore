@@ -119,7 +119,7 @@ export default {
     innerCoupon: {
       type: Object,
       default() {
-        return {}
+        return { is_enabled: 0 }
       }
     },
     innerNew: {

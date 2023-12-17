@@ -14,15 +14,15 @@
         ></product-category>
       </div>
       <div class="col-9">
-        <product-card
+        <ul class="row g-3">
+          <li v-for="item in products" class="col-3 d-flex">
+            <product-card :item="item"></product-card>
+          </li>
+        </ul>
+        <!-- <product-card
           v-if="searchResult.length !== 0"
           :colConfig="{ colClass: 'col-lg-3 col-md-4 col-6', products: searchResult }"
-        ></product-card>
-
-        <product-card
-          v-else
-          :colConfig="{ colClass: 'col-lg-3 col-md-4 col-6', products: filterProduct }"
-        ></product-card>
+        ></product-card> -->
       </div>
     </div>
   </div>

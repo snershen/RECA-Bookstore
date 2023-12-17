@@ -63,7 +63,7 @@ const router = createRouter({
           component: () => import('../views/user/UserPay.vue')
         },
         {
-          path: 'orderlist',
+          path: 'order',
           component: () => import('../views/user/UserOrderList.vue')
         },
         // {
@@ -71,7 +71,7 @@ const router = createRouter({
         //   component: () => import('../views/user/UserOrderFinal.vue')
         // },
         {
-          path: 'order/:id',
+          path: 'order/:orderId',
           component: () => import('../views/user/UserOrderSingle.vue')
         },
         {
