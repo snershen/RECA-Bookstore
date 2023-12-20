@@ -16,8 +16,7 @@ const adminRequest = axios.create({
 //從 cookie 中取出 token
 const token = document.cookie.replace(/(?:(?:^|.*;\s*)bookstoreAPI\s*=\s*([^;]*).*$)|^.*$/, '$1')
 
-// //將 token 放在請求的 header 中一併送出
-loginRequest.defaults.headers.common['Authorization'] = token
+//將 token 放在請求的 header 中一併送出
 adminRequest.defaults.headers.common['Authorization'] = token
 
 export const apiSignIn = (data) => {
@@ -28,9 +27,9 @@ export const apiLogout = () => {
   return loginRequest.post(`/logout`)
 }
 
-export const apiCheck = () => {
-  return loginRequest.post(`/api/user/check`)
-}
+// export const apiCheck = () => {
+//   return loginRequest.post(`/api/user/check`)
+// }
 
 const userRequest = axios.create({
   baseURL: `${domain}/api/${apiPath}/`

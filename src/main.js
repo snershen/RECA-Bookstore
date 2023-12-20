@@ -7,6 +7,7 @@ import VueAxios from 'vue-axios'
 
 import Loading from 'vue3-loading-overlay'
 import gsap from 'gsap'
+import { createPinia } from 'pinia'
 
 // Import stylesheet
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
@@ -20,9 +21,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faXmark, faPlus, faMinus, faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
-import { faClipboard } from '@fortawesome/free-regular-svg-icons'
+import { faClipboard, faFileLines } from '@fortawesome/free-regular-svg-icons'
 
 import { faInstagram, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons'
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Init plugin
@@ -42,6 +44,7 @@ library.add(faCircleCheck)
 library.add(faClipboard)
 library.add(faPen)
 library.add(faTrashCan)
+library.add(faFileLines)
 
 import { defineRule } from 'vee-validate'
 
@@ -69,11 +72,13 @@ defineRule('phone', (value, args) => {
 })
 
 const app = createApp(App)
+const pinia = createPinia()
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(router)
 app.use(VueAxios, axios)
 app.use(gsap)
+app.use(pinia)
 
 app.component('Loading', Loading)
 

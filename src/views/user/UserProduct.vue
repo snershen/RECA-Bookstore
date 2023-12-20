@@ -1,13 +1,7 @@
 <template>
-  <Loading :active="isLoading">
-    <div class="loading-box">
-      <img src="@/assets/img/icons8-book4.gif" alt="" />
-    </div>
-  </Loading>
+  <LoadingComponent></LoadingComponent>
+  <Breadcrumb></Breadcrumb>
   <div class="container mb-5">
-    <breadcrumb
-      :breadConfig="{ navList: '書籍類別', path: 'products', title: singleProduct.title }"
-    ></breadcrumb>
     <div>
       <div class="row">
         <div class="offset-lg-2 col-lg-4 col-12 mb-3 mb-lg-0 text-center">
@@ -20,14 +14,21 @@
             <h1 class="fw-bold mb-3 mb-lg-0 fs-3">{{ singleProduct.title }}</h1>
             <p>{{ singleProduct.content }}</p>
           </div>
-          <div>
-            <a href="#" class="btn btn-dark w-100 py-3 rounded-0 mb-2" @click.prevent="addCart"
-              ><font-awesome-icon
-                :icon="['fas', 'cart-shopping']"
-                class="fa-lg text-white me-2"
-              />放入購物車</a
-            ><br />
-            <a href="#" class="btn btn-outline-dark w-100 py-3 rounded-0">加入收藏</a>
+          <div class="row">
+            <div class="col-lg-6">
+              <a
+                href="#"
+                class="btn btn-secondary w-100 py-3 rounded-0 mb-2"
+                @click.prevent="addCart(singleProduct.id)"
+                ><font-awesome-icon
+                  :icon="['fas', 'cart-shopping']"
+                  class="fa-lg text-white me-2"
+                />放入購物車</a
+              >
+            </div>
+            <div class="col-lg-6">
+              <a href="#" class="btn btn-outline-secondary w-100 py-3 rounded-0">加入收藏</a>
+            </div>
           </div>
         </div>
         <div class="offset-lg-2 col-8 py-5">
@@ -37,11 +38,11 @@
       </div>
     </div>
   </div>
-  <div class="bg-light py-5" v-if="products.length !== 0">
+  <div class="bg-light py-5" v-if="productList.length !== 0">
     <h2 class="text-center fw-bold mb-4">瀏覽更多書籍</h2>
     <div class="container">
       <ul class="row g-3">
-        <li v-for="item in products" class="col-2 d-flex">
+        <li v-for="item in productList" class="col-2 d-flex">
           <product-card :item="item"></product-card>
         </li>
       </ul>
@@ -50,67 +51,39 @@
 </template>
 
 <script>
-import { userGetSingleProduct } from '../../utils/apis'
-import { userGetProduct } from '../../utils/apis'
-import { userPostCart } from '../../utils/apis'
-
 import productCard from '../../components/ProductCard.vue'
-import breadcrumb from '../../components/Breadcrumb.vue'
-import loadingMixin from '../../mixins/loadingMixin'
-import toastMixin from '../../mixins/toastMixin'
+
 import Breadcrumb from '../../components/Breadcrumb.vue'
+import LoadingComponent from '@/components/Loading.vue'
+
+import { mapState, mapActions } from 'pinia'
+import cartStore from '@/stores/cart.js'
+import productStore from '@/stores/product.js'
 
 export default {
-  data() {
-    return {
-      singleProduct: {},
-      products: []
-    }
+  // data() {
+  //   return {
+  //     singleProduct: {},
+  //     products: []
+  //   }
+  // },
+  components: { productCard, Breadcrumb, LoadingComponent },
+  computed: {
+    ...mapState(productStore, ['singleProduct', 'productList'])
   },
-  components: { productCard, breadcrumb },
-  mixins: [toastMixin, loadingMixin],
+
   methods: {
-    getProduct() {
-      userGetProduct().then((res) => {
-        const productsArr = res.data.products
-        const result = productsArr.filter((item) => {
-          if (item.id !== this.singleProduct.id) {
-            return item.category === this.singleProduct.category
-          }
-        })
-        this.products = result
-      })
-    },
-    getSingleProduct() {
-      const path = this.$route.path
-      const pathArr = path.split('/')
-      const id = pathArr[pathArr.length - 1]
-      this.startLoading()
-      userGetSingleProduct(id).then((res) => {
-        this.stopLoading()
-        this.singleProduct = res.data.product
-        this.getProduct()
-      })
-    },
-    addCart() {
-      const target = {
-        data: {
-          product_id: this.singleProduct.id,
-          qty: 1
-        }
-      }
-      userPostCart(target).then((res) => {
-        // console.log(res)
-        this.showToast({
-          title: '成功加入購物車',
-          icon: 'success'
-        })
-      })
-    }
+    ...mapActions(cartStore, ['getCart', 'addCart']),
+    ...mapActions(productStore, ['getSingleProduct', 'getProducts'])
   },
 
   created() {
-    this.getSingleProduct()
+    const path = this.$route.path
+    const pathArr = path.split('/')
+    const id = pathArr[pathArr.length - 1]
+    console.log(id)
+    this.getSingleProduct(id)
+    this.getProducts()
   }
 }
 </script>

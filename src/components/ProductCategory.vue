@@ -1,20 +1,20 @@
 <template>
-  <div class="accordion" id="accordionExample" ref="accordion">
+  <div>
     <ul>
       <li>
         <a
           href="#"
           class="ps-3 py-3 d-block"
-          :class="{ 'bg-selected': selectedItem === '全部' }"
+          :class="{ 'bg-selected': selectedCategory === '全部' }"
           @click.prevent="filterProduct('全部')"
           >全部</a
         >
       </li>
-      <li v-for="item in category">
+      <li v-for="item in categoryList">
         <a
           href="#"
           class="px-3 py-3 w-100"
-          :class="{ 'bg-selected': selectedItem === item }"
+          :class="{ 'bg-selected': selectedCategory === item }"
           @click.prevent="filterProduct(item)"
         >
           {{ item }}
@@ -25,55 +25,18 @@
 </template>
 
 <script>
-import Accordion from 'bootstrap/js/dist/collapse'
+import { mapState, mapActions } from 'pinia'
+import productStore from '@/stores/product.js'
+
 export default {
-  data() {
-    return {
-      accordion: {},
-      productList: [],
-      category: [],
-      selectedItem: ''
-    }
-  },
-  props: {
-    innerProductList: {
-      default: []
-    }
+  computed: {
+    ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
   },
   methods: {
-    getCategory() {
-      this.productList = this.innerProductList
-      const categoryObj = {}
-      const newProductList = [...this.productList]
-
-      newProductList.forEach((item) => {
-        if (!categoryObj[item.category]) {
-          categoryObj[item.category] = 1
-        } else {
-          categoryObj[item.category]++
-        }
-      })
-
-      this.category = Object.keys(categoryObj)
-    },
-    filterProduct(category) {
-      this.$emit('filterProduct', category)
-      this.selectedItem = category
-      console.log(this.selectedItem, category)
-      if (category === '全部') {
-        this.selectedItem = '全部'
-      }
-    }
+    ...mapActions(productStore, ['getProducts', 'filterProduct'])
   },
-  watch: {
-    innerProductList() {
-      this.productList = this.innerProductList
-      this.getCategory()
-    }
-  },
-  mounted() {
-    this.accordion = new Accordion(this.$refs.accordion)
-    this.selectedItem = '全部'
+  created() {
+    this.getProducts()
   }
 }
 </script>

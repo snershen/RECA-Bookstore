@@ -30,14 +30,14 @@
       </table>
       <a
         href="#"
-        class="btn btn-dark w-100 mb-3 py-2"
+        class="btn btn-secondary w-100 mb-3 py-2"
         @click.prevent="payMoney"
         v-if="!orderData.is_paid"
         >立刻付款</a
       >
       <router-link
         to="/user/order"
-        class="btn btn-outline-dark w-100 py-2"
+        class="btn btn-outline-secondary w-100 py-2"
         @click.prevent="payMoney"
         >查看所有訂單</router-link
       >

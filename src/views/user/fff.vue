@@ -12,13 +12,13 @@
       <div class="offset-lg-4 col-lg-4 col-12 mb-4">
         <a
           href="#"
-          class="btn btn-outline-dark rounded-0 w-100 py-3 mb-3 mb-lg-0"
+          class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           @click.prevent="goCartPage"
           ><span class="me-2"></span>查看訂單
         </a>
       </div>
       <div class="offset-lg-4 col-lg-4 col-12">
-        <a href="#" class="btn btn-dark rounded-0 w-100 py-3" @click.prevent="sendOrder"
+        <a href="#" class="btn btn-secondary rounded-0 w-100 py-3" @click.prevent="sendOrder"
           >繼續逛逛<span class="ms-2"></span
         ></a>
       </div>

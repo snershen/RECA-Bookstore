@@ -11,7 +11,7 @@
             <div class="col-7">
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div class="d-flex align-items-center">
-                  <a href="#" class="btn btn-dark rounded-0 me-3 px-2 py-1 fs-7">{{
+                  <a href="#" class="btn btn-secondary rounded-0 me-3 px-2 py-1 fs-7">{{
                     article.tag
                   }}</a>
                 </div>

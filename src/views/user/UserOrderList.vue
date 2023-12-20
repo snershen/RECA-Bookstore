@@ -19,7 +19,11 @@
                 />
               </div>
               <div class="col-auto">
-                <button type="button" class="btn btn-dark" @click.prevent="findOrder(searchStr)">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click.prevent="findOrder(searchStr)"
+                >
                   搜尋
                 </button>
               </div>
@@ -45,7 +49,10 @@
                   <span v-if="!item.is_paid" class="text-danger">未付款</span>
                 </td>
                 <td>
-                  <a href="#" class="btn btn-outline-dark" @click.prevent="orderDetail(item.id)"
+                  <a
+                    href="#"
+                    class="btn btn-outline-secondary"
+                    @click.prevent="orderDetail(item.id)"
                     >檢視</a
                   >
                 </td>
@@ -62,7 +69,10 @@
                   <span v-if="!item.is_paid" class="text-danger">未付款</span>
                 </td>
                 <td>
-                  <a href="#" class="btn btn-outline-dark" @click.prevent="orderDetail(item.id)"
+                  <a
+                    href="#"
+                    class="btn btn-outline-secondary"
+                    @click.prevent="orderDetail(item.id)"
                     >檢視</a
                   >
                 </td>

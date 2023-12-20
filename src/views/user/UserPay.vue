@@ -101,7 +101,7 @@
               <div class="col-lg-4 col-6">
                 <a
                   href="#"
-                  class="btn btn-outline-dark rounded-0 w-100 py-3 mb-3 mb-lg-0"
+                  class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
                   @click.prevent="goCartPage"
                   ><span class="btn-arrow btn-arrow-left me-2"></span>上一步
                 </a>
@@ -109,7 +109,7 @@
               <div class="col-lg-4 col-6">
                 <button
                   type="submit"
-                  class="btn btn-dark rounded-0 w-100 py-3"
+                  class="btn btn-secondary rounded-0 w-100 py-3"
                   @click.prevent="submitForm"
                 >
                   送出訂單<span class="btn-arrow btn-arrow-right ms-2"></span>

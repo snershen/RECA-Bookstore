@@ -24,7 +24,7 @@
               </li>
               <li>
                 <RouterLink to="/user/order" class="px-2 btn rounded-pill border-0">
-                  <font-awesome-icon :icon="['far', 'clipboard']" class="me-1 fs-5" />
+                  <font-awesome-icon :icon="['far', 'file-lines']" class="me-1 fs-5" />
                   訂單</RouterLink
                 >
               </li>
@@ -41,7 +41,7 @@
                 <RouterLink to="/user/cart" class="ps-1 position-relative"
                   ><font-awesome-icon :icon="['fas', 'cart-shopping']" class="fa-lg" /><span
                     class="px-1 ms-1 text-white rounded bg-primary fs-8 position-absolute start-100 top-0 translate-middle-x d-inline-block"
-                    >{{ cartNum }}</span
+                    >{{ cartLength }}</span
                   ></RouterLink
                 >
               </li>
@@ -60,14 +60,16 @@
 </template>
 
 <script>
-import { userGetCart } from '../utils/apis'
+// import { userGetCart } from '../utils/apis'
 import searchModal from './SearchModal.vue'
+import cartStore from '@/stores/cart.js'
+import { mapState, mapActions } from 'pinia'
 
 export default {
   data() {
     return {
-      cartNum: 0,
-      productList: {},
+      // cartNum: 0,
+      // productList: {},
       searchStr: '',
       searchResult: [],
       isShow: false
@@ -76,13 +78,17 @@ export default {
   components: {
     searchModal
   },
+  computed: {
+    ...mapState(cartStore, ['cartLength'])
+  },
   methods: {
-    getCart() {
-      userGetCart().then((res) => {
-        console.log(res)
-        this.cartNum = res.data.data.carts.length
-      })
-    },
+    ...mapActions(cartStore, ['getCart']),
+    // getCart() {
+    //   userGetCart().then((res) => {
+    //     console.log(res)
+    //     this.cartNum = res.data.data.carts.length
+    //   })
+    // },
     toggleCollapse() {
       // const searchComponent = this.$refs.SearchModal
       this.isShow = !this.isShow
@@ -90,10 +96,6 @@ export default {
   },
   created() {
     this.getCart()
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.isShow = false
-    next()
   }
 }
 </script>

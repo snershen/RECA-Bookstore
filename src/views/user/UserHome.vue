@@ -15,24 +15,17 @@
     <div class="container">
       <ul class="d-flex gap-3 mb-5 py-4">
         <li v-for="item in categoryList">
-          <a href="#" class="btn btn-outline-dark rounded-pill px-3 fs-5"># {{ item }}</a>
+          <a href="#" class="btn btn-outline-secondary rounded-pill px-3 fs-5"># {{ item }}</a>
         </li>
       </ul>
     </div>
   </div>
   <section class="container py-5 my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h2 class="fs-2 fw-bold">最新出版</h2>
+    <div class="mb-5">
+      <div class="text-center">
+        <h2 class="fs-1 fw-bold">最新出版</h2>
         <p class="fw-bold fs-6">NEW RELEASES</p>
       </div>
-      <a href="#" class="rounded-0 more-btn"
-        >more
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-          <path
-            d="M7.78651 0.189649C7.81654 -0.0632164 8.18346 -0.0632164 8.21349 0.189649L8.4652 2.31096C8.79021 5.05015 10.9499 7.20979 13.689 7.53481L15.8103 7.78651C16.0632 7.81654 16.0632 8.18346 15.8103 8.21349L13.689 8.4652C10.9499 8.79021 8.79021 10.9499 8.4652 13.689L8.21349 15.8103C8.18346 16.0632 7.81654 16.0632 7.78651 15.8103L7.53481 13.689C7.20979 10.9499 5.05015 8.79021 2.31096 8.4652L0.189649 8.21349C-0.0632164 8.18346 -0.0632164 7.81654 0.189649 7.78651L2.31096 7.53481C5.05015 7.20979 7.20979 5.05015 7.53481 2.31096L7.78651 0.189649Z"
-          /></svg
-      ></a>
     </div>
     <swiper
       :modules="modules"
@@ -41,13 +34,22 @@
       navigation
       @swiper="onSwiper"
       @slideChange="onSlideChange"
-      class="h-100"
+      class="h-100 mb-5"
       :autoplay="true"
     >
       <swiper-slide v-for="item in products" class="h-auto">
         <product-card :item="item"></product-card>
       </swiper-slide>
     </swiper>
+    <div class="text-center">
+      <a href="#" class="rounded-0 more-btn"
+        >more
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+          <path
+            d="M7.78651 0.189649C7.81654 -0.0632164 8.18346 -0.0632164 8.21349 0.189649L8.4652 2.31096C8.79021 5.05015 10.9499 7.20979 13.689 7.53481L15.8103 7.78651C16.0632 7.81654 16.0632 8.18346 15.8103 8.21349L13.689 8.4652C10.9499 8.79021 8.79021 10.9499 8.4652 13.689L8.21349 15.8103C8.18346 16.0632 7.81654 16.0632 7.78651 15.8103L7.53481 13.689C7.20979 10.9499 5.05015 8.79021 2.31096 8.4652L0.189649 8.21349C-0.0632164 8.18346 -0.0632164 7.81654 0.189649 7.78651L2.31096 7.53481C5.05015 7.20979 7.20979 5.05015 7.53481 2.31096L7.78651 0.189649Z"
+          /></svg
+      ></a>
+    </div>
 
     <!-- <productCard
       :colConfig="{ colClass: 'col-lg-2 col-md-4 col-6', products: products }"
@@ -57,12 +59,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-4">
-          <h2 class="fw-bold fs-1 pt-4">編輯精選</h2>
-        </div>
-        <div class="col-lg-8">
-          <article-card :colConfig="{ article: articles, titleFont: 'fs-4' }"></article-card>
-          <div class="text-end d-block">
-            <router-link to="/user/article" class="rounded-0 more-btn my-5"
+          <h2 class="fw-bold fs-1 pt-4 mb-4">編輯推薦</h2>
+          <div>
+            <router-link to="/user/article" class="rounded-0 more-btn"
               >more
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                 <path
@@ -70,6 +69,9 @@
                 /></svg
             ></router-link>
           </div>
+        </div>
+        <div class="col-lg-8">
+          <article-card :colConfig="{ article: articles, titleFont: 'fs-4' }"></article-card>
         </div>
       </div>
     </div>

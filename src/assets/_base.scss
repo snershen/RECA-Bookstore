@@ -25,3 +25,15 @@ li {
 * {
   // outline: solid 1px;
 }
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  line-height: 1px !important;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

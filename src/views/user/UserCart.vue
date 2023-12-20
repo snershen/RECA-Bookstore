@@ -1,21 +1,16 @@
 <template>
-  <Loading :active="isLoading">
-    <div class="loading-box">
-      <img src="@/assets/img/icons8-book4.gif" alt="" />
-    </div>
-  </Loading>
+  <LoadingComponent></LoadingComponent>
   <div class="container mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="fw-bold">購物車</h1>
       <a
         href="#"
-        class="btn btn-outline-dark"
+        class="btn btn-outline-secondary"
         v-if="cartLength !== 0"
         @click.prevent="deleteAllCart"
         >清空購物車</a
       >
     </div>
-
     <ul class="text-lg-center px-0 list-unstyled" v-if="cartLength !== 0">
       <li class="row d-flex d-lg-none justify-content-center">
         <div class="bg-light text-center py-2 ps-2 fs-7">品項</div>
@@ -32,7 +27,7 @@
       </li>
       <li
         class="row border-bottom py-3"
-        v-for="item in cartInfo.carts"
+        v-for="item in cartList.carts"
         :class="{ 'd-none': item.qty === 0 }"
       >
         <div class="col-lg-1 col-3">
@@ -47,12 +42,21 @@
             >
           </li>
           <li class="col-lg-2 col-6 ms-auto text-end text-lg-center">
-            <a href="#" @click.prevent="editCart(item, false)" class="pe-3 py-3"
-              ><font-awesome-icon :icon="['fas', 'minus']" /></a
-            >{{ item.qty
-            }}<a href="#" @click.prevent="editCart(item, true)" class="ps-3 py-3"
-              ><font-awesome-icon :icon="['fas', 'plus']"
-            /></a>
+            <div class="d-flex align-items-center justify-content-center">
+              <a href="#" @click.prevent="editCart(item, false)" class="pe-3 py-3"
+                ><font-awesome-icon :icon="['fas', 'minus']"
+              /></a>
+              <input
+                class="form-control text-center"
+                type="number"
+                v-model="item.qty"
+                @change.prevent="changeCartNum(item)"
+                style="width: 70px"
+              />
+              <a href="#" @click.prevent="editCart(item, true)" class="ps-3 py-3"
+                ><font-awesome-icon :icon="['fas', 'plus']"
+              /></a>
+            </div>
           </li>
           <li class="col-lg-2 col-6">
             <span class="d-lg-none d-inline-block">小計</span> ${{ item.final_total }}
@@ -70,13 +74,13 @@
       <li>
         <div class="row bg-light py-4 mb-4 px-4 fs-6 fw-bold">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">總計</div>
-          <div class="col-lg-3 text-end col-6">${{ cartInfo.total }}</div>
+          <div class="col-lg-3 text-end col-6">${{ cartList.total }}</div>
         </div>
         <div class="row mb-4 px-4 fs-6 fw-bold">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">優惠券</div>
           <div class="col-lg-3 col-6 d-flex align-items-center justify-content-end">
             <input type="text" placeholder="填入優惠券" class="px-2 me-2" v-model="couponCode" />
-            <div class="btn btn-dark" @click.prevent="checkCoupon">套用</div>
+            <div class="btn btn-secondary" @click.prevent="checkCoupon">套用</div>
           </div>
         </div>
         <div class="row mb-4 pb-4 px-4 fs-6 fw-bold border-bottom">
@@ -85,7 +89,7 @@
         </div>
         <div class="row mb-4 pb-4 px-4 fs-6 fw-bold">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">總計</div>
-          <div class="col-lg-3 text-end col-6 fs-5">${{ cartInfo.final_total }}</div>
+          <div class="col-lg-3 text-end col-6 fs-5">${{ cartList.final_total }}</div>
         </div>
       </li>
     </ul>
@@ -97,19 +101,19 @@
       <div class="col-lg-4 col-6">
         <router-link
           to="/user/products"
-          class="btn btn-outline-dark rounded-0 w-100 py-3 mb-3 mb-lg-0"
+          class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           ><span class="btn-arrow btn-arrow-left me-2"></span>繼續逛逛
         </router-link>
       </div>
       <div class="col-lg-4 col-6">
-        <router-link to="/user/pay" class="btn btn-dark rounded-0 w-100 py-3">
+        <router-link to="/user/pay" class="btn btn-secondary rounded-0 w-100 py-3">
           前往結帳<span class="btn-arrow btn-arrow-right ms-2"></span
         ></router-link>
       </div>
     </div>
     <div class="row justify-content-between py-5" v-else>
       <div class="col-lg-4 mx-auto">
-        <router-link to="/user/products" class="btn btn-dark rounded-0 w-100 py-3 mb-3 mb-lg-0"
+        <router-link to="/user/products" class="btn btn-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           ><span class="me-2"></span>繼續逛逛
         </router-link>
       </div>
@@ -118,76 +122,32 @@
 </template>
 
 <script>
-import { userGetCart } from '../../utils/apis'
-import { userDeleteCart } from '../../utils/apis'
-import { userPutCart } from '../../utils/apis'
-import { userDeleteCartAll } from '../../utils/apis'
-import { userCheckCoupon } from '../../utils/apis'
+import { userCheckCoupon } from '@/utils/apis'
 
-import alertMixin from '../../mixins/alertMixin'
-import loadingMixin from '../../mixins/loadingMixin'
-import toastMixin from '../../mixins/toastMixin'
+import { mapState, mapActions } from 'pinia'
+import cartStore from '@/stores/cart.js'
+
+import LoadingComponent from '@/components/Loading.vue'
 
 export default {
   data() {
     return {
-      cartInfo: {},
-      isPlus: false,
-      cartLength: 0,
-      couponCode: '',
-      discountTotal: 0,
-      saveMoney: 0,
-      count: 0
+      couponCode: ''
     }
   },
-  mixins: [alertMixin, toastMixin, loadingMixin],
+  components: { LoadingComponent },
+  computed: {
+    ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength'])
+  },
+
   methods: {
-    getCart() {
-      userGetCart().then((res) => {
-        this.cartInfo = res.data.data
-        this.cartLength = res.data.data.carts.length
-        this.saveMoney = Math.round(res.data.data.total - res.data.data.final_total)
-        this.cartInfo.final_total = Math.round(this.cartInfo.final_total)
-      })
-    },
-
-    deleteCart(id) {
-      userDeleteCart(id).then((res) => {
-        this.getCart()
-      })
-    },
-
-    editCart(item, isPlus) {
-      this.count = item.qty
-      if (isPlus) {
-        this.count++
-      } else {
-        this.count--
-      }
-      this.isPlus = isPlus
-      const info = { data: { product_id: item.id, qty: this.count } }
-      userPutCart(item.id, info).then((res) => {
-        item.qty = this.count
-        if (item.qty === 0) {
-          this.deleteCart(item.id)
-        }
-        this.getCart()
-      })
-    },
-    deleteAllCart() {
-      this.showAlert({
-        title: '確定要移除購物車所有商品嗎？',
-        showCancelButton: true,
-        icon: 'info'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          userDeleteCartAll().then((res) => {
-            console.log(res)
-            this.getCart()
-          })
-        }
-      })
-    },
+    ...mapActions(cartStore, [
+      'getCart',
+      'deleteCart',
+      'editCart',
+      'changeCartNum',
+      'deleteAllCart'
+    ]),
     checkCoupon() {
       const data = {
         data: {
@@ -205,7 +165,7 @@ export default {
       })
     }
   },
-  mounted() {
+  created() {
     this.getCart()
   }
 }
