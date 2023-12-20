@@ -1,9 +1,5 @@
 <template>
-  <Loading :active="isLoading">
-    <div class="loading-box">
-      <img src="@/assets/img/icons8-book4.gif" alt="" />
-    </div>
-  </Loading>
+  <LoadingComponent></LoadingComponent>
   <main class="mb-5">
     <div class="mt-5">
       <h1 class="mt-5 fw-bold">尋找屬於自己的<span>命定之書</span></h1>
@@ -29,7 +25,7 @@
     </div>
     <swiper
       :modules="modules"
-      :slides-per-view="6"
+      :slides-per-view="slidesPerView"
       :space-between="20"
       navigation
       @swiper="onSwiper"
@@ -37,7 +33,7 @@
       class="h-100 mb-5"
       :autoplay="true"
     >
-      <swiper-slide v-for="item in products" class="h-auto">
+      <swiper-slide v-for="item in productList" class="h-auto">
         <product-card :item="item"></product-card>
       </swiper-slide>
     </swiper>
@@ -50,10 +46,6 @@
           /></svg
       ></a>
     </div>
-
-    <!-- <productCard
-      :colConfig="{ colClass: 'col-lg-2 col-md-4 col-6', products: products }"
-    ></productCard> -->
   </section>
   <section class="bg-light py-5">
     <div class="container">
@@ -71,7 +63,13 @@
           </div>
         </div>
         <div class="col-lg-8">
-          <article-card :colConfig="{ article: articles, titleFont: 'fs-4' }"></article-card>
+          <ul class="row">
+            <li v-for="item in articleList" class="col-12">
+              <div>
+                <ArticleCard :article="item"></ArticleCard>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -85,29 +83,24 @@
 </template>
 
 <script>
-import ProductCard from '../../components/ProductCard.vue'
+import { mapState, mapActions } from 'pinia'
+import productStore from '@/stores/product.js'
+import articleStore from '@/stores/article.js'
+
+import LoadingComponent from '@/components/Loading.vue'
 import Banner from '../../components/Banner.vue'
-import { userGetProduct } from '../../utils/apis'
-import { userGetArticles } from '../../utils/apis'
-import loadingMixin from '../../mixins/loadingMixin'
+import ProductCard from '../../components/ProductCard.vue'
 import ArticleCard from '../../components/ArticleCard.vue'
-import { timeFormat } from '../../utils/timeFormat'
 
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
-import 'swiper/css'
 
 export default {
   data() {
     return {
-      categoryList: [],
-      products: [],
+      // products: [],
       newestProduct: [],
-      articles: [],
+      slidesPerView: 6,
       modules: [Navigation, Pagination, Scrollbar, A11y, Autoplay]
     }
   },
@@ -116,39 +109,43 @@ export default {
     Banner,
     ArticleCard,
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    LoadingComponent
   },
-  mixins: [loadingMixin],
+
+  computed: {
+    ...mapState(productStore, ['productList', 'categoryList']),
+    ...mapState(articleStore, ['articleList'])
+  },
+
   methods: {
-    getProduct() {
-      this.startLoading()
-      userGetProduct().then((res) => {
-        // console.log(res)
-        this.stopLoading()
-        const category = {}
-        const productList = res.data.products
-        productList.forEach((item) => {
-          if (!category[item.category]) {
-            category[item.category] = 1
-          }
-        })
-        this.products = productList
-        this.categoryList = Object.keys(category)
-      })
-      // this.newestProduct = this.products.sort((item) => {
-      //   return item.createat
-      // })
-    },
-    getArticles() {
-      userGetArticles().then((res) => {
-        this.articles = res.data.articles
-        timeFormat(this.articles, 'create_at')
-      })
+    ...mapActions(productStore, ['getProducts']),
+    ...mapActions(articleStore, ['getArticles']),
+    updateSlidesPerView() {
+      const screenWidth = window.innerWidth
+      if (screenWidth <= 576) {
+        this.slidesPerView = 1
+      } else if (screenWidth <= 768) {
+        this.slidesPerView = 2
+      } else if (screenWidth <= 992) {
+        this.slidesPerView = 3
+      } else if (screenWidth <= 1200) {
+        this.slidesPerView = 4
+      } else {
+        this.slidesPerView = 6
+      }
     }
   },
   created() {
-    this.getProduct()
+    this.getProducts()
     this.getArticles()
+  },
+  mounted() {
+    // 在组件挂载时初始化 slides-per-view
+    this.updateSlidesPerView()
+
+    // 监听窗口大小变化，动态更新 slides-per-view
+    window.addEventListener('resize', this.updateSlidesPerView)
   }
 }
 </script>

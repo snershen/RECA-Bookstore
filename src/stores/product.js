@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import Swal from 'sweetalert2'
 
 import { userGetProduct } from '@/utils/apis'
 import { userGetSingleProduct } from '@/utils/apis'
@@ -9,14 +8,22 @@ export default defineStore('productStore', {
     return {
       productList: [],
       singleProduct: {},
-      filterResult: [],
+      singleProductId: '',
+      //篩選：分類
       categoryList: [],
+      filterResult: [],
       selectedCategory: '全部',
-      searchResult: [],
+      //篩選：文字搜尋
       searchString: '',
+      searchResult: [],
+      isEmptyResult: false,
+      isShowCollapse: false,
+      //更多類似產品
+      alikeProduct: [],
       isLoading: false
     }
   },
+
   actions: {
     getProducts() {
       this.isLoading = true
@@ -27,13 +34,16 @@ export default defineStore('productStore', {
       })
     },
     getSingleProduct(id) {
+      this.singleProductId = id
       this.isLoading = true
       userGetSingleProduct(id).then((res) => {
         this.isLoading = false
         this.singleProduct = res.data.product
+        this.showAlikeProduct(this.singleProduct)
       })
     },
     filterProduct(target) {
+      this.isEmptyResult = false
       this.searchResult = []
       if (target === '全部') {
         this.selectedCategory = '全部'
@@ -47,6 +57,7 @@ export default defineStore('productStore', {
       this.filterResult = result
     },
     renderCategory() {
+      this.isEmptyResult = false
       const categoryObj = {}
       const newProductList = [...this.productList]
       newProductList.forEach((item) => {
@@ -67,10 +78,23 @@ export default defineStore('productStore', {
       })
       this.searchResult = result
       this.selectedCategory = '全部'
+      if (this.searchResult.length === 0) {
+        this.isEmptyResult = true
+      }
     },
     updateSearchStr(target) {
       this.searchString = target
       this.searchProduct(this.searchString)
+    },
+    showAlikeProduct(target) {
+      const result = this.productList.filter((item) => {
+        if (item.id !== target.id) return item.category === target.category
+      })
+      this.alikeProduct = result
+    },
+    toggleCollapse() {
+      console.log(this.isShowCollapse)
+      this.isShowCollapse = !this.isShowCollapse
     }
   }
 })

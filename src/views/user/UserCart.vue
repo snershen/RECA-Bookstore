@@ -59,7 +59,7 @@
             </div>
           </li>
           <li class="col-lg-2 col-6">
-            <span class="d-lg-none d-inline-block">小計</span> ${{ item.final_total }}
+            <span class="d-lg-none d-inline-block">小計</span> ${{ item.total }}
           </li>
           <li class="col-lg-1 col-6 ms-auto text-end">
             <a
@@ -78,10 +78,13 @@
         </div>
         <div class="row mb-4 px-4 fs-6 fw-bold">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">優惠券</div>
-          <div class="col-lg-3 col-6 d-flex align-items-center justify-content-end">
+          <div class="col-lg-3 col-6 d-flex align-items-center justify-content-end mb-2">
             <input type="text" placeholder="填入優惠券" class="px-2 me-2" v-model="couponCode" />
-            <div class="btn btn-secondary" @click.prevent="checkCoupon">套用</div>
+            <button type="button" class="btn btn-secondary" @click.prevent="checkCoupon">
+              套用
+            </button>
           </div>
+          <p v-if="this.hasCoupon" class="text-end">已套用優惠券：{{ this.couponCode }}</p>
         </div>
         <div class="row mb-4 pb-4 px-4 fs-6 fw-bold border-bottom">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">折扣</div>
@@ -123,6 +126,7 @@
 
 <script>
 import { userCheckCoupon } from '@/utils/apis'
+import toastMixin from '@/mixins/toastMixin.js'
 
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
@@ -132,10 +136,12 @@ import LoadingComponent from '@/components/Loading.vue'
 export default {
   data() {
     return {
-      couponCode: ''
+      couponCode: '',
+      hasCoupon: false
     }
   },
   components: { LoadingComponent },
+  mixins: [toastMixin],
   computed: {
     ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength'])
   },
@@ -149,19 +155,23 @@ export default {
       'deleteAllCart'
     ]),
     checkCoupon() {
+      this.hasCoupon = false
       const data = {
         data: {
           code: this.couponCode
         }
       }
       userCheckCoupon(data).then((res) => {
+        if (res.data.success) {
+          this.hasCoupon = true
+          console.log(res)
+          this.getCart()
+        }
         const message = res.data.message
-        console.log(res)
         this.showToast({
           title: message,
           icon: 'info'
         })
-        this.getCart()
       })
     }
   },

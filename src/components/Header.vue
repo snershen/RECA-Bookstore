@@ -53,7 +53,7 @@
     </div>
     <div>
       <div class="position-absolute w-100">
-        <search-modal ref="SearchModal" v-show="isShow"></search-modal>
+        <SearchModal v-if="isShowCollapse"></SearchModal>
       </div>
     </div>
   </header>
@@ -61,41 +61,36 @@
 
 <script>
 // import { userGetCart } from '../utils/apis'
-import searchModal from './SearchModal.vue'
-import cartStore from '@/stores/cart.js'
+import SearchModal from './SearchModal.vue'
+
 import { mapState, mapActions } from 'pinia'
+import cartStore from '@/stores/cart.js'
+import productStore from '@/stores/product.js'
 
 export default {
   data() {
     return {
-      // cartNum: 0,
-      // productList: {},
       searchStr: '',
-      searchResult: [],
-      isShow: false
+      searchResult: []
     }
   },
   components: {
-    searchModal
+    SearchModal
   },
   computed: {
-    ...mapState(cartStore, ['cartLength'])
+    ...mapState(cartStore, ['cartLength']),
+    ...mapState(productStore, ['isShowCollapse'])
   },
   methods: {
-    ...mapActions(cartStore, ['getCart']),
-    // getCart() {
-    //   userGetCart().then((res) => {
-    //     console.log(res)
-    //     this.cartNum = res.data.data.carts.length
-    //   })
-    // },
-    toggleCollapse() {
-      // const searchComponent = this.$refs.SearchModal
-      this.isShow = !this.isShow
-    }
-  },
-  created() {
-    this.getCart()
+    ...mapActions(productStore, ['toggleCollapse'])
+    // toggleCollapse() {
+    //   // const searchComponent = this.$refs.SearchModal
+    //   this.isShow = !this.isShow
+    // }
+    // showCollapse() {
+    //   const searchComponent = this.$refs.SearchModal
+    //   searchComponent.showCollapse()
+    // }
   }
 }
 </script>

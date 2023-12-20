@@ -14,7 +14,7 @@
         />
         <button
           class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-3"
-          @click.prevent="updateSearchStr(searchString), directProductPage()"
+          @click.prevent="updateSearchStr(searchString), directProductPage(), toggleCollapse()"
         >
           搜尋
         </button>
@@ -28,60 +28,44 @@
 </template>
 
 <script>
-// import modalMixin from '../mixins/modalMixin'
+import Collapse from 'bootstrap/js/dist/collapse'
 
 import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/product.js'
 
-import Collapse from 'bootstrap/js/dist/collapse'
 export default {
-  // mixins: [modalMixin]
   data() {
     return {
       collapse: {},
       searchString: ''
     }
   },
+
   computed: {
     ...mapState(productStore, ['searchResult', 'searchStr', 'selectedCategory'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'updateSearchStr']),
+    ...mapActions(productStore, ['getProducts', 'updateSearchStr', 'toggleCollapse']),
+
     directProductPage() {
       this.$router.push('/user/products')
       this.searchString = ''
-      this.selectedCategory = '全部'
-    },
-    toggleCollapse() {
-      this.collapse.toggle()
-    },
-    hideCollapse() {
-      this.collapse.hide()
-    },
-    showCollapse() {
-      this.collapse.show()
     }
-    // goFilterPage(search) {
-    //   const searchStr = search.trim()
 
-    //   this.$router.push(`/user/products?search=${searchStr}`)
-    //   this.isShow = false
+    // toggleCollapse() {
+    //   this.collapse.toggle()
+    // },
+    // showCollapse() {
+    //   this.collapse.show()
+    // },
+    // hideCollapse() {
+    //   this.collapse.hide()
     // }
   },
+
   mounted() {
-    this.getProducts()
+    // this.getProducts()
     this.collapse = new Collapse(this.$refs.collapse)
-    this.hideCollapse()
-    this.$nextTick(() => {
-      this.collapse.classList.remove('show')
-    })
   }
 }
 </script>
-
-<style scoped>
-.modal-dialog {
-  width: 100%;
-  max-width: 50%;
-}
-</style>

@@ -6,7 +6,7 @@
           href="#"
           class="ps-3 py-3 d-block"
           :class="{ 'bg-selected': selectedCategory === '全部' }"
-          @click.prevent="filterProduct('全部')"
+          @click.prevent="filterProduct('全部'), directProductPage()"
           >全部</a
         >
       </li>
@@ -15,7 +15,7 @@
           href="#"
           class="px-3 py-3 w-100"
           :class="{ 'bg-selected': selectedCategory === item }"
-          @click.prevent="filterProduct(item)"
+          @click.prevent="filterProduct(item), directProductPage()"
         >
           {{ item }}
         </a>
@@ -33,7 +33,11 @@ export default {
     ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct'])
+    ...mapActions(productStore, ['getProducts', 'filterProduct']),
+    directProductPage() {
+      this.$router.push('/user/products')
+      this.searchString = ''
+    }
   },
   created() {
     this.getProducts()

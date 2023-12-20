@@ -14,9 +14,9 @@ export default defineStore('cartStore', {
       cartLength: 0,
       saveMoney: 0,
       productCount: 0,
-      toastContent: {}
+      toastContent: {},
 
-      // isLoading: false
+      isLoading: false
     }
   },
 
@@ -38,7 +38,7 @@ export default defineStore('cartStore', {
       }).fire()
     },
     showAlert(options) {
-      Swal.fire({
+      return Swal.fire({
         // icon: 'warning',
         // showCancelButton: true,
         confirmButtonText: '確定',
@@ -52,6 +52,7 @@ export default defineStore('cartStore', {
         this.cartList.final_total = Math.round(this.cartList.final_total)
         this.cartLength = res.data.data.carts.length
         this.saveMoney = Math.round(res.data.data.total - res.data.data.final_total)
+        console.log(this.cartList)
       })
     },
     deleteCart(id) {
@@ -94,7 +95,9 @@ export default defineStore('cartStore', {
         icon: 'info'
       }).then((result) => {
         if (result.isConfirmed) {
+          this.isLoading = true
           userDeleteCartAll().then((res) => {
+            this.isLoading = false
             console.log(res)
             this.getCart()
           })

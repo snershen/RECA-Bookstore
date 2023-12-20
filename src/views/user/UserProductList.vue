@@ -1,27 +1,62 @@
 <template>
   <LoadingComponent></LoadingComponent>
-  <div class="container mb-5">
-    <h1 class="fw-bold mb-4 ps-2">全部書籍</h1>
+  <div class="container mb-5 pb-5">
+    <div class="mb-5 ps-2">
+      <h1
+        class="fw-bold"
+        v-if="selectedCategory === '全部' && searchResult.length === 0 && !isEmptyResult"
+      >
+        全部書籍
+      </h1>
+      <h1
+        class="fw-bold"
+        v-else-if="searchResult.length === 0 && filterResult.length !== 0 && !isEmptyResult"
+      >
+        分類：{{ selectedCategory }}
+      </h1>
+      <h1 class="fw-bold" v-else-if="searchResult.length !== 0 && !isEmptyResult">
+        "{{ searchString }}"搜尋結果
+        <span class="fs-4 ms-4">共有 {{ searchResult.length }} 筆商品符合</span>
+      </h1>
+      <h1 class="fw-bold" v-else-if="isEmptyResult">
+        "{{ searchString }}" 搜尋結果
+        <span class="fs-4 ms-4">查無商品符合</span>
+      </h1>
+    </div>
     <div class="row">
       <div class="col-3">
         <product-category></product-category>
       </div>
       <div class="col-9">
-        <ul class="row g-3" v-if="searchResult.length === 0 && filterResult.length === 0">
+        <ul
+          class="row g-3"
+          v-if="searchResult.length === 0 && !isEmptyResult && filterResult.length === 0"
+        >
           <li v-for="item in productList" class="col-3 d-flex">
             <product-card :item="item"></product-card>
           </li>
         </ul>
-        <ul class="row g-3" v-else-if="searchResult.length === 0 && filterResult.length !== 0">
+        <ul
+          class="row g-3"
+          v-else-if="searchResult.length === 0 && filterResult.length !== 0 && !isEmptyResult"
+        >
           <li v-for="item in filterResult" class="col-3 d-flex">
             <product-card :item="item"></product-card>
           </li>
         </ul>
-        <ul class="row g-3" v-if="searchResult.length !== 0">
+        <ul class="row g-3" v-else-if="searchResult.length !== 0 && !isEmptyResult">
           <li v-for="item in searchResult" class="col-3 d-flex">
             <product-card :item="item"></product-card>
           </li>
         </ul>
+        <div class="text-center py-3" v-else-if="isEmptyResult">
+          <div class="fw-bold mb-5">
+            <p>喔不，沒有找到任何相關書籍</p>
+            <p class="fs-2 mb-4">請再次輸入，火速為您尋找</p>
+            <button type="button" class="btn btn-dark rounded-pill px-3">瀏覽全部書籍</button>
+          </div>
+          <img src="@/assets/img/noResult.png" alt="" />
+        </div>
       </div>
     </div>
   </div>
@@ -48,7 +83,14 @@ export default {
   },
 
   computed: {
-    ...mapState(productStore, ['productList', 'filterResult', 'searchResult'])
+    ...mapState(productStore, [
+      'productList',
+      'filterResult',
+      'searchResult',
+      'searchString',
+      'selectedCategory',
+      'isEmptyResult'
+    ])
   },
 
   methods: {

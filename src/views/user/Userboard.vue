@@ -9,7 +9,17 @@
 <script>
 import navbar from '../../components/Header.vue'
 import Footer from '../../components/Footer.vue'
+
+import { mapState, mapActions } from 'pinia'
+import cartStore from '@/stores/cart.js'
+
 export default {
-  components: { navbar, Footer }
+  components: { navbar, Footer },
+  methods: {
+    ...mapActions(cartStore, ['getCart'])
+  },
+  created() {
+    this.getCart()
+  }
 }
 </script>

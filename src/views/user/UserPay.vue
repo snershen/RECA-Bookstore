@@ -9,7 +9,7 @@
             <td width="20%">數量</td>
             <td width="20%" class="text-end">小計</td>
           </tr>
-          <tr class="border-bottom" v-for="item in cartItem.carts">
+          <tr class="border-bottom" v-for="item in cartList.carts">
             <td class="text-start">
               {{ item.product.title }}
             </td>
@@ -22,7 +22,7 @@
           </tr>
           <tr class="fw-bold">
             <td colspan="1" class="text-start">總計</td>
-            <td colspan="2" class="text-end">${{ cartItem.final_total }}</td>
+            <td colspan="2" class="text-end">${{ cartList.final_total }}</td>
           </tr>
         </table>
         <section>
@@ -96,13 +96,12 @@
                 />
               </li>
             </ul>
-            <!-- <button>Sign up for newsletter</button> -->
             <div class="row justify-content-between py-5">
               <div class="col-lg-4 col-6">
                 <a
                   href="#"
                   class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
-                  @click.prevent="goCartPage"
+                  @click.prevent="directCartPage"
                   ><span class="btn-arrow btn-arrow-left me-2"></span>上一步
                 </a>
               </div>
@@ -124,15 +123,17 @@
 </template>
 
 <script>
-import { userGetCart } from '../../utils/apis'
-import { userPostOrder } from '../../utils/apis'
+// import { userGetCart } from '@/utils/apis'
+import { userPostOrder } from '@/utils/apis'
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import toastMixin from '../../mixins/toastMixin'
+import toastMixin from '@/mixins/toastMixin'
+
+import { mapState, mapActions } from 'pinia'
+import cartStore from '@/stores/cart.js'
 
 export default {
   data() {
     return {
-      cartItem: {},
       couponCode: '',
       orderData: { data: { user: {} } }
     }
@@ -143,24 +144,17 @@ export default {
     ErrorMessage
   },
   mixins: [toastMixin],
+  computed: {
+    ...mapState(cartStore, ['saveMoney', 'cartList'])
+  },
   methods: {
-    getCart() {
-      userGetCart().then((res) => {
-        console.log(res)
-        this.cartItem = res.data.data
-        this.cartItem.carts.forEach((item) => {
-          item.final_total = Math.round(item.final_total)
-        })
-        this.cartItem.final_total = Math.round(this.cartItem.final_total)
-      })
-    },
+    ...mapActions(cartStore, ['getCart']),
 
-    goCartPage() {
+    directCartPage() {
       this.$router.push('/user/cart')
     },
     sendOrder() {
       userPostOrder(this.orderData).then((res) => {
-        console.log(res)
         const orderId = res.data.orderId
         this.$router.push(`/user/order/${orderId}`)
       })
@@ -168,10 +162,8 @@ export default {
     async submitForm() {
       const isValid = await this.$refs.form.validate()
       if (isValid.valid) {
-        // 所有字段通过验证，执行提交逻辑
         this.sendOrder()
       } else {
-        // 有字段未通过验证
         this.showToast({ icon: 'info', title: '請填入正確的訂購資料' })
       }
     }

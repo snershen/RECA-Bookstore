@@ -1,21 +1,22 @@
 <template>
-  <nav aria-label="breadcrumb"></nav>
+  <LoadingComponent></LoadingComponent>
+  <nav aria-label="Breadcrumb"></nav>
   <div>
     <div class="container">
-      <breadcrumb
-        :breadConfig="{ navList: '編輯推薦', path: 'article', title: article.title }"
-      ></breadcrumb>
+      <Breadcrumb
+        :breadConfig="{ path: 'article', subNav: '編輯推薦', title: article.title }"
+      ></Breadcrumb>
       <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
           <div class="d-flex align-items-center justify-content-between mb-3">
             <div class="d-flex align-items-center">
-              <a href="#" class="btn btn-secondary rounded-0 me-3 px-2 py-1 fs-6">{{
-                article.tag
-              }}</a>
+              <span href="#" class="text-secondary fw-bold me-3 px-2 py-1 fs-6"
+                >#{{ article.tag }}</span
+              >
             </div>
             <p class="fs-7">{{ article.create_at }}</p>
           </div>
-          <h2 class="mb-1 fw-bold mb-3 fs-1">{{ article.title }}</h2>
+          <h2 class="mb-1 fw-bold mb-1 fs-1">{{ article.title }}</h2>
           <p class="mb-4">作者 / {{ article.author }}</p>
         </div>
       </div>
@@ -27,16 +28,22 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <p class="fs-5">{{ article.content }}</p>
+          <p class="fs-5 py-5">{{ article.content }}</p>
         </div>
       </div>
     </div>
     <div class="bg-light py-5 mt-5">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <h3 class="fs-2 fw-bold">更多文章</h3>
-            <article-card :colConfig="{ article: articles, titleFont: 'fs-5' }"></article-card>
+          <div class="col-lg-10">
+            <h3 class="fs-2 fw-bold mb-4">更多文章</h3>
+            <ul class="row">
+              <li v-for="item in articleList" class="col-lg-6">
+                <div class="mb-3">
+                  <ArticleCard :article="item"></ArticleCard>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -45,43 +52,29 @@
 </template>
 
 <script>
-import { userGetSingleArticle } from '../../utils/apis'
-import breadcrumb from '../../components/Breadcrumb.vue'
-import { timeFormat } from '../../utils/timeFormat'
-import { userGetArticles } from '../../utils/apis'
+import Breadcrumb from '../../components/Breadcrumb.vue'
 import ArticleCard from '../../components/ArticleCard.vue'
+import LoadingComponent from '@/components/Loading.vue'
+import { mapState, mapActions } from 'pinia'
+import articleStore from '@/stores/article.js'
 
 export default {
-  data() {
-    return {
-      article: {},
-      articles: []
-    }
+  computed: {
+    ...mapState(articleStore, ['articleList', 'article'])
   },
-  components: { breadcrumb, ArticleCard },
+  components: { Breadcrumb, ArticleCard, LoadingComponent },
   methods: {
-    getSingleArticle() {
-      const path = this.$route.fullPath.split('/')
-      const id = path[path.length - 1]
-      userGetSingleArticle(id).then((res) => {
-        console.log(res)
-        this.article = res.data.article
-        timeFormat(this.article, 'create_at')
-      })
-    },
-    getArticles() {
-      userGetArticles().then((res) => {
-        this.articles = res.data.articles
-        timeFormat(this.articles, 'create_at')
-      })
-    },
+    ...mapActions(articleStore, ['getArticles', 'getSingleArticle']),
+
     isValidURL(str) {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
       return urlPattern.test(str) ? true : false
     }
   },
   created() {
-    this.getSingleArticle()
+    const path = this.$route.fullPath.split('/')
+    const id = path[path.length - 1]
+    this.getSingleArticle(id)
     this.getArticles()
   }
 }

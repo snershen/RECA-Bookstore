@@ -12,8 +12,26 @@
 // @import '../node_modules/bootstrap/scss/root';
 @import '../node_modules/bootstrap/scss/bootstrap';
 
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/scrollbar';
+
 @import '../assets/base.scss';
 @import '../assets/btn.scss';
 @import '../assets/loading.scss';
 
 @import '../node_modules/sweetalert2/src/sweetalert2.scss';
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 0.5rem;
+  border-radius: 50%;
+  border: solid 1px #000;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+}

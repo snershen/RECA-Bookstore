@@ -1,10 +1,13 @@
 <template>
+  <LoadingComponent></LoadingComponent>
+
   <div class="container">
     <div class="row pb-5">
       <div class="offset-lg-2 col-lg-8">
         <div>
           <div>
             <h1 class="mb-4 fw-bold">所有訂單</h1>
+            {{ orderId }}
             <div class="mb-5 row align-items-center gx-3">
               <div class="col-auto">
                 <label for="orderInput" class="form-label mb-0 pb-0">搜尋訂單</label>
@@ -15,14 +18,14 @@
                   placeholder="請輸入訂單編號"
                   class="form-control px-2 me-2 rounded-0 col-lg-4"
                   id="orderInput"
-                  v-model="searchStr"
+                  v-model="searchString"
                 />
               </div>
               <div class="col-auto">
                 <button
                   type="button"
                   class="btn btn-secondary"
-                  @click.prevent="findOrder(searchStr)"
+                  @click.prevent="filterOrder(searchString)"
                 >
                   搜尋
                 </button>
@@ -38,7 +41,7 @@
               <td width="10%">訂單狀態</td>
               <td width="12%"></td>
             </tr>
-            <tbody v-if="!orderResult.length">
+            <tbody v-if="orderResult.length === 0 && !isEmptyResult">
               <tr v-for="(item, index) in orderList" :key="item.id" class="border-bottom">
                 <td>{{ index + 1 }}</td>
                 <td>{{ item.create_at }}</td>
@@ -52,13 +55,13 @@
                   <a
                     href="#"
                     class="btn btn-outline-secondary"
-                    @click.prevent="orderDetail(item.id)"
+                    @click.prevent="directSingleOrder(item.id)"
                     >檢視</a
                   >
                 </td>
               </tr>
             </tbody>
-            <tbody v-else>
+            <tbody v-else-if="orderResult.length !== 0">
               <tr v-for="(item, index) in orderResult" :key="item.id" class="border-bottom">
                 <td>{{ index + 1 }}</td>
                 <td>{{ item.create_at }}</td>
@@ -72,10 +75,15 @@
                   <a
                     href="#"
                     class="btn btn-outline-secondary"
-                    @click.prevent="orderDetail(item.id)"
+                    @click.prevent="directSingleOrder(item.id)"
                     >檢視</a
                   >
                 </td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr class="border-bottom text-center fw-bold">
+                <td colspan="8">查無符合訂單，請再次確認訂單編號</td>
               </tr>
             </tbody>
           </table>
@@ -86,39 +94,28 @@
 </template>
 
 <script>
-import { userGetOrder } from '../../utils/apis'
-import { userSingleOrder } from '../../utils/apis'
-import { timeFormat } from '../../utils/timeFormat'
+import { mapState, mapActions } from 'pinia'
+import orderStore from '@/stores/order.js'
+
+import LoadingComponent from '@/components/Loading.vue'
+
 export default {
   data() {
     return {
-      orderList: [],
-      orderResult: [],
-      searchStr: ''
+      searchString: ''
     }
   },
+
+  computed: {
+    ...mapState(orderStore, ['orderList', 'orderResult', 'orderId', 'searchStr', 'isEmptyResult'])
+  },
+
+  components: { LoadingComponent },
+
   methods: {
-    getOrders() {
-      userGetOrder().then((res) => {
-        console.log(res)
-        this.orderList = res.data.orders
-        timeFormat(this.orderList, 'create_at')
-        this.orderResult = {}
-      })
-    },
-    orderDetail(id) {
-      userSingleOrder(id).then((res) => {
-        console.log(res)
-        this.$router.push(`/user/order/${id}`)
-      })
-    },
-    findOrder(str) {
-      const newStr = str.trim()
-      const result = this.orderList.filter((item) => {
-        return item.id === newStr
-      })
-      this.orderResult = result
-      console.log(this.orderResult)
+    ...mapActions(orderStore, ['getOrders', 'filterOrder', 'getOrderId']),
+    directSingleOrder(id) {
+      this.$router.push(`/user/order/${id}`)
     }
   },
   created() {
