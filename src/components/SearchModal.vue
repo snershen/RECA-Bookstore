@@ -1,10 +1,10 @@
 <template>
-  <div class="collapse border-0 bg-light border-bottom" id="collapseExample" ref="collapse">
-    <div class="card card-body py-3 container px-0 border-0 bg-light">
+  <div class="collapse border-0" id="collapseExample" ref="collapse">
+    <div class="py-2 px-0 border-0">
       <div class="position-relative mb-3">
         <font-awesome-icon
           :icon="['fas', 'magnifying-glass']"
-          class="text-dark position-absolute top-50 start-0 translate-middle-y text-gray ms-3 position-absolute top-0"
+          class="text-dark position-absolute top-50 start-0 translate-middle-y text-gray ms-3 top-0"
         />
         <input
           type="text"
@@ -14,7 +14,7 @@
         />
         <button
           class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-3"
-          @click.prevent="updateSearchStr(searchString), directProductPage(), toggleCollapse()"
+          @click.prevent="handleSearch"
         >
           搜尋
         </button>
@@ -50,8 +50,10 @@ export default {
     directProductPage() {
       this.$router.push('/user/products')
       this.searchString = ''
+    },
+    handleSearch() {
+      this.updateSearchStr(this.searchString), this.directProductPage(), this.toggleCollapse()
     }
-
     // toggleCollapse() {
     //   this.collapse.toggle()
     // },

@@ -151,7 +151,7 @@
                   v-model="tempProduct.content"
                 ></textarea>
               </div>
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -163,7 +163,7 @@
                   />
                   <label class="form-check-label" for="is_enabled"> 是否啟用 </label>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@ export default {
   data() {
     return {
       modal: {},
-      tempProduct: { isPublic: false }
+      tempProduct: {}
     }
   },
   props: {

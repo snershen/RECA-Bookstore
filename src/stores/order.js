@@ -18,12 +18,16 @@ export default defineStore('orderStore', {
   },
   actions: {
     getOrders() {
+      this.isEmptyResult = false
       this.isLoading = true
       userGetOrder().then((res) => {
         this.isLoading = false
         this.orderList = res.data.orders
         timeFormat(this.orderList, 'create_at')
         this.orderResult = []
+        this.orderList.forEach((item) => {
+          item.total = Math.round(item.total)
+        })
       })
     },
 
@@ -35,6 +39,7 @@ export default defineStore('orderStore', {
         this.order = res.data.order
         console.log(this.order)
         timeFormat(this.order, 'create_at')
+        this.order.total = Math.round(this.order.total)
         if (this.order.is_paid) {
           timeFormat(this.order, 'paid_date')
         }

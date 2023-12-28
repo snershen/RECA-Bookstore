@@ -20,7 +20,10 @@ export default defineStore('productStore', {
       isShowCollapse: false,
       //更多類似產品
       alikeProduct: [],
-      isLoading: false
+      isLoading: false,
+      //收藏列表
+      collectList: [],
+      collectStorage: []
     }
   },
 
@@ -81,6 +84,7 @@ export default defineStore('productStore', {
       if (this.searchResult.length === 0) {
         this.isEmptyResult = true
       }
+      console.log(this.isEmptyResult)
     },
     updateSearchStr(target) {
       this.searchString = target
@@ -93,8 +97,44 @@ export default defineStore('productStore', {
       this.alikeProduct = result
     },
     toggleCollapse() {
-      console.log(this.isShowCollapse)
       this.isShowCollapse = !this.isShowCollapse
+    },
+    getStorage() {
+      if (localStorage.getItem('collectList')) {
+        this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
+      }
+      return
+    },
+
+    addOrRemoveCollect(item, isSolid) {
+      if (!localStorage.getItem('collectList')) {
+        if (isSolid) {
+          this.collectList.push({ ...item, isSolid })
+          localStorage.setItem('collectList', JSON.stringify(this.collectList))
+          this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
+          return
+        }
+      }
+      this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
+      this.collectList = this.collectStorage
+      if (isSolid) {
+        const index = this.collectStorage.findIndex((storage) => {
+          return item.id === storage.id
+        })
+        if (index !== -1) {
+          return
+        }
+        this.collectList.push({ ...item, isSolid })
+        localStorage.setItem('collectList', JSON.stringify(this.collectList))
+        this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
+      } else {
+        const index = this.collectStorage.findIndex((storage) => {
+          return item.id === storage.id
+        })
+        this.collectList.splice(index, 1)
+        localStorage.setItem('collectList', JSON.stringify(this.collectList))
+        this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
+      }
     }
   }
 })

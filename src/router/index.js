@@ -75,6 +75,10 @@ const router = createRouter({
           component: () => import('../views/user/UserOrderSingle.vue')
         },
         {
+          path: 'collect',
+          component: () => import('../views/user/UserCollect.vue')
+        },
+        {
           path: 'article',
           component: () => import('../views/user/UserArticleList.vue')
         },

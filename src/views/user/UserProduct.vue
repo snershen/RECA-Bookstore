@@ -11,13 +11,13 @@
       </div>
       <div class="col-lg-9">
         <div class="row">
-          <div class="col-lg-3 col-12 mb-3 mb-lg-0 text-center">
+          <div class="col-lg-3 mb-3 mb-lg-0 text-center">
             <div class="px-5 mx-5 px-lg-0 mx-lg-0">
               <img :src="singleProduct.imageUrl" :alt="singleProduct" class="img-fluid" />
             </div>
           </div>
-          <div class="col-lg-8 col-12 d-flex flex-column justify-content-between">
-            <div>
+          <div class="col-lg-8 d-flex flex-column justify-content-between">
+            <div class="mb-3 mb-lg-0">
               <h1 class="fw-bold mb-3 mb-lg-0 fs-3">{{ singleProduct.title }}</h1>
               <p>{{ singleProduct.content }}</p>
             </div>
@@ -25,7 +25,7 @@
               <div class="col-lg-6">
                 <a
                   href="#"
-                  class="btn btn-secondary w-100 py-3 rounded-0 mb-2"
+                  class="btn btn-secondary w-100 py-3 rounded-0 mb-lg-0 mb-2"
                   @click.prevent="addCart(singleProduct.id)"
                   ><font-awesome-icon
                     :icon="['fas', 'cart-shopping']"

@@ -15,13 +15,21 @@ import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faCartShopping,
-  faHeart,
+  faHeart as fasHeart,
   faMagnifyingGlass,
   faCircleCheck
 } from '@fortawesome/free-solid-svg-icons'
-import { faXmark, faPlus, faMinus, faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
-import { faClipboard, faFileLines } from '@fortawesome/free-regular-svg-icons'
+import {
+  faXmark,
+  faPlus,
+  faMinus,
+  faPen,
+  faTrashCan,
+  faBars
+} from '@fortawesome/free-solid-svg-icons'
+
+import { faClipboard, faFileLines, faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 
 import { faInstagram, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 
@@ -31,7 +39,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import App from './App.vue'
 import router from './router'
 
-library.add(faHeart)
+library.add(fasHeart)
+library.add(farHeart)
 library.add(faXmark)
 library.add(faInstagram)
 library.add(faFacebookF)
@@ -45,6 +54,7 @@ library.add(faClipboard)
 library.add(faPen)
 library.add(faTrashCan)
 library.add(faFileLines)
+library.add(faBars)
 
 import { defineRule } from 'vee-validate'
 

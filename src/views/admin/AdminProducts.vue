@@ -7,7 +7,7 @@
     <h1 class="fs-3 fw-bold">產品列表管理</h1>
     <button class="btn btn-primary" type="button" @click="openModal(true)">新增產品</button>
   </div>
-
+  {{ productChecked }}
   <table class="table table-hover mt-4 align-middle">
     <thead>
       <tr>
@@ -26,9 +26,19 @@
         <td class="text-right">{{ product.origin_price }}</td>
         <td class="text-right">{{ product.price }}</td>
         <td>
-          <span class="text-success" v-if="product.is_enabled">啟用</span>
-          <span class="text-muted" v-else>未啟用</span>
-          <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
+          <!-- <span class="text-success" v-if="product.is_enabled">啟用</span>
+          <span class="text-muted" v-else>未啟用</span> -->
+          <div class="d-flex">
+            <input
+              type="checkbox"
+              :id="product.id"
+              :true-value="1"
+              :false-value="0"
+              :class="{ active: product.is_enabled }"
+              @click.prevent="updateIsAble(product)"
+            />
+            <label :for="product.id"> Toggle </label>
+          </div>
         </td>
         <td>
           <div>
@@ -117,7 +127,6 @@ export default {
       } else {
         admin_postProduct({ data: this.tempProduct }).then((res) => {
           this.showToast({ title: res.data.message, icon: 'success' })
-
           productComponent.hideModal()
           this.getProducts()
         })
@@ -127,6 +136,17 @@ export default {
       //   productComponent.hideModal()
       //   this.getProducts()
       // })
+    },
+    updateIsAble(item) {
+      this.tempProduct = item
+      this.tempProduct.is_enabled = !this.tempProduct.is_enabled
+      admin_putProduct({ data: this.tempProduct }, item.id).then((res) => {
+        if (res.data.success) {
+          this.showToast({ title: res.data.message, icon: 'success' })
+
+          this.getProducts()
+        }
+      })
     },
     deleteProduct(item) {
       this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true }).then(
@@ -139,6 +159,9 @@ export default {
           }
         }
       )
+    },
+    toggleCheckbox() {
+      this.productChecked = !this.productChecked
     }
   },
   created() {
@@ -177,11 +200,11 @@ label:after {
   transition: 0.3s;
 }
 
-input:checked + label {
+input.active + label {
   background: #ff5a26;
 }
 
-input:checked + label:after {
+input.active + label:after {
   left: calc(100% - 5px);
   transform: translateX(-100%);
 }

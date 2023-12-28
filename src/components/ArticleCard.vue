@@ -1,12 +1,16 @@
 <template>
   <div class="border-bottom position-relative">
     <div class="row py-4">
-      <div class="col-4 h-100">
+      <div class="col-12 col-md-4 h-100">
         <div class="overflow-hidden">
-          <img :src="article.image" alt="article.title" class="w-100 h-100 object-fit-cover" />
+          <img
+            :src="article.image"
+            alt="article.title"
+            class="w-100 h-100 object-fit-cover mb-3 mb-lg-0"
+          />
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-12 col-md-8">
         <div class="d-flex align-items-center justify-content-between">
           <span href="#" class="fs-7 text-secondary fw-bold mb-1">#{{ article.tag }}</span>
           <p class="fs-7">{{ article.create_at }}</p>

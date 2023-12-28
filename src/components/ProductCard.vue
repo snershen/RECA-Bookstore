@@ -2,11 +2,15 @@
   <div
     class="position-relative p-3 d-flex flex-column w-100 bg-white border-light-300 h-100 product-card"
   >
-    <a href="#" class="position-absolute top-0 end-0 pt-2 pe-2">
-      <span class="rounded-circle bg-white p-2 shadow-sm">
-        <font-awesome-icon :icon="['fas', 'heart']" class="fa-lg text-success" />
+    <button
+      type="button"
+      class="like-btn btn btn-white position-absolute top-0 end-0 pt-2 pe-2 border-0"
+      @click.prevent="handleCollectBtn(item, isSolid)"
+    >
+      <span class="rounded-circle bg-white shadow-sm">
+        <font-awesome-icon :icon="icon" class="text-primary" />
       </span>
-    </a>
+    </button>
     <img
       :src="item.imageUrl"
       :alt="item.title"
@@ -23,14 +27,51 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
+import productStore from '@/stores/product.js'
+
 export default {
+  data() {
+    return {
+      isSolid: false,
+      storageObj: {}
+    }
+  },
   props: {
     item: Object
   },
+  computed: {
+    icon() {
+      return this.isSolid ? ['fas', 'heart'] : ['far', 'heart']
+    },
+    ...mapState(productStore, ['collectList', 'collectStorage'])
+  },
   methods: {
+    ...mapActions(productStore, ['addOrRemoveCollect', 'getStorage']),
     directSingleProduct(id) {
       this.$router.push(`/user/products/${id}`)
+    },
+    changeCollectIcon() {
+      this.isSolid = !this.isSolid
+    },
+    handleCollectBtn(item) {
+      this.changeCollectIcon()
+      this.addOrRemoveCollect(item, this.isSolid)
+    },
+    initializeIsSolid() {
+      const copyCollectList = Array.from(this.collectStorage)
+
+      const storedItem = copyCollectList.filter((storedItem) => storedItem.id === this.item.id)
+      console.log(storedItem)
+      if (storedItem.length > 0) {
+        this.isSolid = storedItem[0].isSolid ? true : false
+      }
     }
+  },
+  created() {
+    // localStorage.clear()
+    this.getStorage()
+    this.initializeIsSolid()
   }
 }
 </script>
@@ -47,5 +88,17 @@ export default {
 .product-card:hover {
   /* scale: 1.05; */
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+}
+
+.like-btn {
+  z-index: 10;
+}
+
+.like-btn span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
 }
 </style>

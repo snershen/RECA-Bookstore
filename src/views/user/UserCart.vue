@@ -76,11 +76,20 @@
           <div class="offset-lg-8 col-lg-1 col-6 text-start">總計</div>
           <div class="col-lg-3 text-end col-6">${{ cartList.total }}</div>
         </div>
-        <div class="row mb-4 px-4 fs-6 fw-bold">
+        <div class="row mb-4 px-4 fs-6 fw-bold align-items-center">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">優惠券</div>
           <div class="col-lg-3 col-6 d-flex align-items-center justify-content-end mb-2">
-            <input type="text" placeholder="填入優惠券" class="px-2 me-2" v-model="couponCode" />
-            <button type="button" class="btn btn-secondary" @click.prevent="checkCoupon">
+            <input
+              type="text"
+              placeholder="填入優惠券"
+              class="form-control px-2 me-2"
+              v-model="couponCode"
+            />
+            <button
+              type="button"
+              class="btn btn-secondary text-nowrap"
+              @click.prevent="checkCoupon"
+            >
               套用
             </button>
           </div>

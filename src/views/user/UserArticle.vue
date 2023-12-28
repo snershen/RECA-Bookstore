@@ -23,7 +23,7 @@
     </div>
 
     <div v-if="isValidURL(article.image)">
-      <img :src="article.image" alt="" height="350" class="w-100 object-fit-cover mb-5" />
+      <img :src="article.image" alt="" height="350" class="w-100 object-fit-cover mb-lg-5" />
     </div>
     <div class="container">
       <div class="row justify-content-center">

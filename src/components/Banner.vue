@@ -29,65 +29,68 @@ export default {
       products: []
     }
   },
-  mounted() {
-    gsap.timeline().set(this.$refs.container, { perspective: 1200 })
+  methods: {
+    applyGSAPAnimations() {
+      gsap.timeline().set(this.$refs.container, { perspective: 1200 })
 
-    this.$refs.box.forEach((box, index) => {
-      //   // let b = document.createElement('div')
-      //   // b.classList.add('box')
-      //   // this.$refs.container.appendChild(b)
-      gsap.set(box, {
-        left: '50%',
-        top: '50%',
-        x: '-50%',
-        y: '-50%',
-        z: 400,
-        width: '25%',
+      this.$refs.box.forEach((box, index) => {
+        gsap.set(box, {
+          left: '50%',
+          top: '50%',
+          x: '-50%',
+          y: '-50%',
+          z: 400,
+          width: '25%',
+          borderRadius: 8
+        })
 
-        borderRadius: 8
-        // background: `hsl(${(index / this.bookList.length) * 360},100%, 50%)`
+        gsap.fromTo(
+          box,
+          {
+            scaleY: 0,
+            scaleX: -1,
+            zIndex: () => (index < this.bookList.length / 2 ? -index : index),
+            rotationY: 50 + (index / this.bookList.length) * 140,
+            transformOrigin: String('50% 50% -1200%')
+          },
+          {
+            scaleY: 1,
+            duration: 1,
+            delay: 1 - 0.5 * (index / this.bookList.length),
+            ease: 'elastic'
+          }
+        )
+
+        box.onmouseenter = () => {
+          gsap.to(box, {
+            duration: 0.3,
+            rotationX: 0,
+            y: '-70%',
+            ease: 'back.out(6)'
+          })
+        }
+
+        box.onmouseleave = () => {
+          gsap.to(box, { duration: 0.4, rotationX: 0, y: '-50%' })
+        }
       })
 
-      gsap.fromTo(
-        box,
-        {
-          scaleY: 0,
-          scaleX: -1,
-          // opacity:0.7,
-          zIndex: () => (index < this.bookList.length / 2 ? -index : index),
-
-          rotationY: 50 + (index / this.bookList.length) * 140,
-          transformOrigin: String('50% 50% -1200%')
-        },
-        {
-          scaleY: 1,
-          duration: 1,
-          delay: 1 - 0.5 * (index / this.bookList.length),
-          ease: 'elastic'
-        }
-      )
-
-      box.onmouseenter = (e) => {
-        gsap.to(box, {
-          duration: 0.3,
-          rotationX: 0,
-          y: '-70%',
-          ease: 'back.out(6)'
+      this.$refs.container.onmousemove = (e) => {
+        gsap.to(this.$refs.box, {
+          duration: 0.6,
+          rotationY: (index) =>
+            90 + (index / this.bookList.length) * 140 + 90 * (e.clientX / window.innerWidth)
         })
       }
-
-      box.onmouseleave = (e) => {
-        gsap.to(box, { duration: 0.4, rotationX: 0, y: '-50%' })
-      }
-    })
-
-    this.$refs.container.onmousemove = (e) => {
-      gsap.to(this.$refs.box, {
-        duration: 0.6,
-        rotationY: (index) =>
-          90 + (index / this.bookList.length) * 140 + 90 * (e.clientX / window.innerWidth)
-      })
     }
+  },
+  mounted() {
+    this.applyGSAPAnimations()
+
+    window.addEventListener('resize', () => {
+      // 在視窗大小改變時重新應用 GSAP 動畫
+      this.applyGSAPAnimations()
+    })
   }
 }
 </script>
@@ -111,5 +114,23 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+@media screen and (max-width: 576px) {
+  .box {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .box {
+    width: 50% !important;
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .box {
+    width: 25% !important;
+  }
 }
 </style>

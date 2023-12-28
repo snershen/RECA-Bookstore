@@ -19,7 +19,7 @@
           <span class="badge text-bg-success" v-if="order.is_paid">已付款</span>
           <span class="badge text-bg-warning" v-else>未付款</span>
         </td>
-        <!-- <td>{{ order.user.name }}</td> -->
+        <td>{{ order.user.name }}</td>
         <td>{{ order.total }}</td>
 
         <td>
@@ -55,6 +55,9 @@ export default {
         console.log(res)
         this.orderList = res.data.orders
         timeFormat(this.orderList)
+        this.orderList.forEach((item) => {
+          item.total = Math.round(item.total)
+        })
       })
     },
     delOrder(order) {

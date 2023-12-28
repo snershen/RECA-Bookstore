@@ -4,14 +4,16 @@
     <div class="mt-5">
       <h1 class="mt-5 fw-bold">尋找屬於自己的<span>命定之書</span></h1>
       <p class="text-center mt-2 fs-4">上萬本書籍等待你的閱讀</p>
+      <Banner></Banner>
     </div>
-    <Banner></Banner>
   </main>
   <div class="bg-light">
     <div class="container">
-      <ul class="d-flex gap-3 mb-5 py-4">
+      <ul class="d-flex gap-3 mb-5 py-4 overflow-x-auto">
         <li v-for="item in categoryList">
-          <a href="#" class="btn btn-outline-secondary rounded-pill px-3 fs-5"># {{ item }}</a>
+          <a href="#" class="btn btn-outline-secondary rounded-pill px-3 fs-6 text-nowrap"
+            ># {{ item }}</a
+          >
         </li>
       </ul>
     </div>
@@ -31,10 +33,10 @@
       @swiper="onSwiper"
       @slideChange="onSlideChange"
       class="h-100 mb-5"
-      :autoplay="true"
     >
       <swiper-slide v-for="item in productList" class="h-auto">
-        <product-card :item="item"></product-card>
+        <!-- :autoplay="true" -->
+        <product-card :item="item" :isSolid="isSolid"></product-card>
       </swiper-slide>
     </swiper>
     <div class="text-center">
