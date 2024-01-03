@@ -11,10 +11,10 @@
         :centeredSlides="true"
         :slidesPerView="slidesPerViewCoverFlow"
         :autoplay="true"
-        spaceBetween="40"
+        spaceBetween="50"
         :coverflowEffect="{
           rotate: 30,
-          stretch: 10,
+          stretch: 1,
           depth: 50,
           modifier: 1,
           slideShadows: false
@@ -32,7 +32,7 @@
   </main>
   <div class="bg-light">
     <div class="d-flex justify-content-center">
-      <ul class="d-flex gap-3 py-4 overflow-x-auto">
+      <ul class="d-flex gap-3 py-5 overflow-x-auto">
         <li v-for="item in categoryList">
           <a
             href="#"
@@ -85,7 +85,7 @@
     <swiper
       :modules="modules"
       :slides-per-view="slidesPerView"
-      :space-between="20"
+      :space-between="30"
       navigation
       @swiper="onSwiper"
       @slideChange="onSlideChange"
