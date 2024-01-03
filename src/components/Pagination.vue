@@ -9,11 +9,12 @@
           :class="{ 'd-none': !pagination.has_pre }"
           @click.prevent="updatePage(pagination.current_page - 1)"
         >
-          <span aria-hidden="true">&laquo;</span>
+          <!-- <span aria-hidden="true">&laquo;</span> -->
+          <font-awesome-icon :icon="['fas', 'arrow-left']" />
         </a>
       </li>
       <li
-        class="page-item"
+        class="page-item mx-1"
         v-for="page in pagination.total_pages"
         :key="page"
         :class="{ active: pagination.current_page === page }"
@@ -28,7 +29,7 @@
           :class="{ 'd-none': !pagination.has_next }"
           @click.prevent="updatePage(pagination.current_page + 1)"
         >
-          <span aria-hidden="true">&raquo;</span>
+          <font-awesome-icon :icon="['fas', 'arrow-right']" />
         </a>
       </li>
     </ul>
@@ -61,3 +62,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.active .page-link {
+  background: #000;
+  color: white;
+}
+
+.page-link {
+  color: #000;
+}
+</style>

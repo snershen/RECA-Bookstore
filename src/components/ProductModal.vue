@@ -93,6 +93,10 @@
                     <option>社會科學</option>
                     <option>商業理財</option>
                     <option>勵志成長</option>
+                    <option>生活風格</option>
+                    <option>醫療保健</option>
+                    <option>旅遊觀光</option>
+                    <option>電腦科技</option>
                   </select>
                 </div>
                 <div class="mb-3 col-md-6">

@@ -6,12 +6,12 @@
       :breadConfig="{ path: 'products', subNav: '書籍類別', title: singleProduct.title }"
     ></Breadcrumb>
     <div class="row">
-      <div class="col-3 d-none d-lg-block">
+      <div class="col-3 d-none d-lg-block mb-5">
         <ProductCategory></ProductCategory>
       </div>
       <div class="col-lg-9">
         <div class="row">
-          <div class="col-lg-3 mb-3 mb-lg-0 text-center">
+          <div class="col-lg-4 mb-3 mb-lg-0 text-center">
             <div class="px-5 mx-5 px-lg-0 mx-lg-0">
               <img :src="singleProduct.imageUrl" :alt="singleProduct" class="img-fluid" />
             </div>
@@ -19,9 +19,17 @@
           <div class="col-lg-8 d-flex flex-column justify-content-between">
             <div class="mb-3 mb-lg-0">
               <h1 class="fw-bold mb-3 mb-lg-0 fs-3">{{ singleProduct.title }}</h1>
-              <p>{{ singleProduct.content }}</p>
+              <p v-html="singleProduct.description"></p>
             </div>
             <div class="row">
+              <div class="col-12">
+                <div class="mb-4">
+                  <span class="fs-4 me-2 text-secondary fw-bold"
+                    >售價 ${{ singleProduct.price }}</span
+                  >
+                  <del class="opacity-50">${{ singleProduct.origin_price }}</del>
+                </div>
+              </div>
               <div class="col-lg-6">
                 <a
                   href="#"
@@ -34,13 +42,24 @@
                 >
               </div>
               <div class="col-lg-6">
-                <a href="#" class="btn btn-outline-secondary w-100 py-3 rounded-0">加入收藏</a>
+                <a
+                  href="#"
+                  class="btn btn-outline-secondary w-100 py-3 rounded-0"
+                  :class="{ 'opacity-75 bg-dark text-white': isSolid }"
+                  @click.prevent="handleCollectBtn(singleProduct)"
+                >
+                  <span class="me-2 fa-lg">
+                    <font-awesome-icon :icon="icon" class="text-primary" />
+                  </span>
+                  <span v-if="isSolid">已加入收藏</span>
+                  <span v-else>加入收藏</span>
+                </a>
               </div>
             </div>
           </div>
           <div class="col-12 py-5">
             <h2 class="fs-4 fw-bold mb-3">本書介紹</h2>
-            <p>{{ singleProduct.description }}</p>
+            <p v-html="singleProduct.content"></p>
           </div>
         </div>
       </div>
@@ -108,14 +127,53 @@ import cartStore from '@/stores/cart.js'
 import productStore from '@/stores/product.js'
 
 export default {
+  data() {
+    return {
+      isSolid: false
+    }
+  },
   components: { ProductCard, ProductCategory, Breadcrumb, LoadingComponent },
   computed: {
-    ...mapState(productStore, ['singleProduct', 'singleProductId', 'productList', 'alikeProduct'])
+    ...mapState(productStore, [
+      'singleProduct',
+      'singleProductId',
+      'productList',
+      'alikeProduct',
+      'collectList',
+      'collectStorage',
+      'isSolid'
+    ]),
+    icon() {
+      return this.isSolid ? ['fas', 'heart'] : ['far', 'heart']
+    }
   },
 
   methods: {
     ...mapActions(cartStore, ['getCart', 'addCart']),
-    ...mapActions(productStore, ['getSingleProduct', 'getProducts', 'showAlikeProduct'])
+    ...mapActions(productStore, [
+      'getSingleProduct',
+      'getProducts',
+      'showAlikeProduct',
+      'getProductsAll',
+      'getStorage',
+      'addOrRemoveCollect'
+    ]),
+    initializeIsSolid() {
+      const copyCollectList = Array.from(this.collectStorage)
+      const storedItem = copyCollectList.filter(
+        (storedItem) => storedItem.id === this.singleProduct.id
+      )
+      if (storedItem.length > 0) {
+        this.isSolid = storedItem[0].isSolid ? true : false
+      }
+    },
+    changeCollectIcon() {
+      this.isSolid = !this.isSolid
+    },
+    handleCollectBtn(item) {
+      this.changeCollectIcon()
+      this.addOrRemoveCollect(item, this.isSolid)
+    }
   },
 
   created() {
@@ -124,6 +182,13 @@ export default {
     const id = pathArr[pathArr.length - 1]
     this.getSingleProduct(id)
     this.getProducts()
+    this.getProductsAll()
+  },
+  mounted() {
+    this.getStorage()
+    setTimeout(() => {
+      this.initializeIsSolid()
+    }, 500)
   }
 }
 </script>

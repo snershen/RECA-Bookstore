@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul id="container" ref="container">
-      <li v-for="(book, index) in bookList" :key="index" class="box" ref="box">
-        <router-link to="">
-          <img :src="book.imgUrl" alt="" />
+      <li v-for="(book, index) in productList" :key="index" class="box" ref="box">
+        <router-link to="#">
+          <img :src="book.imageUrl" alt="" />
         </router-link>
       </li>
     </ul>
@@ -12,6 +12,8 @@
 
 <script>
 import { gsap } from 'gsap'
+import { mapState, mapActions } from 'pinia'
+import productStore from '@/stores/product.js'
 
 export default {
   data() {
@@ -29,7 +31,14 @@ export default {
       products: []
     }
   },
+  computed: {
+    ...mapState(productStore, ['productList'])
+  },
   methods: {
+    ...mapActions(productStore, ['getProducts']),
+    directSingleProduct(id) {
+      this.$router.push(`/user/products/${id}`)
+    },
     applyGSAPAnimations() {
       gsap.timeline().set(this.$refs.container, { perspective: 1200 })
 
@@ -49,14 +58,14 @@ export default {
           {
             scaleY: 0,
             scaleX: -1,
-            zIndex: () => (index < this.bookList.length / 2 ? -index : index),
-            rotationY: 50 + (index / this.bookList.length) * 140,
+            zIndex: () => (index < this.productList.length / 2 ? -index : index),
+            rotationY: 50 + (index / this.productList.length) * 140,
             transformOrigin: String('50% 50% -1200%')
           },
           {
             scaleY: 1,
             duration: 1,
-            delay: 1 - 0.5 * (index / this.bookList.length),
+            delay: 1 - 0.5 * (index / this.productList.length),
             ease: 'elastic'
           }
         )
@@ -79,18 +88,22 @@ export default {
         gsap.to(this.$refs.box, {
           duration: 0.6,
           rotationY: (index) =>
-            90 + (index / this.bookList.length) * 140 + 90 * (e.clientX / window.innerWidth)
+            90 + (index / this.productList.length) * 160 + 90 * (e.clientX / window.innerWidth)
         })
       }
     }
   },
+  created() {
+    this.getProducts()
+  },
   mounted() {
-    this.applyGSAPAnimations()
+    // this.applyGSAPAnimations()
 
-    window.addEventListener('resize', () => {
-      // 在視窗大小改變時重新應用 GSAP 動畫
-      this.applyGSAPAnimations()
-    })
+    // window.addEventListener('resize', () => {
+    //   // 在視窗大小改變時重新應用 GSAP 動畫
+    //   this.applyGSAPAnimations()
+    // })
+    console.log(this.productList)
   }
 }
 </script>

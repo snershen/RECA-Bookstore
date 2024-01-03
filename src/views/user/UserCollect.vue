@@ -4,7 +4,7 @@
       <h1 class="fw-bold mb-5">收藏清單</h1>
     </div>
     <ul class="row g-4" v-if="collectStorage.length !== 0">
-      <li v-for="item in collectStorage" class="col-lg-2 col-md-4 col-sm-6 mb-lg-0">
+      <li v-for="item in collectStorage" :key="item.id" class="col-lg-2 col-md-4 col-sm-6 mb-lg-0">
         <ProductCard :item="item"></ProductCard>
       </li>
     </ul>

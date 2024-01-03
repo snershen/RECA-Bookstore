@@ -1,12 +1,16 @@
 import { defineStore } from 'pinia'
+import { textBreak } from '@/utils/textBreak'
 
 import { userGetProduct } from '@/utils/apis'
+import { userGetProductAll } from '@/utils/apis'
 import { userGetSingleProduct } from '@/utils/apis'
 
 export default defineStore('productStore', {
   state: () => {
     return {
       productList: [],
+      productAll: [],
+      pagination: {},
       singleProduct: {},
       singleProductId: '',
       //篩選：分類
@@ -28,12 +32,28 @@ export default defineStore('productStore', {
   },
 
   actions: {
-    getProducts() {
+    async getProductsAll() {
+      try {
+        this.isLoading = true
+        const res = await userGetProductAll()
+        this.productAll = res.data.products
+        this.renderCategory()
+        this.isLoading = false
+
+        // 返回數據，如果需要的話
+        return res.data.products
+      } catch (error) {
+        this.isLoading = false
+        console.error('Error fetching data:', error)
+        throw error
+      }
+    },
+    getProducts(page = 1) {
       this.isLoading = true
-      userGetProduct().then((res) => {
+      userGetProduct(page).then((res) => {
         this.isLoading = false
         this.productList = res.data.products
-        this.renderCategory()
+        this.pagination = res.data.pagination
       })
     },
     getSingleProduct(id) {
@@ -42,6 +62,8 @@ export default defineStore('productStore', {
       userGetSingleProduct(id).then((res) => {
         this.isLoading = false
         this.singleProduct = res.data.product
+        this.singleProduct.description = textBreak(this.singleProduct.description)
+        this.singleProduct.content = textBreak(this.singleProduct.content)
         this.showAlikeProduct(this.singleProduct)
       })
     },
@@ -51,18 +73,21 @@ export default defineStore('productStore', {
       if (target === '全部') {
         this.selectedCategory = '全部'
         this.filterResult = this.productList
+        this.getProducts((page = 1))
         return
       }
       this.selectedCategory = target
-      const result = [...this.productList].filter((item) => {
+      const result = [...this.productAll].filter((item) => {
         return item.category === target
       })
       this.filterResult = result
+      console.log(result)
+      return result
     },
     renderCategory() {
       this.isEmptyResult = false
       const categoryObj = {}
-      const newProductList = [...this.productList]
+      const newProductList = [...this.productAll]
       newProductList.forEach((item) => {
         if (!categoryObj[item.category]) {
           categoryObj[item.category] = 1
@@ -76,7 +101,7 @@ export default defineStore('productStore', {
       this.searchResult = []
       this.searchString = searchStr
       const newSearchStr = searchStr.trim()
-      const result = this.productList.filter((item) => {
+      const result = this.productAll.filter((item) => {
         return item.title.includes(newSearchStr)
       })
       this.searchResult = result
@@ -84,7 +109,6 @@ export default defineStore('productStore', {
       if (this.searchResult.length === 0) {
         this.isEmptyResult = true
       }
-      console.log(this.isEmptyResult)
     },
     updateSearchStr(target) {
       this.searchString = target

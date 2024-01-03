@@ -28,7 +28,7 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <p class="fs-5 py-5">{{ article.content }}</p>
+          <p class="fs-5 py-5" v-html="article.content"></p>
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@
       class="mb-3 w-100 object-fit-contain"
       height="180"
     />
-    <h3 class="flex-grow-1 fs-6">{{ item.title }}</h3>
+    <h3 class="flex-grow-1 fs-6 text-overflow">{{ item.title }}</h3>
     <a href="#" class="stretched-link" @click.prevent="directSingleProduct(item.id)"></a>
     <p class="price">${{ item.price }}</p>
     <!-- <div class="d-flex justify-content-between align-items-center">
@@ -60,9 +60,7 @@ export default {
     },
     initializeIsSolid() {
       const copyCollectList = Array.from(this.collectStorage)
-
       const storedItem = copyCollectList.filter((storedItem) => storedItem.id === this.item.id)
-      console.log(storedItem)
       if (storedItem.length > 0) {
         this.isSolid = storedItem[0].isSolid ? true : false
       }

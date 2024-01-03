@@ -69,7 +69,7 @@ export default {
     ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct']),
+    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductsAll']),
     directProductPage() {
       this.$router.push('/user/products')
       this.searchString = ''

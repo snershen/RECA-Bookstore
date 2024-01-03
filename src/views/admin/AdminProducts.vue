@@ -53,7 +53,12 @@
       </tr>
     </tbody>
   </table>
-
+  <Pagination
+    :inner-pagination="pagination"
+    @emit-page="getProducts"
+    v-if="pagination.total_pages !== 1"
+    class="py-5"
+  ></Pagination>
   <ProductModal
     ref="productModal"
     :product="tempProduct"
@@ -62,15 +67,17 @@
 </template>
 
 <script>
-import ProductModal from '../../components/ProductModal.vue'
-import { admin_getProductPage } from '../../utils/apis.js'
-import { admin_putProduct } from '../../utils/apis.js'
-import { admin_postProduct } from '../../utils/apis.js'
-import { admin_deleteProduct } from '../../utils/apis.js'
+import { admin_getProductPage } from '@/utils/apis.js'
+import { admin_putProduct } from '@/utils/apis.js'
+import { admin_postProduct } from '@/utils/apis.js'
+import { admin_deleteProduct } from '@/utils/apis.js'
 
-import toastMixin from '../../mixins/toastMixin'
-import alertMixin from '../../mixins/alertMixin'
-import loadingMixin from '../../mixins/loadingMixin'
+import ProductModal from '@/components/ProductModal.vue'
+import Pagination from '@/components/Pagination.vue'
+
+import toastMixin from '@/mixins/toastMixin'
+import alertMixin from '@/mixins/alertMixin'
+import loadingMixin from '@/mixins/loadingMixin'
 
 export default {
   data() {
@@ -82,13 +89,14 @@ export default {
     }
   },
   components: {
-    ProductModal
+    ProductModal,
+    Pagination
   },
   mixins: [toastMixin, alertMixin, loadingMixin],
   methods: {
-    getProducts() {
+    getProducts(page = 1) {
       this.startLoading()
-      admin_getProductPage().then((res) => {
+      admin_getProductPage(page).then((res) => {
         this.stopLoading()
         if (res.data.success) {
           this.products = res.data.products
@@ -143,7 +151,6 @@ export default {
       admin_putProduct({ data: this.tempProduct }, item.id).then((res) => {
         if (res.data.success) {
           this.showToast({ title: res.data.message, icon: 'success' })
-
           this.getProducts()
         }
       })

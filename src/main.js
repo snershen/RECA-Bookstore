@@ -26,7 +26,9 @@ import {
   faMinus,
   faPen,
   faTrashCan,
-  faBars
+  faBars,
+  faArrowLeft,
+  faArrowRight
 } from '@fortawesome/free-solid-svg-icons'
 
 import { faClipboard, faFileLines, faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
@@ -55,6 +57,8 @@ library.add(faPen)
 library.add(faTrashCan)
 library.add(faFileLines)
 library.add(faBars)
+library.add(faArrowLeft)
+library.add(faArrowRight)
 
 import { defineRule } from 'vee-validate'
 

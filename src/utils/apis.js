@@ -59,8 +59,8 @@ export const admin_getProductAll = () => {
   return adminRequest.get(`/products/all`)
 }
 
-export const admin_getProductPage = () => {
-  return adminRequest.get(`/products`)
+export const admin_getProductPage = (page) => {
+  return adminRequest.get(`/products/?page=${page}`)
 }
 
 export const admin_postProduct = (data) => {
@@ -115,7 +115,7 @@ export const adminPostArticle = (data) => {
 }
 
 export const adminGetArticleAll = (page) => {
-  return adminRequest.get(`/articles`)
+  return adminRequest.get(`/articles/?page=${page}`)
 }
 
 export const adminGetSingleArticle = (id) => {
@@ -138,8 +138,12 @@ export const adminUploadImg = (data) => {
 //=========== user ============
 
 //商品列表
-export const userGetProduct = () => {
-  return userRequest.get(`/products`)
+export const userGetProduct = (page) => {
+  return userRequest.get(`/products?page=${page}`)
+}
+
+export const userGetProductAll = () => {
+  return userRequest.get(`products/all`)
 }
 
 export const userGetSingleProduct = (id) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="collapse border-0" id="collapseExample" ref="collapse">
-    <div class="py-2 px-0 border-0">
+    <div class="py-3 px-0 border-0">
       <div class="position-relative mb-3">
         <font-awesome-icon
           :icon="['fas', 'magnifying-glass']"
@@ -21,7 +21,9 @@
       </div>
       <div class="text-gray">
         <span>熱門關鍵字：</span>
-        <a href="#">#神在他方</a>
+        <a href="#" v-for="item in hotString" class="mx-2" @click.prevent="handleHotSearch(item)"
+          >#{{ item }}</a
+        >
       </div>
     </div>
   </div>
@@ -37,22 +39,34 @@ export default {
   data() {
     return {
       collapse: {},
-      searchString: ''
+      searchString: '',
+      hotString: ['筆記法', '貝果', '塔羅牌']
     }
   },
 
   computed: {
-    ...mapState(productStore, ['searchResult', 'searchStr', 'selectedCategory'])
+    ...mapState(productStore, ['searchResult', 'searchStr', 'selectedCategory', 'productAll'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'updateSearchStr', 'toggleCollapse']),
+    ...mapActions(productStore, [
+      'getProducts',
+      'updateSearchStr',
+      'toggleCollapse',
+      'getProductsAll'
+    ]),
 
     directProductPage() {
       this.$router.push('/user/products')
-      this.searchString = ''
+      // this.searchString = ''
     },
+
     handleSearch() {
       this.updateSearchStr(this.searchString), this.directProductPage(), this.toggleCollapse()
+    },
+
+    handleHotSearch(item) {
+      this.updateSearchStr(item)
+      this.directProductPage(), this.toggleCollapse()
     }
     // toggleCollapse() {
     //   this.collapse.toggle()
@@ -67,6 +81,7 @@ export default {
 
   mounted() {
     // this.getProducts()
+    this.getProductsAll()
     this.collapse = new Collapse(this.$refs.collapse)
   }
 }

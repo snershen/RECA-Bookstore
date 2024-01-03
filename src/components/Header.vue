@@ -7,24 +7,25 @@
             <img src="@/assets/img/logo.svg" alt="" class="px-2 img-fluid"
           /></RouterLink>
 
-          <div
-            class="collapse navbar-collapse position-absolute top-100 start-0 bg-white py-3 shadow-sm d-lg-none"
-            id="navbarSupportedContent"
-            ref="collapse"
-          >
-            <div class="container">
-              <ul class="navbar-nav me-auto mb-3 mb-lg-0">
-                <li class="nav-item">
-                  <RouterLink to="/user/products" class="nav-link">書籍類別</RouterLink>
-                </li>
-                <li class="nav-item">
-                  <RouterLink to="/user/article" class="nav-link">編輯推薦</RouterLink>
-                </li>
-                <li class="nav-item">
-                  <RouterLink to="/user/order" class="nav-link">查看訂單</RouterLink>
-                </li>
-              </ul>
-              <SearchModal></SearchModal>
+          <div ref="headerCollapse" class="position-absolute top-100 start-0 d-lg-none w-100 px-0">
+            <div
+              class="collapse navbar-collapse bg-white py-3 shadow-sm"
+              id="navbarSupportedContent"
+            >
+              <div class="container">
+                <ul class="navbar-nav me-auto mb-3 mb-lg-0">
+                  <li class="nav-item">
+                    <RouterLink to="/user/products" class="nav-link">書籍類別</RouterLink>
+                  </li>
+                  <li class="nav-item">
+                    <RouterLink to="/user/article" class="nav-link">編輯推薦</RouterLink>
+                  </li>
+                  <li class="nav-item">
+                    <RouterLink to="/user/order" class="nav-link">查看訂單</RouterLink>
+                  </li>
+                </ul>
+                <SearchModal></SearchModal>
+              </div>
             </div>
           </div>
 
@@ -75,6 +76,7 @@
                 aria-controls="navbarSupportedContent"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
+                @click.prevent="toggleCollapse"
               >
                 <font-awesome-icon :icon="['fas', 'bars']" class="fa-lg" />
               </button>
@@ -83,6 +85,7 @@
         </div>
       </div>
     </div>
+
     <div>
       <div class="position-absolute w-100 d-none d-lg-block">
         <div class="bg-light border-bottom">
@@ -96,7 +99,6 @@
 </template>
 
 <script>
-// import { userGetCart } from '../utils/apis'
 import SearchModal from './SearchModal.vue'
 import Collapse from 'bootstrap/js/dist/collapse'
 
@@ -110,7 +112,6 @@ export default {
       searchStr: '',
       searchResult: [],
       collapse: {}
-      // collectListStorage: []
     }
   },
   components: {
@@ -118,7 +119,7 @@ export default {
   },
   computed: {
     ...mapState(cartStore, ['cartLength']),
-    ...mapState(productStore, ['isShowCollapse', 'collectList', 'collectStorage'])
+    ...mapState(productStore, ['collectList', 'collectStorage', 'isShowCollapse'])
   },
   methods: {
     ...mapActions(productStore, ['toggleCollapse', 'getStorage'])
@@ -138,7 +139,7 @@ export default {
     this.getStorage()
   },
   mounted() {
-    this.collapse = new Collapse(this.$refs.collapse)
+    this.collapse = new Collapse(this.$refs.headerCollapse)
     this.collapse.hide()
   }
 }

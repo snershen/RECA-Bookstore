@@ -24,8 +24,8 @@
 
         <td>
           <div>
-            <button class="btn btn-success btn-sm me-1" @click="openModal(false, order)">
-              <font-awesome-icon :icon="['fas', 'pen']" />
+            <button class="btn btn-dark btn-sm me-1" @click="openModal(order)">
+              <font-awesome-icon :icon="['far', 'file-lines']" />
             </button>
             <button class="btn btn-danger btn-sm" @click.prevent="delOrder(order)">
               <font-awesome-icon :icon="['fas', 'trash-can']" />
@@ -34,29 +34,37 @@
         </td>
       </tr>
     </tbody>
+
+    <OrderModal ref="orderModal" :inner-order="tempOrder"></OrderModal>
   </table>
 </template>
 
 <script>
-import { adminGetOrder } from '../../utils/apis'
-import { deleteOrder } from '../../utils/apis'
+import { adminGetOrder } from '@/utils/apis'
+import { deleteOrder } from '@/utils/apis'
+import OrderModal from '@/components/OrderModal.vue'
 
-import { timeFormat } from '../../utils/timeFormat'
+import { timeFormat } from '@/utils/timeFormat'
 
 export default {
   data() {
     return {
-      orderList: []
+      orderList: [],
+      tempOrder: {}
     }
+  },
+  components: {
+    OrderModal
   },
   methods: {
     getOrderAll() {
       adminGetOrder().then((res) => {
-        console.log(res)
         this.orderList = res.data.orders
         timeFormat(this.orderList)
+
         this.orderList.forEach((item) => {
           item.total = Math.round(item.total)
+          timeFormat(item, 'create_at')
         })
       })
     },
@@ -65,6 +73,11 @@ export default {
         // console.log(res)
         this.getOrderAll()
       })
+    },
+    openModal(item) {
+      this.tempOrder = { ...item }
+      const orderComponent = this.$refs.orderModal
+      orderComponent.showModal()
     }
   },
   created() {

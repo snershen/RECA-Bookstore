@@ -77,8 +77,8 @@
           <div class="col-lg-3 text-end col-6">${{ cartList.total }}</div>
         </div>
         <div class="row mb-4 px-4 fs-6 fw-bold align-items-center">
-          <div class="offset-lg-8 col-lg-1 col-6 text-start">優惠券</div>
-          <div class="col-lg-3 col-6 d-flex align-items-center justify-content-end mb-2">
+          <div class="offset-lg-8 col-lg-1 col-12 text-start mb-2 mb-lg-0">優惠券</div>
+          <div class="col-lg-3 col-12 d-flex align-items-center justify-content-end mb-2">
             <input
               type="text"
               placeholder="填入優惠券"
@@ -110,14 +110,14 @@
       <div class="text-center"><img src="@/assets/img/cart-empty.png" alt="" /></div>
     </div>
     <div class="row justify-content-between py-5" v-if="cartLength">
-      <div class="col-lg-4 col-6">
+      <div class="col-lg-4 col-12">
         <router-link
           to="/user/products"
           class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           ><span class="btn-arrow btn-arrow-left me-2"></span>繼續逛逛
         </router-link>
       </div>
-      <div class="col-lg-4 col-6">
+      <div class="col-lg-4 col-12">
         <router-link to="/user/pay" class="btn btn-secondary rounded-0 w-100 py-3">
           前往結帳<span class="btn-arrow btn-arrow-right ms-2"></span
         ></router-link>

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { userGetArticles } from '@/utils/apis'
 import { userGetSingleArticle } from '@/utils/apis'
 import { timeFormat } from '@/utils/timeFormat'
+import { textBreak } from '@/utils/textBreak'
 
 export default defineStore('articleStore', {
   state: () => {
@@ -26,6 +27,7 @@ export default defineStore('articleStore', {
         this.isLoading = false
         this.article = res.data.article
         timeFormat(this.article, 'create_at')
+        this.article.content = textBreak(this.article.content, 3)
       })
     }
   }

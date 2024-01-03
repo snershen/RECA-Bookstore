@@ -28,9 +28,9 @@
       <div class="row pt-3">
         <div class="col-12 col-lg-6 text-lg-start">
           <ul class="d-flex mb-4 mb-lg-0">
-            <li><a href="#" class="pe-3 py-0">常見問題</a></li>
-            <li><a href="#" class="px-3 py-0">聯絡我們</a></li>
-            <li><a href="#" class="px-3 py-0">隱私權政策</a></li>
+            <li><a href="#" class="pe-3 py-0" @click.prevent="handleClick">常見問題</a></li>
+            <li><a href="#" class="px-3 py-0" @click.prevent="handleClick">聯絡我們</a></li>
+            <li><a href="#" class="px-3 py-0" @click.prevent="handleClick">隱私權政策</a></li>
           </ul>
         </div>
         <div class="col-12 col-lg-6 text-lg-end text-gray">
@@ -40,6 +40,14 @@
     </div>
   </footer>
 </template>
+
+<script>
+export default {
+  handleClick() {
+    console.log('已點擊')
+  }
+}
+</script>
 
 <style scoped>
 .social-link {

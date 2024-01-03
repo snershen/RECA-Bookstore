@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Swal from 'sweetalert2'
+import { addThousandsSeparator } from '@/utils/thousandNumber.js'
 
 import { userGetCart } from '@/utils/apis'
 import { userDeleteCart } from '@/utils/apis'
@@ -49,10 +50,18 @@ export default defineStore('cartStore', {
     getCart() {
       userGetCart().then((res) => {
         this.cartList = res.data.data
+        // console.log(this.cartList)
+        this.cartList.carts.forEach((item) => {
+          item.final_total = addThousandsSeparator(item.final_total)
+          item.total = addThousandsSeparator(item.total)
+        })
+        console.log(this.cartList)
         this.cartList.final_total = Math.round(this.cartList.final_total)
         this.cartLength = res.data.data.carts.length
         this.saveMoney = Math.round(res.data.data.total - res.data.data.final_total)
-        console.log(this.cartList)
+        this.saveMoney = addThousandsSeparator(this.saveMoney)
+        this.cartList.final_total = addThousandsSeparator(this.cartList.final_total)
+        this.cartList.total = addThousandsSeparator(this.cartList.total)
       })
     },
     deleteCart(id) {

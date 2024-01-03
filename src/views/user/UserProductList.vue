@@ -28,24 +28,28 @@
         <product-category></product-category>
       </div>
       <div class="col-lg-9">
-        <ul
-          class="row g-3"
-          v-if="searchResult.length === 0 && !isEmptyResult && filterResult.length === 0"
-        >
-          <li v-for="item in productList" class="col-lg-3 col-6 d-flex">
-            <product-card :item="item"></product-card>
-          </li>
-        </ul>
-        <ul
-          class="row g-3"
-          v-else-if="searchResult.length === 0 && filterResult.length !== 0 && !isEmptyResult"
-        >
-          <li v-for="item in filterResult" class="col-lg-3 col-6 d-flex">
-            <product-card :item="item"></product-card>
-          </li>
-        </ul>
+        <div v-if="searchResult.length === 0 && !isEmptyResult && filterResult.length === 0">
+          <ul class="row g-3">
+            <li v-for="item in productList" :key="item.id" class="col-lg-3 col-6 d-flex">
+              <product-card :item="item"></product-card>
+            </li>
+          </ul>
+          <Pagination
+            :inner-pagination="pagination"
+            @emit-page="getProducts"
+            class="py-5"
+            v-if="pagination.total_pages !== 1"
+          ></Pagination>
+        </div>
+        <div v-else-if="searchResult.length === 0 && filterResult.length !== 0 && !isEmptyResult">
+          <ul class="row g-3">
+            <li v-for="item in filterResult" class="col-lg-3 col-6 d-flex" :key="item.id">
+              <product-card :item="item"></product-card>
+            </li>
+          </ul>
+        </div>
         <ul class="row g-3" v-else-if="searchResult.length !== 0 && !isEmptyResult">
-          <li v-for="item in searchResult" class="col-lg-3 col-6 d-flex">
+          <li v-for="item in searchResult" class="col-lg-3 col-6 d-flex" :key="item.id">
             <product-card :item="item"></product-card>
           </li>
         </ul>
@@ -71,6 +75,7 @@
 <script>
 import ProductCategory from '../../components/ProductCategory.vue'
 import ProductCard from '../../components/ProductCard.vue'
+import Pagination from '@/components/Pagination.vue'
 
 import LoadingComponent from '@/components/Loading.vue'
 
@@ -81,26 +86,30 @@ export default {
   components: {
     ProductCategory,
     ProductCard,
-    LoadingComponent
+    LoadingComponent,
+    Pagination
   },
 
   computed: {
     ...mapState(productStore, [
-      'productList',
+      'productAll',
       'filterResult',
       'searchResult',
       'searchString',
       'selectedCategory',
-      'isEmptyResult'
+      'isEmptyResult',
+      'productList',
+      'pagination'
     ])
   },
 
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct'])
+    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductsAll'])
   },
 
   created() {
     this.getProducts()
+    this.getProductsAll()
   }
 }
 </script>
