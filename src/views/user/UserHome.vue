@@ -33,7 +33,7 @@
   <div class="bg-light">
     <div class="d-flex justify-content-center">
       <ul class="d-flex gap-3 py-5 overflow-x-auto">
-        <li v-for="item in categoryList">
+        <li v-for="item in categoryList" :key="item">
           <a
             href="#"
             class="fs-4 btn btn-outline-secondary rounded-pill px-3 fs-6 text-nowrap"
@@ -220,14 +220,14 @@ export default {
       this.updateSlidesPerViewCoverFlow()
     },
     directProductPage(item) {
+      this.getProductsAll()
       this.filterProduct(item)
       this.$router.push('/user/products')
     },
     directSingleProduct(id) {
       this.$router.push(`/user/products/${id}`)
     },
-    async filterProduct(target, list) {
-      console.log(target, this.productAll)
+    filterCategoryProduct(target, list) {
       const result = this.productAll.filter((item) => {
         return item.category === target
       })
@@ -235,24 +235,19 @@ export default {
     },
     async handler() {
       await this.getProductsAll()
-      console.log(this.productAll)
-      // await this.otherAsyncOperation() // 如果有其他異步操作，確保都等待完成
-      await this.filterProduct('文學小說', 'literalResult')
-      await this.filterProduct('商業理財', 'commercialResult')
-      // this.literalResult = this.filterProduct('文學小說')
-      console.log(this.literalResult)
+      await this.filterCategoryProduct('文學小說', 'literalResult')
+      await this.filterCategoryProduct('商業理財', 'commercialResult')
     }
   },
   created() {
     this.getProducts()
     this.getArticles()
-    // this.getProductsAll()
+    this.getProductsAll()
   },
 
   mounted() {
     this.updateSlidersHandler()
     window.addEventListener('resize', this.updateSlidersHandler)
-
     this.handler()
   }
 }

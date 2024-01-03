@@ -70,6 +70,7 @@ export default defineStore('productStore', {
     filterProduct(target) {
       this.isEmptyResult = false
       this.searchResult = []
+      console.log(target)
       if (target === '全部') {
         this.selectedCategory = '全部'
         this.filterResult = this.productList
@@ -80,8 +81,8 @@ export default defineStore('productStore', {
       const result = [...this.productAll].filter((item) => {
         return item.category === target
       })
+
       this.filterResult = result
-      console.log(result)
       return result
     },
     renderCategory() {
