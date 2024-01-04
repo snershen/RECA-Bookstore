@@ -32,7 +32,7 @@
   </main>
   <div class="bg-light">
     <div class="d-flex justify-content-center">
-      <ul class="d-flex gap-3 py-5 overflow-x-auto">
+      <ul class="d-flex gap-3 py-lg-5 py-4 overflow-x-auto">
         <li v-for="item in categoryList" :key="item">
           <a
             href="#"
