@@ -9,24 +9,24 @@
           <div class="col-md-8">
             <h1 class="fs-4 mb-4 font-weight-normal fw-bold">RECA 書店後台管理</h1>
             <div class="mb-4">
-              <label for="inputEmail" class="sr-only mb-2">Email address</label>
+              <label for="inputEmail" class="sr-only mb-2">帳號</label>
               <input
                 type="email"
                 id="inputEmail"
                 class="form-control"
-                placeholder="Email address"
+                placeholder="請輸入電子信箱"
                 required
                 autofocus
                 v-model="user.username"
               />
             </div>
             <div class="mb-2">
-              <label for="inputPassword" class="sr-only mb-2">Password</label>
+              <label for="inputPassword" class="sr-only mb-2">密碼</label>
               <input
                 type="password"
                 id="inputPassword"
                 class="form-control"
-                placeholder="Password"
+                placeholder="請輸入密碼"
                 required
                 v-model="user.password"
               />

@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-dark vh-100 d-flex flex-column position-fixed start-0">
-    <a class="navbar-brand fw-bold mb-4 px-4 pt-4 text-white fs-4" href="#">RECA 書店後台管理</a>
+    <a class="navbar-brand fw-bold px-4 pt-4 text-white fs-4" href="#">RECA 書店後台管理</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -38,7 +38,10 @@
         </li>
       </ul>
 
-      <a class="nav-link text-white px-4 py-3 text-start w-100" href="#" @click.prevent="logout"
+      <a
+        class="nav-link text-white px-4 py-3 text-start w-100 mt-5"
+        href="#"
+        @click.prevent="logout"
         >登出</a
       >
     </div>
@@ -46,20 +49,19 @@
 </template>
 
 <script>
-import { apiLogout } from '../utils/apis.js'
-import toastMixin from '../mixins/toastMixin.js'
+import { apiLogout } from '@/utils/apis.js'
+import toastMixin from '@/mixins/toastMixin.js'
 
 export default {
   mixins: [toastMixin],
   methods: {
     logout() {
       apiLogout().then((res) => {
-        const message = res.data.message
-        if (res.data.success) {
-          this.$router.push('/login')
-          this.showToast({ title: message, icon: 'success' })
-        }
+        // const message = res.data.message
+        this.$router.push('/login')
+        this.showToast({ title: '已登出', icon: 'success' })
       })
+      console.log('logout')
     }
   }
 }

@@ -26,6 +26,7 @@ export default {
     axios.defaults.headers.common.Authorization = token
     axios.post(`${import.meta.env.VITE_API_URL}/api/user/check`).then((res) => {
       console.log(res)
+      this.$router.push('/admin/products')
       if (!res.data.success) {
         this.$router.push('/login')
       }
