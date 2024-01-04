@@ -8,17 +8,17 @@
         <div class="col-6 col-lg-9">
           <ul class="d-flex mb-0 justify-content-end">
             <li class="pe-2">
-              <a href="#" class="social-link">
+              <a href="#" class="social-link" @click.prevent="handleClick">
                 <font-awesome-icon :icon="['fab', 'instagram']" class="fs-4" />
               </a>
             </li>
             <li class="px-2">
-              <a href="#" class="social-link">
+              <a href="#" class="social-link" @click.prevent="handleClick">
                 <font-awesome-icon :icon="['fab', 'facebook-f']" class="fs-5" />
               </a>
             </li>
             <li class="ps-2">
-              <a href="#" class="social-link">
+              <a href="#" class="social-link" @click.prevent="handleClick">
                 <font-awesome-icon :icon="['fab', 'x-twitter']" class="fs-5" />
               </a>
             </li>
