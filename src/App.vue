@@ -5,7 +5,6 @@ export default {
   components: {
     RouterLink,
     RouterView
-    // HelloWorld
   }
 }
 </script>

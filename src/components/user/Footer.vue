@@ -2,7 +2,7 @@
   <footer class="py-lg-5 pt-4 pb-4 bg-dark text-white fs-7">
     <div class="container">
       <div class="row align-items-center border-bottom pb-5">
-        <RouterLink to="/user/home" class="col-6 col-lg-3">
+        <RouterLink :to="{ name: 'index' }" class="col-6 col-lg-3">
           <img src="@/assets/img/logo-white.svg" alt="LOGO" class="px-2 img-fluid"
         /></RouterLink>
         <div class="col-6 col-lg-9">

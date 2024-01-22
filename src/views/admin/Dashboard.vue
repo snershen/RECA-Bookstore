@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex">
-    <AdminNav></AdminNav>
+    <Navbar />
     <div class="view-area ms-auto">
       <div class="container p-4">
         <RouterView />
@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import AdminNav from '@/components/AdminNav.vue'
-// import { apiCheck } from '@/utils/apis.js'
+import Navbar from '@/components/admin/Navbar.vue'
+
 import axios from 'axios'
 
 export default {
   components: {
-    AdminNav
+    Navbar
   },
   created() {
     const token = document.cookie.replace(
@@ -26,9 +26,9 @@ export default {
     axios.defaults.headers.common.Authorization = token
     axios.post(`${import.meta.env.VITE_API_URL}/api/user/check`).then((res) => {
       console.log(res)
-      this.$router.push('/admin/products')
+      this.$router.push({ name: 'admin-product' })
       if (!res.data.success) {
-        this.$router.push('/login')
+        this.$router.push({ name: 'admin-login' })
       }
     })
   }

@@ -71,7 +71,7 @@ export default {
   methods: {
     ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductsAll']),
     directProductPage() {
-      this.$router.push('/user/products')
+      this.$router.push('/products')
       this.searchString = ''
     }
   },

@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import ProductCategory from '../../components/ProductCategory.vue'
-import ProductCard from '../../components/ProductCard.vue'
+import ProductCategory from '@/components/user/ProductCategory.vue'
+import ProductCard from '@/components/user/ProductCard.vue'
 import Pagination from '@/components/Pagination.vue'
 
 import LoadingComponent from '@/components/Loading.vue'

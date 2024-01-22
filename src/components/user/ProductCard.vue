@@ -18,7 +18,7 @@
       height="180"
     />
     <h3 class="flex-grow-1 fs-6 text-overflow">{{ item.title }}</h3>
-    <a href="#" class="stretched-link" @click.prevent="directSingleProduct(item.id)"></a>
+    <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
     <p class="price">${{ item.price }}</p>
     <!-- <div class="d-flex justify-content-between align-items-center">
       <a href="#" class="btn btn-outline-dark w-100 text-nowrap">放入購物車</a>
@@ -49,7 +49,7 @@ export default {
   methods: {
     ...mapActions(productStore, ['addOrRemoveCollect', 'getStorage']),
     directSingleProduct(id) {
-      this.$router.push(`/user/products/${id}`)
+      this.$router.push(`/products/${id}`)
     },
     changeCollectIcon() {
       this.isSolid = !this.isSolid

@@ -36,7 +36,7 @@
         v-if="!order.is_paid"
         >立刻付款</a
       >
-      <router-link to="/user/order" class="btn btn-outline-secondary w-100 py-2"
+      <router-link :to="{ name: 'orders' }" class="btn btn-outline-secondary w-100 py-2"
         >查看所有訂單</router-link
       >
     </div>
@@ -53,14 +53,13 @@ export default {
   computed: {
     ...mapState(orderStore, ['order'])
   },
+  props: ['id'],
   components: { LoadingComponent },
   methods: {
     ...mapActions(orderStore, ['getSingleOrder', 'payMoney'])
   },
   created() {
-    const pathArr = this.$route.path.split('/')
-    const id = pathArr[pathArr.length - 1]
-    this.getSingleOrder(id)
+    this.getSingleOrder(this.id)
   }
 }
 </script>

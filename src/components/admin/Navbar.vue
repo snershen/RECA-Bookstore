@@ -58,7 +58,7 @@ export default {
     logout() {
       apiLogout().then((res) => {
         // const message = res.data.message
-        this.$router.push('/login')
+        this.$router.push({ name: 'login' })
         this.showToast({ title: '已登出', icon: 'success' })
       })
       console.log('logout')

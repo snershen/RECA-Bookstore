@@ -3,7 +3,7 @@
     <div class="py-2 border-bottom bg-white position-relative">
       <div class="container">
         <div class="row align-items-center">
-          <RouterLink to="/user/home" class="col-5 col-lg-2">
+          <RouterLink :to="{ name: 'index' }" class="col-5 col-lg-2">
             <img src="@/assets/img/logo.svg" alt="" class="px-2 img-fluid"
           /></RouterLink>
 
@@ -15,13 +15,13 @@
               <div class="container">
                 <ul class="navbar-nav me-auto mb-3 mb-lg-0">
                   <li class="nav-item">
-                    <RouterLink to="/user/products" class="nav-link">書籍類別</RouterLink>
+                    <RouterLink :to="{ name: 'products' }" class="nav-link">書籍類別</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <RouterLink to="/user/article" class="nav-link">編輯推薦</RouterLink>
+                    <RouterLink :to="{ name: 'articles' }" class="nav-link">編輯推薦</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <RouterLink to="/user/order" class="nav-link">查看訂單</RouterLink>
+                    <RouterLink :to="{ name: 'orders' }" class="nav-link">查看訂單</RouterLink>
                   </li>
                 </ul>
                 <SearchModal></SearchModal>
@@ -33,9 +33,9 @@
             class="col-lg-6 col-8 py-3 list-unstyled d-none d-lg-flex gap-4 mb-0 justify-content-end justify-content-lg-start"
           >
             <li>
-              <RouterLink to="/user/products" class="pe-2">書籍類別</RouterLink>
+              <RouterLink :to="{ name: 'products' }" class="pe-2">書籍類別</RouterLink>
             </li>
-            <li><RouterLink to="/user/article" class="px-2">編輯推薦</RouterLink></li>
+            <li><RouterLink :to="{ name: 'articles' }" class="px-2">編輯推薦</RouterLink></li>
           </ul>
 
           <div class="col-lg-4 col-7">
@@ -46,13 +46,13 @@
                 >
               </li>
               <li class="d-none d-lg-block">
-                <RouterLink to="/user/order" class="px-2 btn rounded-pill border-0">
+                <RouterLink :to="{ name: 'orders' }" class="px-2 btn rounded-pill border-0">
                   <font-awesome-icon :icon="['far', 'file-lines']" class="me-1 fs-5" />
                   訂單</RouterLink
                 >
               </li>
               <li>
-                <RouterLink to="/user/collect" class="ps-1 position-relative"
+                <RouterLink :to="{ name: 'collect' }" class="ps-1 position-relative"
                   ><font-awesome-icon :icon="['fas', 'heart']" class="fa-lg" />
                   <span
                     class="px-1 ms-1 text-white rounded bg-primary fs-8 position-absolute start-100 top-0 translate-middle-x d-inline-block"
@@ -61,7 +61,7 @@
                 >
               </li>
               <li class="me-2">
-                <RouterLink to="/user/cart" class="ps-1 position-relative"
+                <RouterLink :to="{ name: 'cart' }" class="ps-1 position-relative"
                   ><font-awesome-icon :icon="['fas', 'cart-shopping']" class="fa-lg" /><span
                     class="px-1 ms-1 text-white rounded bg-primary fs-8 position-absolute start-100 top-0 translate-middle-x d-inline-block"
                     >{{ cartLength }}</span

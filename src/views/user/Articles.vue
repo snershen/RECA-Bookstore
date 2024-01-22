@@ -57,7 +57,7 @@ import { mapState, mapActions } from 'pinia'
 import articleStore from '@/stores/article.js'
 
 import LoadingComponent from '@/components/Loading.vue'
-import ArticleCard from '@/components/ArticleCard.vue'
+import ArticleCard from '@/components/user/ArticleCard.vue'
 
 export default {
   data() {

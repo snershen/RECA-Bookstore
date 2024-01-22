@@ -42,7 +42,7 @@
 <script>
 import { adminGetOrder } from '@/utils/apis'
 import { deleteOrder } from '@/utils/apis'
-import OrderModal from '@/components/OrderModal.vue'
+import OrderModal from '@/components/admin/OrderModal.vue'
 
 import { timeFormat } from '@/utils/timeFormat'
 

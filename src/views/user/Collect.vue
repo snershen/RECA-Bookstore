@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ProductCard from '../../components/ProductCard.vue'
+import ProductCard from '@/components/user/ProductCard.vue'
 
 import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/product.js'

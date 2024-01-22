@@ -49,14 +49,14 @@
 </template>
 
 <script>
-import { adminGetArticleAll } from '../../utils/apis'
-import { adminGetSingleArticle } from '../../utils/apis'
-import { adminPostArticle } from '../../utils/apis'
-import { adminPutArticle } from '../../utils/apis'
-import { adminDeleteArticle } from '../../utils/apis'
+import { adminGetArticleAll } from '@/utils/apis'
+import { adminGetSingleArticle } from '@/utils/apis'
+import { adminPostArticle } from '@/utils/apis'
+import { adminPutArticle } from '@/utils/apis'
+import { adminDeleteArticle } from '@/utils/apis'
 
-import ArticleModal from '../../components/ArticleModal.vue'
-import toastMixin from '../../mixins/toastMixin'
+import ArticleModal from '@/components/admin/ArticleModal.vue'
+import toastMixin from '@/mixins/toastMixin'
 
 export default {
   data() {

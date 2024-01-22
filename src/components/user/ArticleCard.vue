@@ -16,9 +16,12 @@
           <p class="fs-7">{{ article.create_at }}</p>
         </div>
         <h2 class="mb-1 fw-bold text-truncate fs-5">
-          <a href="#" class="stretched-link" @click.prevent="directArticle(article)">{{
-            article.title
-          }}</a>
+          <RouterLink
+            to="`articles/${article.id}`"
+            class="stretched-link"
+            @click.prevent="directArticle(article)"
+            >{{ article.title }}</RouterLink
+          >
         </h2>
         <p class="fs-7 mb-3">作者 / {{ article.author }}</p>
         <p class="text-overflow fs-6 text-gray-550">{{ article.description }}</p>
@@ -37,7 +40,7 @@ export default {
   },
   methods: {
     directArticle(article) {
-      this.$router.push(`/user/article/${article.id}`)
+      this.$router.push(`/articles/${article.id}`)
     }
   }
 }

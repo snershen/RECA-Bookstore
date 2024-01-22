@@ -1,11 +1,11 @@
 <template>
   <ol class="breadcrumb mb-5">
     <li class="breadcrumb-item">
-      <router-link to="/user/home">首頁</router-link>
+      <router-link :to="{ name: 'index' }">首頁</router-link>
     </li>
     <li class="breadcrumb-item">
       <router-link
-        :to="`/user/${breadConfig.path}`"
+        :to="`/${breadConfig.path}`"
         :class="{ active: breadConfig.title ? false : true }"
         >{{ breadConfig.subNav }}</router-link
       >

@@ -56,18 +56,18 @@
 </template>
 
 <script>
-import { adminGetCoupon } from '../../utils/apis'
-import { adminDeleteCoupon } from '../../utils/apis'
-import { adminPostCoupon } from '../../utils/apis'
-import { adminPutCoupon } from '../../utils/apis'
+import { adminGetCoupon } from '@/utils/apis'
+import { adminDeleteCoupon } from '@/utils/apis'
+import { adminPostCoupon } from '@/utils/apis'
+import { adminPutCoupon } from '@/utils/apis'
 
-import CouponModal from '../../components/CouponModal.vue'
-import Pagination from '../../components/Pagination.vue'
+import CouponModal from '@/components/admin/CouponModal.vue'
+import Pagination from '@/components/Pagination.vue'
 
-import toastMixin from '../../mixins/toastMixin'
-import alertMixin from '../../mixins/alertMixin'
+import toastMixin from '@/mixins/toastMixin'
+import alertMixin from '@/mixins/alertMixin'
 
-import { timeFormat } from '../../utils/timeFormat'
+import { timeFormat } from '@/utils/timeFormat'
 
 export default {
   data() {

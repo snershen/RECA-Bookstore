@@ -1,90 +1,109 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   scrollBehavior(to, from, savedPosition) {
-    console.log('Scroll behavior triggered:', to, from, savedPosition)
     return { top: 0 }
   },
   routes: [
-    // {
-    //   path: '/',
-    //   component: () => import('../views/user/UserHome.vue')
-    // },
     {
       path: '/login',
+      name: 'admin-login',
       component: () => import('../views/admin/Login.vue')
     },
     {
       path: '/admin',
-      component: () => import('../views/admin/AdminBoard.vue'),
+      name: 'admin',
+      component: () => import('../views/admin/DashBoard.vue'),
       children: [
         {
           path: 'products',
-          component: () => import('../views/admin/AdminProducts.vue')
+          name: 'admin-products',
+          component: () => import('../views/admin/Products.vue')
         },
         {
           path: 'orders',
-          component: () => import('../views/admin/AdminOrders.vue')
-        },
-        {
-          path: 'coupons',
-          component: () => import('../views/admin/AdminCoupons.vue')
+          name: 'admin-orders',
+          component: () => import('../views/admin/Orders.vue')
         },
         {
           path: 'articles',
-          component: () => import('../views/admin/AdminArticles.vue')
+          name: 'admin-articles',
+          component: () => import('../views/admin/Articles.vue')
+        },
+        {
+          path: 'coupons',
+          name: 'admin-coupons',
+          component: () => import('../views/admin/Coupons.vue')
         }
       ]
     },
     {
-      path: '/user',
-      component: () => import('../views/user/Userboard.vue'),
+      path: '/',
+      component: () => import('../views/user/User.vue'),
       children: [
         {
-          path: 'home',
-          component: () => import('../views/user/UserHome.vue')
+          path: '',
+          name: 'index',
+          component: () => import('../views/user/Index.vue')
         },
         {
           path: 'products',
-          component: () => import('../views/user/UserProductList.vue')
+          name: 'products',
+          component: () => import('../views/user/Products.vue')
         },
         {
-          path: 'products/:productId',
-          component: () => import('../views/user/UserProduct.vue')
+          path: 'products/:id',
+          name: 'product',
+          component: () => import('../views/user/Product.vue'),
+          props: (route) => {
+            return {
+              id: route.params.id
+            }
+          }
         },
         {
           path: 'cart',
-          component: () => import('../views/user/UserCart.vue')
+          name: 'cart',
+          component: () => import('../views/user/Cart.vue')
         },
         {
           path: 'pay',
-          component: () => import('../views/user/UserPay.vue')
+          name: 'pay',
+          component: () => import('../views/user/CartPay.vue')
         },
         {
-          path: 'order',
-          component: () => import('../views/user/UserOrderList.vue')
+          path: 'orders',
+          name: 'orders',
+          component: () => import('../views/user/Orders.vue')
         },
-        // {
-        //   path: 'order/final',
-        //   component: () => import('../views/user/UserOrderFinal.vue')
-        // },
         {
-          path: 'order/:orderId',
-          component: () => import('../views/user/UserOrderSingle.vue')
+          path: 'orders/:id',
+          name: 'order',
+          component: () => import('../views/user/Order.vue'),
+          props: (route) => {
+            return { id: route.params.id }
+          }
         },
         {
           path: 'collect',
-          component: () => import('../views/user/UserCollect.vue')
+          name: 'collect',
+          component: () => import('../views/user/Collect.vue')
         },
         {
-          path: 'article',
-          component: () => import('../views/user/UserArticleList.vue')
+          path: 'articles',
+          name: 'articles',
+          component: () => import('../views/user/articles.vue')
         },
         {
-          path: 'article/:id',
-          component: () => import('../views/user/UserArticle.vue')
+          path: 'articles/:id',
+          name: 'article',
+          component: () => import('../views/user/article.vue'),
+          props: (route) => {
+            return {
+              id: route.params.id
+            }
+          }
         }
       ]
     }

@@ -112,20 +112,22 @@
     <div class="row justify-content-between py-5" v-if="cartLength">
       <div class="col-lg-4 col-12">
         <router-link
-          to="/user/products"
+          :to="{ name: 'products' }"
           class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           ><span class="btn-arrow btn-arrow-left me-2"></span>繼續逛逛
         </router-link>
       </div>
       <div class="col-lg-4 col-12">
-        <router-link to="/user/pay" class="btn btn-secondary rounded-0 w-100 py-3">
+        <router-link :to="{ name: 'pay' }" class="btn btn-secondary rounded-0 w-100 py-3">
           前往結帳<span class="btn-arrow btn-arrow-right ms-2"></span
         ></router-link>
       </div>
     </div>
     <div class="row justify-content-between py-5" v-else>
       <div class="col-lg-4 mx-auto">
-        <router-link to="/user/products" class="btn btn-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
+        <router-link
+          :to="{ name: 'products' }"
+          class="btn btn-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           ><span class="me-2"></span>繼續逛逛
         </router-link>
       </div>

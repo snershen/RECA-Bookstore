@@ -66,7 +66,7 @@
       </swiper-slide>
     </swiper>
     <div class="text-center">
-      <RouterLink to="/user/products" class="rounded-0 more-btn"
+      <RouterLink :to="{ name: 'products' }" class="rounded-0 more-btn"
         >more
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
           <path
@@ -97,7 +97,7 @@
       </swiper-slide>
     </swiper>
     <div class="text-center">
-      <RouterLink to="/user/products" class="rounded-0 more-btn"
+      <RouterLink :to="{ name: 'products' }" class="rounded-0 more-btn"
         >more
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
           <path
@@ -111,7 +111,9 @@
       <div class="row">
         <div class="col-lg-4">
           <h2 class="fw-bold fs-1 pt-4 mb-4">編輯推薦</h2>
-          <router-link to="/user/article" class="d-none d-lg-inline-block rounded-0 more-btn"
+          <router-link
+            :to="{ name: 'articles' }"
+            class="d-none d-lg-inline-block rounded-0 more-btn"
             >more
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
               <path
@@ -128,7 +130,9 @@
             </li>
           </ul>
           <div class="text-center">
-            <router-link to="/user/article" class="d-lg-none d-inline-block rounded-0 more-btn mt-4"
+            <router-link
+              :to="{ name: 'articles' }"
+              class="d-lg-none d-inline-block rounded-0 more-btn mt-4"
               >more
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                 <path
@@ -142,7 +146,7 @@
   </section>
   <div class="bookstore-bg text-center">
     <h3 class="fs-1 text-white mb-4">開啟屬於你的閱讀旅程</h3>
-    <router-link to="/user/products" class="btn btn-outline-light rounded-pill fs-5 px-5"
+    <router-link :to="{ name: 'products' }" class="btn btn-outline-light rounded-pill fs-5 px-5"
       >探索書店</router-link
     >
   </div>
@@ -154,9 +158,9 @@ import productStore from '@/stores/product.js'
 import articleStore from '@/stores/article.js'
 
 import LoadingComponent from '@/components/Loading.vue'
-import Banner from '../../components/Banner.vue'
-import ProductCard from '../../components/ProductCard.vue'
-import ArticleCard from '../../components/ArticleCard.vue'
+import Banner from '@/components/user/Banner.vue'
+import ProductCard from '@/components/user/ProductCard.vue'
+import ArticleCard from '@/components/user/ArticleCard.vue'
 
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay, EffectCoverflow } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -222,10 +226,10 @@ export default {
     directProductPage(item) {
       this.getProductsAll()
       this.filterProduct(item)
-      this.$router.push('/user/products')
+      this.$router.push({ name: 'products' })
     },
     directSingleProduct(id) {
-      this.$router.push(`/user/products/${id}`)
+      this.$router.push(`/products/${id}`)
     },
     filterCategoryProduct(target, list) {
       const result = this.productAll.filter((item) => {

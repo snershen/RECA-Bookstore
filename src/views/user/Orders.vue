@@ -52,11 +52,8 @@
                   <span v-if="!item.is_paid" class="text-danger">未付款</span>
                 </td>
                 <td>
-                  <a
-                    href="#"
-                    class="btn btn-outline-secondary"
-                    @click.prevent="directSingleOrder(item.id)"
-                    >檢視</a
+                  <RouterLink :to="`/orders/${item.id}`" class="btn btn-outline-secondary"
+                    >檢視</RouterLink
                   >
                 </td>
               </tr>
@@ -72,11 +69,8 @@
                   <span v-if="!item.is_paid" class="text-danger">未付款</span>
                 </td>
                 <td>
-                  <a
-                    href="#"
-                    class="btn btn-outline-secondary"
-                    @click.prevent="directSingleOrder(item.id)"
-                    >檢視</a
+                  <RouterLink href="#" class="btn btn-outline-secondary" :to="`/orders/${item.id}`"
+                    >檢視</RouterLink
                   >
                 </td>
               </tr>
@@ -113,10 +107,7 @@ export default {
   components: { LoadingComponent },
 
   methods: {
-    ...mapActions(orderStore, ['getOrders', 'filterOrder', 'getOrderId']),
-    directSingleOrder(id) {
-      this.$router.push(`/user/order/${id}`)
-    }
+    ...mapActions(orderStore, ['getOrders', 'filterOrder', 'getOrderId'])
   },
   created() {
     this.getOrders()

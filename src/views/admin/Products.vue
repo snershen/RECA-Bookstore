@@ -72,7 +72,7 @@ import { admin_putProduct } from '@/utils/apis.js'
 import { admin_postProduct } from '@/utils/apis.js'
 import { admin_deleteProduct } from '@/utils/apis.js'
 
-import ProductModal from '@/components/ProductModal.vue'
+import ProductModal from '@/components/admin/ProductModal.vue'
 import Pagination from '@/components/Pagination.vue'
 
 import toastMixin from '@/mixins/toastMixin'

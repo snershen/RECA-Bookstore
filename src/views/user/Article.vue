@@ -4,7 +4,7 @@
   <div>
     <div class="container">
       <Breadcrumb
-        :breadConfig="{ path: 'article', subNav: '編輯推薦', title: article.title }"
+        :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: article.title }"
       ></Breadcrumb>
       <div class="row justify-content-center">
         <div class="col-lg-10">
@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import Breadcrumb from '../../components/Breadcrumb.vue'
-import ArticleCard from '../../components/ArticleCard.vue'
+import Breadcrumb from '@/components/user/Breadcrumb.vue'
+import ArticleCard from '@/components/user/ArticleCard.vue'
 import LoadingComponent from '@/components/Loading.vue'
 import { mapState, mapActions } from 'pinia'
 import articleStore from '@/stores/article.js'
@@ -71,10 +71,9 @@ export default {
       return urlPattern.test(str) ? true : false
     }
   },
+  props: ['id'],
   created() {
-    const path = this.$route.fullPath.split('/')
-    const id = path[path.length - 1]
-    this.getSingleArticle(id)
+    this.getSingleArticle(this.id)
     this.getArticles()
   }
 }

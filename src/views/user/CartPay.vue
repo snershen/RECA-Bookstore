@@ -151,7 +151,7 @@ export default {
     ...mapActions(cartStore, ['getCart']),
 
     directCartPage() {
-      this.$router.push('/user/cart')
+      this.$router.push({ name: 'cart' })
     },
     sendOrder() {
       userPostOrder(this.orderData).then((res) => {

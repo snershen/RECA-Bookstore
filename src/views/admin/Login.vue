@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import { apiSignIn } from '../../utils/apis.js'
-import toastMixin from '../../mixins/toastMixin'
+import { apiSignIn } from '@/utils/apis.js'
+import toastMixin from '@/mixins/toastMixin'
 
 export default {
   data() {
@@ -65,7 +65,7 @@ export default {
           const { token, expired } = res.data
           //取得的 token 存到 cookie
           document.cookie = `bookstoreAPI=${token}; expires=${new Date(expired)}`
-          this.$router.push('/admin/products')
+          this.$router.push({ name: 'admin-products' })
           this.showToast({
             title: message,
             icon: 'success'

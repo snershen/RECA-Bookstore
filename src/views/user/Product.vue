@@ -116,10 +116,10 @@
 </template>
 
 <script>
-import ProductCard from '@/components/ProductCard.vue'
+import ProductCard from '@/components/user/ProductCard.vue'
 
-import ProductCategory from '@/components/ProductCategory.vue'
-import Breadcrumb from '@/components/Breadcrumb.vue'
+import ProductCategory from '@/components/user/ProductCategory.vue'
+import Breadcrumb from '@/components/user/Breadcrumb.vue'
 import LoadingComponent from '@/components/Loading.vue'
 
 import { mapState, mapActions } from 'pinia'
@@ -132,6 +132,7 @@ export default {
       isSolid: false
     }
   },
+  props: ['id'],
   components: { ProductCard, ProductCategory, Breadcrumb, LoadingComponent },
   computed: {
     ...mapState(productStore, [
@@ -180,7 +181,7 @@ export default {
     const path = this.$route.path
     const pathArr = path.split('/')
     const id = pathArr[pathArr.length - 1]
-    this.getSingleProduct(id)
+    this.getSingleProduct(this.id)
     this.getProducts()
     this.getProductsAll()
   },

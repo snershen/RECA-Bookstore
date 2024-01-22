@@ -56,8 +56,7 @@ export default {
     ]),
 
     directProductPage() {
-      this.$router.push('/user/products')
-      // this.searchString = ''
+      this.$router.push('/products')
     },
 
     handleSearch() {
