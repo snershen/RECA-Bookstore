@@ -6,7 +6,6 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 import Loading from 'vue3-loading-overlay'
-import gsap from 'gsap'
 import { createPinia } from 'pinia'
 
 // Import stylesheet
@@ -17,7 +16,9 @@ import {
   faCartShopping,
   faHeart as fasHeart,
   faMagnifyingGlass,
-  faCircleCheck
+  faCircleCheck,
+  faChevronLeft,
+  faChevronRight
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -43,6 +44,8 @@ import router from './router'
 
 library.add(fasHeart)
 library.add(farHeart)
+library.add(faChevronLeft)
+library.add(faChevronRight)
 library.add(faXmark)
 library.add(faInstagram)
 library.add(faFacebookF)
@@ -91,7 +94,6 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(router)
 app.use(VueAxios, axios)
-app.use(gsap)
 app.use(pinia)
 
 app.component('Loading', Loading)

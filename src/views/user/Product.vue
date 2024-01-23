@@ -1,15 +1,15 @@
 <template>
   <LoadingComponent></LoadingComponent>
 
-  <div class="container">
+  <div class="container py-5">
     <Breadcrumb
-      :breadConfig="{ path: 'products', subNav: '書籍類別', title: singleProduct.title }"
+      :breadConfig="{ path: 'products', subNav: '書籍類別', title: '書籍介紹' }"
     ></Breadcrumb>
     <div class="row">
-      <div class="col-3 d-none d-lg-block mb-5">
+      <div class="col-md-3 d-none d-md-block mb-5">
         <ProductCategory></ProductCategory>
       </div>
-      <div class="col-lg-9">
+      <div class="col-md-9 col-12">
         <div class="row">
           <div class="col-lg-4 mb-3 mb-lg-0 text-center">
             <div class="px-5 mx-5 px-lg-0 mx-lg-0">
@@ -18,48 +18,53 @@
           </div>
           <div class="col-lg-8 d-flex flex-column justify-content-between">
             <div class="mb-3 mb-lg-0">
-              <h1 class="fw-bold mb-3 mb-lg-0 fs-3">{{ singleProduct.title }}</h1>
-              <p v-html="singleProduct.description"></p>
+              <h3 class="font-sans fw-bold mb-3 mb-lg-0 fs-lg-2 fs-4">{{ singleProduct.title }}</h3>
+              <!-- <p v-html="singleProduct.description"></p> -->
             </div>
             <div class="row">
               <div class="col-12">
-                <div class="mb-4">
-                  <span class="fs-4 me-2 text-secondary fw-bold"
-                    >售價 ${{ singleProduct.price }}</span
+                <div class="mb-4 d-flex align-items-center">
+                  <span class="fs-3 me-2 text-secondary fw-bold">${{ singleProduct.price }}</span>
+                  <del class="opacity-50 fs-6 text-decoration-line-through"
+                    >${{ singleProduct.origin_price }}</del
                   >
-                  <del class="opacity-50">${{ singleProduct.origin_price }}</del>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-2 order-1 order-lg-0">
                 <a
                   href="#"
-                  class="btn btn-secondary w-100 py-3 rounded-0 mb-lg-0 mb-2"
-                  @click.prevent="addCart(singleProduct.id)"
-                  ><font-awesome-icon
-                    :icon="['fas', 'cart-shopping']"
-                    class="fa-lg text-white me-2"
-                  />放入購物車</a
-                >
-              </div>
-              <div class="col-lg-6">
-                <a
-                  href="#"
-                  class="btn btn-outline-secondary w-100 py-3 rounded-0"
-                  :class="{ 'opacity-75 bg-dark text-white': isSolid }"
+                  class="btn btn-gray w-100 py-3 rounded-2 border-0"
+                  :class="{ 'bg-secondary text-white': isSolid }"
                   @click.prevent="handleCollectBtn(singleProduct)"
                 >
-                  <span class="me-2 fa-lg">
-                    <font-awesome-icon :icon="icon" class="text-primary" />
+                  <span class="fa-lg text-white">
+                    <font-awesome-icon :icon="icon" />
                   </span>
-                  <span v-if="isSolid">已加入收藏</span>
-                  <span v-else>加入收藏</span>
+                  <!-- <span v-if="isSolid">已加入收藏</span>
+                  <span v-else>加入收藏</span> -->
                 </a>
+              </div>
+              <div class="col-lg-5 col-10 order-1 order-lg-0">
+                <a
+                  href="#"
+                  class="btn btn-gray text-white w-100 py-3 rounded-0 mb-lg-0 mb-0 rounded-2"
+                  @click.prevent="addCart(singleProduct.id)"
+                  >加入購物車</a
+                >
+              </div>
+              <div class="col-lg-5">
+                <a
+                  href="#"
+                  class="btn btn-primary text-white w-100 py-3 rounded-0 mb-lg-0 mb-2 rounded-2"
+                  @click.prevent="addCart(singleProduct.id)"
+                  >立即購買</a
+                >
               </div>
             </div>
           </div>
           <div class="col-12 py-5">
             <h2 class="fs-4 fw-bold mb-3">本書介紹</h2>
-            <p v-html="singleProduct.content"></p>
+            <p v-html="singleProduct.content" class="fs-6"></p>
           </div>
         </div>
       </div>

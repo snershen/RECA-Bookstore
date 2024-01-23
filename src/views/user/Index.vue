@@ -1,36 +1,147 @@
 <template>
   <LoadingComponent></LoadingComponent>
-  <main class="mb-5">
-    <div class="mt-5">
-      <h1 class="mt-5 fw-bold fs-1">尋找屬於自己的<span>命定之書</span></h1>
-      <p class="text-center mt-2 fs-4">上萬本書籍等待你的閱讀</p>
-      <!-- <Banner class="d-none d-lg-block"></Banner> -->
-      <swiper
+  <main>
+    <section class="banner">
+      <h1 class="banner-title fw-bold">踏上探索之旅<br />尋找屬於自己的命定之書</h1>
+      <p class="banner-subtitle text-white text-center mt-2 fs-4">上萬本書籍等待你的閱讀</p>
+      <!-- <swiper
         :effect="'coverflow'"
         :grabCursor="true"
         :centeredSlides="true"
         :slidesPerView="slidesPerViewCoverFlow"
         :autoplay="true"
-        spaceBetween="50"
+        spaceBetween="80"
         :coverflowEffect="{
-          rotate: 30,
-          stretch: 1,
-          depth: 50,
-          modifier: 1,
-          slideShadows: false
+          rotate: 0,
+          stretch: 10,
+          depth: 10,
+          modifier: 5,
+          slideShadows: true
         }"
         :modules="modules"
         class="mySwiper py-5"
       >
-        <swiper-slide v-for="item in productList">
+        <swiper-slide v-for="item in productList" class="align-items-center">
           <a href="#" @click.prevent="directSingleProduct(item.id)">
             <img :src="item.imageUrl" class="img-fluid" />
           </a>
         </swiper-slide>
-      </swiper>
-    </div>
-  </main>
-  <div class="bg-light">
+      </swiper> -->
+    </section>
+    <section class="container py-5 my-5">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold">今日熱門</h2>
+        <RouterLink
+          to="#"
+          class="btn-more fs-lg-6 fs-7 px-lg-4 px-3 py-lg-2 py-1 text-white rounded-pill"
+          >查看更多
+          <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
+        /></RouterLink>
+      </div>
+      <div class="position-relative px-5 px-xxl-0">
+        <swiper
+          :slidesPerView="slidesPerView"
+          :spaceBetween="40"
+          :modules="modules"
+          :navigation="true"
+          :loop="true"
+          class="swiper-today my-5 px-3 position-static"
+        >
+          <swiper-slide v-for="item in productList" :key="item.id" class="h-auto">
+            <div class="today-card">
+              <button
+                type="button"
+                class="like-btn btn btn-white position-absolute top-0 end-0 pt-2 pe-2 border-0"
+                @click.prevent="handleCollectBtn(item, isSolid)"
+              >
+                <span class="rounded-circle bg-white shadow-sm">
+                  <font-awesome-icon :icon="icon" class="text-primary" />
+                </span>
+              </button>
+              <img
+                :src="item.imageUrl"
+                :alt="item.title"
+                class="mb-3 w-100 object-fit-contain"
+                height="300"
+              />
+              <div class="flex-grow-1 w-100">
+                <h4 class="today-card-title fw-bold text-overflow-title flex-grow-1">
+                  {{ item.title }}
+                </h4>
+                <div class="today-card-price align-items-center">
+                  <p class="fw-bold me-2 fs-4">${{ item.price }}</p>
+                  <p class="fs-7 text-gray text-decoration-line-through">
+                    ${{ item.origin_price }}
+                  </p>
+                </div>
+                <p class="today-card-content text-overflow-content">{{ item.content }}</p>
+                <!-- <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink> -->
+              </div>
+              <!-- <div class="d-flex justify-content-between align-items-center">
+      <a href="#" class="btn btn-outline-dark w-100 text-nowrap">放入購物車</a>
+    </div> -->
+            </div>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </section>
+    <section class="bg-primary-light py-5">
+      <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold">最新出版</h2>
+          <RouterLink
+            to="#"
+            class="btn-more fs-lg-6 fs-7 px-lg-4 px-3 py-lg-2 py-1 text-white rounded-pill"
+            >查看更多
+            <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
+          /></RouterLink>
+        </div>
+        <Tabs />
+        <div class="position-relative px-5 px-xxl-0">
+          <swiper
+            :slidesPerView="slidesPerView"
+            :spaceBetween="18"
+            :scrollbar="true"
+            :navigation="true"
+            :modules="modules"
+            class="mySwiper py-5 position-static px-3"
+          >
+            <swiper-slide
+              v-for="item in productList"
+              :key="item.id"
+              class="h-auto d-flex justify-content-center"
+            >
+              <ProductCard :item="item" />
+            </swiper-slide>
+          </swiper>
+        </div>
+      </div>
+    </section>
+    <section class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold py-5">暢銷排行</h2>
+      </div>
+    </section>
+    <section class="bg-primary-light py-5">
+      <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="fw-bold">編輯推薦</h2>
+          <RouterLink
+            to="#"
+            class="btn-more fs-lg-6 fs-7 px-lg-4 px-3 py-lg-2 py-1 text-white rounded-pill"
+            >查看更多
+            <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
+          /></RouterLink>
+        </div>
+        <ul class="row">
+          <li class="col-lg-4 col-6" v-for="item in articleList">
+            <ArticleCard :article="item" />
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- <div class="bg-light">
     <div class="d-flex justify-content-center">
       <ul class="d-flex gap-3 py-lg-5 py-4 overflow-x-auto">
         <li v-for="item in categoryList" :key="item">
@@ -43,113 +154,16 @@
         </li>
       </ul>
     </div>
-  </div>
-  <section class="container py-5 my-5">
-    <div class="mb-5">
-      <div class="text-center">
-        <h2 class="fs-1 fw-bold">文學小說</h2>
-        <p class="fw-bold fs-5">LITERATURE & FICTION</p>
-      </div>
+  </div> -->
+
+    <div class="bookstore-bg text-center">
+      <h3 class="fs-1 fw-bold text-primary mb-4">開啟屬於你的閱讀旅程</h3>
+      <router-link :to="{ name: 'products' }" class="btn btn-outline-light rounded-pill fs-6 px-4">
+        探索書店
+        <font-awesome-icon :icon="['fas', 'chevron-right']" class="ms-2 fa-sm" />
+      </router-link>
     </div>
-    <swiper
-      :modules="modules"
-      :slides-per-view="slidesPerView"
-      :space-between="20"
-      navigation
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-      class="h-100 mb-5"
-    >
-      <swiper-slide v-for="item in literalResult" class="h-auto">
-        <!-- :autoplay="true" -->
-        <product-card :item="item" :isSolid="isSolid"></product-card>
-      </swiper-slide>
-    </swiper>
-    <div class="text-center">
-      <RouterLink :to="{ name: 'products' }" class="rounded-0 more-btn"
-        >more
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-          <path
-            d="M7.78651 0.189649C7.81654 -0.0632164 8.18346 -0.0632164 8.21349 0.189649L8.4652 2.31096C8.79021 5.05015 10.9499 7.20979 13.689 7.53481L15.8103 7.78651C16.0632 7.81654 16.0632 8.18346 15.8103 8.21349L13.689 8.4652C10.9499 8.79021 8.79021 10.9499 8.4652 13.689L8.21349 15.8103C8.18346 16.0632 7.81654 16.0632 7.78651 15.8103L7.53481 13.689C7.20979 10.9499 5.05015 8.79021 2.31096 8.4652L0.189649 8.21349C-0.0632164 8.18346 -0.0632164 7.81654 0.189649 7.78651L2.31096 7.53481C5.05015 7.20979 7.20979 5.05015 7.53481 2.31096L7.78651 0.189649Z"
-          /></svg
-      ></RouterLink>
-    </div>
-  </section>
-  <section class="container py-5 my-5">
-    <div class="mb-5">
-      <div class="text-center">
-        <h2 class="fs-1 fw-bold">商業理財</h2>
-        <p class="fw-bold fs-5">Business & Money</p>
-      </div>
-    </div>
-    <swiper
-      :modules="modules"
-      :slides-per-view="slidesPerView"
-      :space-between="30"
-      navigation
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-      class="h-100 mb-5"
-    >
-      <swiper-slide v-for="item in commercialResult" class="h-auto">
-        <!-- :autoplay="true" -->
-        <product-card :item="item" :isSolid="isSolid"></product-card>
-      </swiper-slide>
-    </swiper>
-    <div class="text-center">
-      <RouterLink :to="{ name: 'products' }" class="rounded-0 more-btn"
-        >more
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-          <path
-            d="M7.78651 0.189649C7.81654 -0.0632164 8.18346 -0.0632164 8.21349 0.189649L8.4652 2.31096C8.79021 5.05015 10.9499 7.20979 13.689 7.53481L15.8103 7.78651C16.0632 7.81654 16.0632 8.18346 15.8103 8.21349L13.689 8.4652C10.9499 8.79021 8.79021 10.9499 8.4652 13.689L8.21349 15.8103C8.18346 16.0632 7.81654 16.0632 7.78651 15.8103L7.53481 13.689C7.20979 10.9499 5.05015 8.79021 2.31096 8.4652L0.189649 8.21349C-0.0632164 8.18346 -0.0632164 7.81654 0.189649 7.78651L2.31096 7.53481C5.05015 7.20979 7.20979 5.05015 7.53481 2.31096L7.78651 0.189649Z"
-          /></svg
-      ></RouterLink>
-    </div>
-  </section>
-  <section class="bg-light py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <h2 class="fw-bold fs-1 pt-4 mb-4">編輯推薦</h2>
-          <router-link
-            :to="{ name: 'articles' }"
-            class="d-none d-lg-inline-block rounded-0 more-btn"
-            >more
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-              <path
-                d="M7.78651 0.189649C7.81654 -0.0632164 8.18346 -0.0632164 8.21349 0.189649L8.4652 2.31096C8.79021 5.05015 10.9499 7.20979 13.689 7.53481L15.8103 7.78651C16.0632 7.81654 16.0632 8.18346 15.8103 8.21349L13.689 8.4652C10.9499 8.79021 8.79021 10.9499 8.4652 13.689L8.21349 15.8103C8.18346 16.0632 7.81654 16.0632 7.78651 15.8103L7.53481 13.689C7.20979 10.9499 5.05015 8.79021 2.31096 8.4652L0.189649 8.21349C-0.0632164 8.18346 -0.0632164 7.81654 0.189649 7.78651L2.31096 7.53481C5.05015 7.20979 7.20979 5.05015 7.53481 2.31096L7.78651 0.189649Z"
-              /></svg
-          ></router-link>
-        </div>
-        <div class="col-lg-8">
-          <ul class="row">
-            <li v-for="item in articleList" :key="item.id" class="col-12">
-              <div>
-                <ArticleCard :article="item"></ArticleCard>
-              </div>
-            </li>
-          </ul>
-          <div class="text-center">
-            <router-link
-              :to="{ name: 'articles' }"
-              class="d-lg-none d-inline-block rounded-0 more-btn mt-4"
-              >more
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                <path
-                  d="M7.78651 0.189649C7.81654 -0.0632164 8.18346 -0.0632164 8.21349 0.189649L8.4652 2.31096C8.79021 5.05015 10.9499 7.20979 13.689 7.53481L15.8103 7.78651C16.0632 7.81654 16.0632 8.18346 15.8103 8.21349L13.689 8.4652C10.9499 8.79021 8.79021 10.9499 8.4652 13.689L8.21349 15.8103C8.18346 16.0632 7.81654 16.0632 7.78651 15.8103L7.53481 13.689C7.20979 10.9499 5.05015 8.79021 2.31096 8.4652L0.189649 8.21349C-0.0632164 8.18346 -0.0632164 7.81654 0.189649 7.78651L2.31096 7.53481C5.05015 7.20979 7.20979 5.05015 7.53481 2.31096L7.78651 0.189649Z"
-                /></svg
-            ></router-link>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="bookstore-bg text-center">
-    <h3 class="fs-1 text-white mb-4">開啟屬於你的閱讀旅程</h3>
-    <router-link :to="{ name: 'products' }" class="btn btn-outline-light rounded-pill fs-5 px-5"
-      >探索書店</router-link
-    >
-  </div>
+  </main>
 </template>
 
 <script>
@@ -158,14 +172,13 @@ import productStore from '@/stores/product.js'
 import articleStore from '@/stores/article.js'
 
 import LoadingComponent from '@/components/Loading.vue'
-import Banner from '@/components/user/Banner.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
+import Tabs from '@/components/user/Tabs.vue'
 
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay, EffectCoverflow } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
-//  import {, Pagination } from 'swiper/modules';
 export default {
   data() {
     return {
@@ -180,8 +193,8 @@ export default {
   },
   components: {
     ProductCard,
-    Banner,
     ArticleCard,
+    Tabs,
     Swiper,
     SwiperSlide,
     LoadingComponent
@@ -203,7 +216,7 @@ export default {
         this.slidesPerView = 2
       } else if (screenWidth <= 992) {
         this.slidesPerView = 3
-      } else if (screenWidth <= 1200) {
+      } else if (screenWidth <= 1400) {
         this.slidesPerView = 4
       } else {
         this.slidesPerView = 6
@@ -214,9 +227,9 @@ export default {
       if (screenWidth <= 576) {
         this.slidesPerViewCoverFlow = 2
       } else if (screenWidth <= 768) {
-        this.slidesPerViewCoverFlow = 4
+        this.slidesPerViewCoverFlow = 3
       } else {
-        this.slidesPerViewCoverFlow = 6
+        this.slidesPerViewCoverFlow = 5
       }
     },
     updateSlidersHandler() {
@@ -257,74 +270,111 @@ export default {
 }
 </script>
 
-<style scoped>
-h1 {
-  margin: 0;
-  padding-top: 30px;
-  color: #1c1c1c;
-  /* position: absolute; */
-  /* z-index: -10; */
-  /* top: 0; */
-  text-align: center;
-  /* width: 100%; */
-  /* font-family: 'Noto sans TC', sans-serif; */
-  /*   font-family: serif; */
-  letter-spacing: 2px;
-  font-size: 3rem;
-  font-weight: 900;
-}
+<style lang="scss" scoped>
+@import '@/assets/mixin';
 
-h1 span {
-  position: relative;
-}
-
-h1 span::after {
-  content: '';
-  position: absolute;
-  bottom: 10px;
-  display: inline-block;
-  height: 20px;
-  width: 0%;
-  left: 0;
-  z-index: -1;
-  background: #ffae63;
-  animation: stretch 3s infinite linear;
-}
-
-@keyframes stretch {
-  30% {
-    width: 100%;
+.banner {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  background-image: url('../../assets/img/banner-bg.png');
+  background-position: center;
+  background-size: cover;
+  &-title {
+    font-size: 2rem;
+    text-align: center;
+    color: #ffae63;
+    @include min-lg {
+      font-size: 3.625rem;
+    }
   }
-
-  100% {
-    width: 100%;
+  &-subtitle {
+    letter-spacing: 9px;
   }
 }
 
 .bookstore-bg {
-  padding-top: 100px;
-  padding-bottom: 100px;
-  background: url('../../assets/img/bookstore-bg.png');
+  padding-top: 120px;
+  padding-bottom: 120px;
+  background-image: url('../../assets/img/bookstore-bg2.png');
   background-attachment: fixed;
-}
-
-.more-btn {
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  padding-right: 12px;
-  padding-left: 12px;
-}
-
-.more-btn:hover {
-  color: white;
-  background: black;
-}
-
-.more-btn:hover path {
-  fill: white;
 }
 
 ::-webkit-scrollbar {
   display: none; /* Chrome Safari 兼容*/
+}
+
+.swiper-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.btn-more {
+  background: #000;
+
+  * {
+    transition: 0.2s;
+  }
+  &:hover {
+    background: #c9a65c;
+  }
+  &:hover &-arrow {
+    transform: translateX(3px);
+  }
+}
+
+.swiper-today {
+  @include min-lg {
+    height: 400px;
+  }
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    transform: scale(0.95);
+  }
+  .today-card {
+    &-title {
+      font-size: 1rem;
+    }
+    &-content {
+      display: none;
+    }
+    &-price {
+      display: none;
+    }
+    img {
+      height: 200px;
+      object-position: left;
+    }
+  }
+  .swiper-slide-active {
+    transition: transform 0.5s;
+    transform: scale(1);
+    width: 100% !important;
+
+    @include min-lg {
+      width: 50% !important;
+      height: 300px;
+    }
+    .today-card {
+      display: flex;
+
+      &-title {
+        font-size: 1.5rem;
+      }
+      &-content {
+        margin-top: 40px;
+        display: -webkit-box;
+      }
+      &-price {
+        display: flex;
+      }
+      img {
+        margin-right: 20px;
+        width: 40% !important;
+        height: auto;
+        object-position: top right;
+      }
+    }
+  }
 }
 </style>

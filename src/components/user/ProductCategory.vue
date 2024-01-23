@@ -1,29 +1,32 @@
 <template>
-  <div class="d-lg-block d-none">
-    <ul>
-      <li>
-        <a
-          href="#"
-          class="ps-3 py-lg-3 py-2 d-block"
-          :class="{ 'bg-selected': selectedCategory === '全部' }"
-          @click.prevent="filterProduct('全部'), directProductPage()"
-          >全部</a
-        >
-      </li>
-      <li v-for="item in categoryList">
-        <a
-          href="#"
-          class="px-3 py-lg-3 py-2 w-100"
-          :class="{ 'bg-selected': selectedCategory === item }"
-          @click.prevent="filterProduct(item), directProductPage()"
-        >
-          {{ item }}
-        </a>
-      </li>
-    </ul>
+  <div class="d-md-block d-none">
+    <div class="text-white bg-dark py-3 text-start w-100 rounded-0 px-4">所有分類</div>
+    <div class="border">
+      <ul>
+        <li>
+          <a
+            href="#"
+            class="px-4 py-lg-3 py-2 d-block fs-6"
+            :class="{ 'bg-selected': selectedCategory === '全部' }"
+            @click.prevent="filterProduct('全部'), directProductPage()"
+            >全部</a
+          >
+        </li>
+        <li v-for="item in categoryList">
+          <a
+            href="#"
+            class="px-4 py-lg-3 py-2 w-100 fs-6"
+            :class="{ 'bg-selected': selectedCategory === item }"
+            @click.prevent="filterProduct(item), directProductPage()"
+          >
+            {{ item }}
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 
-  <div class="d-lg-none">
+  <div class="d-md-none d-block">
     <a
       class="btn btn-dark py-3 fw-bold text-start w-100 rounded-0"
       data-bs-toggle="collapse"
@@ -81,9 +84,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .bg-selected {
   background: rgb(243, 243, 243);
-  font-weight: bold;
+  // font-weight: bold;
+  &:hover {
+    color: inherit;
+  }
 }
 </style>

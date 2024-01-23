@@ -1,6 +1,78 @@
-.text-overflow {
+.text-overflow-title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  width: 100%;
+}
+
+.text-overflow-content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  height: auto;
+  overflow: hidden;
+}
+
+.font-sans {
+  font-family: 'Noto Sans TC', 'Roboto', sans-serif;
+}
+
+.font-serif {
+  font-family: 'Noto Serif TC', 'Roboto', serif;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll !important;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 44px;
+  height: 44px;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 1rem !important;
+  @include min-lg {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+.swiper-button-prev {
+  position: absolute;
+  left: 0;
+  @include min-xl {
+    display: block;
+    left: -72px;
+  }
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.swiper-button-next {
+  position: absolute;
+  right: 0;
+  @include min-xl {
+    display: block;
+    right: -72px;
+  }
+  &:hover {
+    opacity: 0.3;
+  }
+}
+
+.swiper-horizontal > .swiper-scrollbar,
+.swiper-scrollbar.swiper-scrollbar-horizontal {
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
 }

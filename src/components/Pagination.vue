@@ -3,14 +3,13 @@
     <ul class="pagination">
       <li class="page-item">
         <a
-          class="page-link border-0"
+          class="page-link"
           href="#"
           aria-label="Previous"
           :class="{ 'd-none': !pagination.has_pre }"
           @click.prevent="updatePage(pagination.current_page - 1)"
         >
-          <!-- <span aria-hidden="true">&laquo;</span> -->
-          <font-awesome-icon :icon="['fas', 'arrow-left']" />
+          <font-awesome-icon :icon="['fas', 'chevron-left']" class="fa-sm" />
         </a>
       </li>
       <li
@@ -19,17 +18,17 @@
         :key="page"
         :class="{ active: pagination.current_page === page }"
       >
-        <a class="page-link border-0" href="#" @click.prevent="updatePage(page)">{{ page }}</a>
+        <a class="page-link" href="#" @click.prevent="updatePage(page)">{{ page }}</a>
       </li>
       <li class="page-item">
         <a
-          class="page-link border-0"
+          class="page-link"
           href="#"
           aria-label="Next"
           :class="{ 'd-none': !pagination.has_next }"
           @click.prevent="updatePage(pagination.current_page + 1)"
         >
-          <font-awesome-icon :icon="['fas', 'arrow-right']" />
+          <font-awesome-icon :icon="['fas', 'chevron-right']" class="fa-sm" />
         </a>
       </li>
     </ul>
@@ -64,12 +63,37 @@ export default {
 </script>
 
 <style scoped>
-.active .page-link {
-  background: #000;
-  color: white;
+.page-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+  margin-left: 4px;
+  width: 32px;
+  height: 32px;
+  font-weight: bold;
+  font-size: 0.875rem;
+  border: 1px solid #dfe3e8;
+  background: none;
+  color: #d3d3d3;
+  border-radius: 4px;
 }
 
-.page-link {
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+  border-radius: 4px;
+}
+
+.page-item:not(:first-child, :last-child) .page-link {
+  color: #868686;
+}
+
+.page-link:focus {
+  box-shadow: none;
+}
+
+.page-item.active .page-link {
   color: #000;
+  border: 2px solid #000;
 }
 </style>

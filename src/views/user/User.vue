@@ -1,7 +1,7 @@
 <template>
   <LoadingComponent></LoadingComponent>
   <div>
-    <Navbar class="mb-5" />
+    <Navbar />
     <RouterView :key="$route.fullPath" />
     <Footer></Footer>
   </div>

@@ -310,19 +310,22 @@ $dark: $gray-900 !default;
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
-  'primary': #fb7349,
+  'primary': #c9a65c,
   //$primary,
+  'primary-light': #fffcf6,
   'secondary': #644949,
   //$secondary,
-  'success': $success,
+  'secondary-light': #6f6462,
+  'success': #00b171,
+  //$success,
   'info': $info,
-  'warning': $warning,
+  'warning': #ff0000,
+  //$warning,
   'danger': $danger,
   'light': $light,
-  'dark': #181818,
-  'gray-light': $gray-300,
-  'gray': $gray-500,
-  'gray-550': #989898 //$dark
+  'dark': #121212,
+  'gray': #7e7e7e,
+  'gray-dark': #868686
 ) !default;
 // scss-docs-end theme-colors-map
 
@@ -657,14 +660,25 @@ $h6-font-size: $font-size-base !default;
 
 // scss-docs-start font-sizes
 $font-sizes: (
-  1: $h1-font-size,
-  2: $h2-font-size,
-  3: $h3-font-size,
-  4: $h4-font-size,
-  5: $h5-font-size,
-  6: $h6-font-size,
-  7: 0.875rem,
-  8: 0.5rem
+  1: 3rem,
+  //48
+  //$h1-font-size,
+  2: 2rem,
+  //32
+  //$h2-font-size,
+  3: 1.5rem,
+  //24
+  //$h3-font-size,
+  4: 1.25rem,
+  //20
+  //$h4-font-size,
+  5: 1.125rem,
+  //18
+  //$h5-font-size,
+  6: 1rem,
+  //16
+  //$h6-font-size,
+  7: 0.875rem
 ) !default;
 // scss-docs-end font-sizes
 

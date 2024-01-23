@@ -1,18 +1,25 @@
+body {
+  line-height: 1.75;
+  font-size: 1rem;
+  min-height: 100vh;
+  color: #0d0c22;
+  font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+}
+
 a {
   text-decoration: none;
   color: inherit;
   display: inline-block;
-}
-
-body {
-  line-height: 1.75;
-  font-size: 1.125rem;
+  &:hover {
+    color: #95896c;
+  }
 }
 
 h1,
 h2,
 h3 {
   line-height: 1.5;
+  font-family: 'Roboto', 'Noto Serif TC', serif;
 }
 
 ul,
@@ -22,13 +29,9 @@ li {
   margin: 0;
 }
 
-* {
-  // outline: solid 1px;
-}
-
 input[type='number'] {
-  -moz-appearance: textfield;
-  -webkit-appearance: textfield;
+  // -moz-appearance: textfield;
+  // -webkit-appearance: textfield;
   line-height: 1px !important;
 }
 

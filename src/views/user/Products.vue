@@ -1,7 +1,7 @@
 <template>
   <LoadingComponent></LoadingComponent>
-  <div class="container mb-5 pb-5">
-    <div class="mb-lg-5 mb-3 ps-2">
+  <div class="container py-5">
+    <div class="mb-lg-5 mb-3 ps-2" data-aos="fade-up" data-aos-duration="800">
       <h1
         class="fw-bold"
         v-if="selectedCategory === '全部' && searchResult.length === 0 && !isEmptyResult"
@@ -41,19 +41,27 @@
             v-if="pagination.total_pages !== 1"
           ></Pagination>
         </div>
-        <div v-else-if="searchResult.length === 0 && filterResult.length !== 0 && !isEmptyResult">
+        <div
+          v-else-if="searchResult.length === 0 && filterResult.length !== 0 && !isEmptyResult"
+          data-aos="fade-up"
+          data-aos-duration="800"
+        >
           <ul class="row g-3">
             <li v-for="item in filterResult" class="col-lg-3 col-6 d-flex" :key="item.id">
               <product-card :item="item"></product-card>
             </li>
           </ul>
         </div>
-        <ul class="row g-3" v-else-if="searchResult.length !== 0 && !isEmptyResult">
+        <ul
+          class="row g-3"
+          v-else-if="searchResult.length !== 0 && !isEmptyResult"
+          data-aos="fade-up"
+        >
           <li v-for="item in searchResult" class="col-lg-3 col-6 d-flex" :key="item.id">
             <product-card :item="item"></product-card>
           </li>
         </ul>
-        <div class="text-center py-3" v-else-if="isEmptyResult">
+        <div class="text-center py-3" v-else-if="isEmptyResult" data-aos="fade-up">
           <div class="fw-bold mb-5">
             <p>喔不，沒有找到任何相關書籍</p>
             <p class="fs-2 mb-4">請再次輸入，火速為您尋找</p>

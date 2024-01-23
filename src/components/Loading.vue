@@ -22,3 +22,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.loading-box {
+  background: white;
+  opacity: 1;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+</style>

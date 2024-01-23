@@ -1,14 +1,17 @@
 <template>
   <LoadingComponent></LoadingComponent>
-  <div class="container mb-5 pb-5">
+  <div class="container py-5">
     <h1 class="fw-bold mb-4">編輯推薦</h1>
     <div class="row">
-      <div class="col-lg-8 order-1 order-lg-0">
+      <div class="col-lg-8 order-1 order-lg-0 overflow-hidden">
         <ul class="row" v-if="filterResult.length === 0 && !isSearch">
-          <li v-for="item in articleList" class="col-12">
-            <div>
-              <ArticleCard :article="item"></ArticleCard>
-            </div>
+          <li v-for="(item, index) in articleList" class="col-12">
+            <ArticleCard
+              :article="item"
+              data-aos="fade-left"
+              data-aos-duration="1000"
+              :data-aos-delay="500 * index"
+            ></ArticleCard>
           </li>
         </ul>
         <div v-else-if="filterResult.length !== 0 && isSearch">

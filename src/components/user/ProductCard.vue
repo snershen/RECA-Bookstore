@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="position-relative p-3 d-flex flex-column w-100 bg-white border-light-300 h-100 product-card"
-  >
+  <div class="position-relative px-3 py-4 d-flex flex-column w-100 bg-white h-100 product-card">
     <button
       type="button"
       class="like-btn btn btn-white position-absolute top-0 end-0 pt-2 pe-2 border-0"
@@ -15,14 +13,20 @@
       :src="item.imageUrl"
       :alt="item.title"
       class="mb-3 w-100 object-fit-contain"
-      height="180"
+      height="160"
     />
-    <h3 class="flex-grow-1 fs-6 text-overflow">{{ item.title }}</h3>
-    <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
-    <p class="price">${{ item.price }}</p>
-    <!-- <div class="d-flex justify-content-between align-items-center">
+    <div class="text-center flex-grow-1 d-flex flex-column">
+      <p class="category fs-7 text-gray mb-1">{{ item.category }}</p>
+      <h4 class="fs-6 fw-bold text-overflow-title flex-grow-1">{{ item.title }}</h4>
+      <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
+      <div class="d-flex justify-content-center align-items-center">
+        <p class="fw-bold me-2">${{ item.price }}</p>
+        <p class="fs-7 text-gray text-decoration-line-through">${{ item.origin_price }}</p>
+      </div>
+      <!-- <div class="d-flex justify-content-between align-items-center">
       <a href="#" class="btn btn-outline-dark w-100 text-nowrap">放入購物車</a>
     </div> -->
+    </div>
   </div>
 </template>
 
@@ -70,26 +74,35 @@ export default {
     // localStorage.clear()
     this.getStorage()
     this.initializeIsSolid()
+  },
+  beforeCreate() {
+    if (this.$route.name === 'index') {
+      document.body.classList.add('index-card-style')
+    } else {
+      document.body.classList.remove('index-card-style')
+    }
   }
+  // beforeDestroy() {
+  //   document.body.classList.remove('index-card-style')
+  // }
 }
 </script>
 
-<style scoped>
-.border-light-300 {
-  border: solid 1px #edebeb;
-}
-
+<style lang="scss" scoped>
 .product-card {
-  transition: box-shadow 0.2s;
+  transition: 0.5s;
 }
 
 .product-card:hover {
-  /* scale: 1.05; */
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
 }
 
 .like-btn {
   z-index: 10;
+}
+
+.category {
+  display: none;
 }
 
 .like-btn span {
@@ -98,5 +111,22 @@ export default {
   align-items: center;
   width: 35px;
   height: 35px;
+}
+
+.index-card-style {
+  .product-card {
+    border: solid 1px #eee;
+    border-radius: 16px;
+    max-width: 250px;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  .category {
+    display: block;
+  }
+  .like-btn {
+    display: none;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <header class="position-sticky top-0">
-    <div class="py-2 border-bottom bg-white position-relative">
+    <div class="border-bottom bg-white position-relative">
       <div class="container">
         <div class="row align-items-center">
           <RouterLink :to="{ name: 'index' }" class="col-5 col-lg-2">
@@ -55,7 +55,7 @@
                 <RouterLink :to="{ name: 'collect' }" class="ps-1 position-relative"
                   ><font-awesome-icon :icon="['fas', 'heart']" class="fa-lg" />
                   <span
-                    class="px-1 ms-1 text-white rounded bg-primary fs-8 position-absolute start-100 top-0 translate-middle-x d-inline-block"
+                    class="button-count ms-1 text-white bg-primary position-absolute start-100 top-0 translate-middle-x d-inline-block"
                     >{{ collectStorage.length }}</span
                   ></RouterLink
                 >
@@ -63,7 +63,7 @@
               <li class="me-2">
                 <RouterLink :to="{ name: 'cart' }" class="ps-1 position-relative"
                   ><font-awesome-icon :icon="['fas', 'cart-shopping']" class="fa-lg" /><span
-                    class="px-1 ms-1 text-white rounded bg-primary fs-8 position-absolute start-100 top-0 translate-middle-x d-inline-block"
+                    class="button-count ms-1 text-white bg-primary position-absolute start-100 top-0 translate-middle-x d-inline-block"
                     >{{ cartLength }}</span
                   ></RouterLink
                 >
@@ -148,5 +148,15 @@ export default {
 <style scoped>
 header {
   z-index: 1000;
+}
+
+.button-count {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.6rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
 }
 </style>

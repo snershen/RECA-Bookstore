@@ -2,33 +2,33 @@
   <LoadingComponent></LoadingComponent>
   <nav aria-label="Breadcrumb"></nav>
   <div>
-    <div class="container">
+    <div class="container py-5">
       <Breadcrumb
         :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: article.title }"
       ></Breadcrumb>
       <div class="row justify-content-center">
         <div class="col-lg-10">
-          <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center justify-content-between mb-1">
             <div class="d-flex align-items-center">
-              <span href="#" class="text-secondary fw-bold me-3 px-2 py-1 fs-6"
+              <span href="#" class="text-secondary fw-bold me-3 px-2 py-2 fs-6"
                 >#{{ article.tag }}</span
               >
             </div>
             <p class="fs-7">{{ article.create_at }}</p>
           </div>
           <h2 class="mb-1 fw-bold mb-1 fs-1">{{ article.title }}</h2>
-          <p class="mb-4">作者 / {{ article.author }}</p>
+          <p class="mb-1">作者 / {{ article.author }}</p>
         </div>
       </div>
     </div>
 
     <div v-if="isValidURL(article.image)">
-      <img :src="article.image" alt="" height="350" class="w-100 object-fit-cover mb-lg-5" />
+      <img :src="article.image" alt="" height="500" class="w-100 object-fit-cover mb-lg-5" />
     </div>
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <p class="fs-5 py-5" v-html="article.content"></p>
+          <p class="fs-6 py-5" v-html="article.content"></p>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
           <div class="col-lg-10">
             <h3 class="fs-2 fw-bold mb-4">更多文章</h3>
             <ul class="row">
-              <li v-for="item in articleList" class="col-lg-6">
+              <li v-for="item in articleList" class="col-lg-4">
                 <div class="mb-3">
                   <ArticleCard :article="item"></ArticleCard>
                 </div>
