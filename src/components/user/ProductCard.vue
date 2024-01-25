@@ -82,15 +82,13 @@ export default {
       document.body.classList.remove('index-card-style')
     }
   }
-  // beforeDestroy() {
-  //   document.body.classList.remove('index-card-style')
-  // }
 }
 </script>
 
 <style lang="scss" scoped>
 .product-card {
   transition: 0.5s;
+  border-radius: 8px;
 }
 
 .product-card:hover {

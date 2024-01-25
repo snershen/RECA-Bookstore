@@ -1,7 +1,7 @@
 <template>
   <div class="card-article position-relative">
     <div class="row py-4">
-      <div class="col-12">
+      <div class="col-12 card-img-wrapper">
         <div class="card-img overflow-hidden rounded-3 position-relative mb-3">
           <span
             href="#"
@@ -15,10 +15,10 @@
           />
         </div>
       </div>
-      <div class="col-12 w-100">
+      <div class="col-12 card-content-wrapper">
         <h2 class="fw-bold text-overflow-title fs-3">
           <RouterLink
-            to="`articles/${article.id}`"
+            :to="`/articles/${article.id}`"
             class="stretched-link"
             @click.prevent="directArticle(article)"
             >{{ article.title }}</RouterLink
@@ -43,11 +43,20 @@ export default {
     directArticle(article) {
       this.$router.push(`/articles/${article.id}`)
     }
+  },
+  beforeCreate() {
+    if (this.$route.name === 'articles') {
+      document.body.classList.add('articles-card-style')
+    } else {
+      document.body.classList.remove('articles-card-style')
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/mixin';
+
 .card-article {
   .card-img {
     height: 200px !important;
@@ -65,5 +74,28 @@ export default {
 .tag {
   border-bottom-left-radius: 8px;
   z-index: 1;
+}
+
+.articles-card-style {
+  .card-img-wrapper {
+    width: 100%;
+    height: 100%;
+    @include min-lg {
+      width: 40%;
+    }
+    .card-img {
+      max-height: 150px !important;
+    }
+  }
+  .card-content-wrapper {
+    width: 100%;
+    @include min-lg {
+      width: 40%;
+    }
+  }
+}
+
+a:hover {
+  color: #000;
 }
 </style>

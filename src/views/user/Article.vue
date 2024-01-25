@@ -1,30 +1,30 @@
 <template>
   <LoadingComponent></LoadingComponent>
-  <nav aria-label="Breadcrumb"></nav>
   <div>
-    <div class="container py-5">
-      <Breadcrumb
-        :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: article.title }"
-      ></Breadcrumb>
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
-          <div class="d-flex align-items-center justify-content-between mb-1">
-            <div class="d-flex align-items-center">
-              <span href="#" class="text-secondary fw-bold me-3 px-2 py-2 fs-6"
-                >#{{ article.tag }}</span
-              >
+    <template v-if="isValidURL(article.image)">
+      <div class="article-banner" :style="{ backgroundImage: `url(${article.image})` }">
+        <div class="container py-lg-5 pb-5 pt-4 article-content">
+          <Breadcrumb
+            :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: article.title }"
+          ></Breadcrumb>
+          <div class="row justify-content-center">
+            <div class="col-lg-10">
+              <div class="text-center">
+                <span href="#" class="me-3 fs-6"># {{ article.tag }}</span>
+                <h2 class="mb-1 fw-bold mb-1 fs-lg-1 fs-2 ls-lg">{{ article.title }}</h2>
+                <div class="d-flex align-items-center justify-content-center">
+                  <p class="me-3">作者 / {{ article.author }}</p>
+                  <p class="fs-7 ls-lg">{{ article.create_at }}</p>
+                </div>
+              </div>
             </div>
-            <p class="fs-7">{{ article.create_at }}</p>
           </div>
-          <h2 class="mb-1 fw-bold mb-1 fs-1">{{ article.title }}</h2>
-          <p class="mb-1">作者 / {{ article.author }}</p>
         </div>
       </div>
-    </div>
-
-    <div v-if="isValidURL(article.image)">
+    </template>
+    <!-- <div v-if="isValidURL(article.image)">
       <img :src="article.image" alt="" height="500" class="w-100 object-fit-cover mb-lg-5" />
-    </div>
+    </div> -->
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -78,3 +78,30 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.article-banner {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  color: white;
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #8d8366 !important;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+.article-content {
+  position: relative;
+  z-index: 100;
+}
+</style>

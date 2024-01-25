@@ -1,10 +1,10 @@
 <template>
   <LoadingComponent></LoadingComponent>
-  <div>
+  <div class="main-content">
     <Navbar />
     <RouterView :key="$route.fullPath" />
-    <Footer></Footer>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
@@ -25,3 +25,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.main-content {
+  min-height: calc(100vh - 232px);
+}
+</style>

@@ -1,9 +1,9 @@
 <template>
   <ol class="breadcrumb mb-5">
-    <li class="breadcrumb-item text-gray">
+    <li class="breadcrumb-item">
       <router-link :to="{ name: 'index' }" class="pe-3">首頁</router-link>
     </li>
-    <li class="breadcrumb-item text-gray">
+    <li class="breadcrumb-item">
       <router-link
         :to="`/${breadConfig.path}`"
         class="px-3"
@@ -11,10 +11,8 @@
         >{{ breadConfig.subNav }}</router-link
       >
     </li>
-    <li class="breadcrumb-item" :class="{ 'text-dark': breadConfig.title }">
-      <span class="px-3">
-        {{ breadConfig.title }}
-      </span>
+    <li class="breadcrumb-item">
+      <span class="px-3"> 文章 </span>
     </li>
   </ol>
 </template>
@@ -29,3 +27,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.breadcrumb-item + .breadcrumb-item::before {
+  color: inherit;
+}
+</style>
