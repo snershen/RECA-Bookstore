@@ -195,7 +195,7 @@
 
 <script>
 import Modal from 'bootstrap/js/dist/modal'
-import { adminUploadImg } from '../../utils/apis'
+import { adminUploadImg } from '@/utils/apis'
 
 export default {
   data() {

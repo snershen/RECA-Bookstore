@@ -19,20 +19,22 @@
     >
       <ul class="navbar-nav flex-column w-100">
         <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3 active" to="/admin/products"
+          <RouterLink class="nav-link text-white px-4 py-3 active" :to="{ name: 'admin-products' }"
             >產品列表管理</RouterLink
           >
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3" to="/admin/orders">訂單管理</RouterLink>
+          <RouterLink class="nav-link text-white px-4 py-3" :to="{ name: 'admin-orders' }"
+            >訂單管理</RouterLink
+          >
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3" to="/admin/coupons"
+          <RouterLink class="nav-link text-white px-4 py-3" :to="{ name: 'admin-coupons' }"
             >優惠券管理</RouterLink
           >
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3" to="/admin/articles"
+          <RouterLink class="nav-link text-white px-4 py-3" :to="{ name: 'admin-articles' }"
             >文章管理</RouterLink
           >
         </li>

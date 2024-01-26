@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { admin_getProductPage } from '@/utils/apis.js'
+import { admin_getProducts } from '@/utils/apis.js'
 import { admin_putProduct } from '@/utils/apis.js'
 import { admin_postProduct } from '@/utils/apis.js'
 import { admin_deleteProduct } from '@/utils/apis.js'
@@ -96,7 +96,7 @@ export default {
   methods: {
     getProducts(page = 1) {
       this.startLoading()
-      admin_getProductPage(page).then((res) => {
+      admin_getProducts(page).then((res) => {
         this.stopLoading()
         if (res.data.success) {
           this.products = res.data.products

@@ -59,8 +59,8 @@ export const admin_getProductAll = () => {
   return adminRequest.get(`/products/all`)
 }
 
-export const admin_getProductCategory = (category = '') => {
-  return adminRequest.get(`/products/?category=${category}`)
+export const admin_getProducts = (page) => {
+  return adminRequest.get(`/products?page=${page}`)
 }
 
 export const admin_postProduct = (data) => {
