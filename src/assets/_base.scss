@@ -10,9 +10,11 @@ a {
   text-decoration: none;
   color: inherit;
   display: inline-block;
-  &:hover {
-    color: #95896c;
-  }
+  line-height: 1.5 !important;
+}
+
+a:hover {
+  color: #95896c;
 }
 
 h1,

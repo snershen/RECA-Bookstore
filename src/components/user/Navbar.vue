@@ -52,7 +52,7 @@
                 >
               </li>
               <li>
-                <RouterLink :to="{ name: 'collect' }" class="ps-1 position-relative"
+                <RouterLink :to="{ name: 'collect' }" class="ps-1 position-relative pt-1"
                   ><font-awesome-icon :icon="['fas', 'heart']" class="fa-lg" />
                   <span
                     class="button-count ms-1 text-white bg-primary position-absolute start-100 top-0 translate-middle-x d-inline-block"
@@ -61,7 +61,7 @@
                 >
               </li>
               <li class="me-2">
-                <RouterLink :to="{ name: 'cart' }" class="ps-1 position-relative"
+                <RouterLink :to="{ name: 'cart' }" class="ps-1 position-relative pt-1"
                   ><font-awesome-icon :icon="['fas', 'cart-shopping']" class="fa-lg" /><span
                     class="button-count ms-1 text-white bg-primary position-absolute start-100 top-0 translate-middle-x d-inline-block"
                     >{{ cartLength }}</span

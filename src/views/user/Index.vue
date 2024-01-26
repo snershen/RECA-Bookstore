@@ -1,69 +1,68 @@
 <template>
   <LoadingComponent></LoadingComponent>
+
   <main>
     <section class="banner">
       <h1 class="banner-title fw-bold">踏上探索之旅<br />尋找屬於自己的命定之書</h1>
       <p class="banner-subtitle text-white text-center mt-2 fs-4">上萬本書籍等待你的閱讀</p>
-      <!-- <swiper
-        :effect="'coverflow'"
-        :grabCursor="true"
-        :centeredSlides="true"
-        :slidesPerView="slidesPerViewCoverFlow"
-        :autoplay="true"
-        spaceBetween="80"
-        :coverflowEffect="{
-          rotate: 0,
-          stretch: 10,
-          depth: 10,
-          modifier: 5,
-          slideShadows: true
-        }"
-        :modules="modules"
-        class="mySwiper py-5"
-      >
-        <swiper-slide v-for="item in productList" class="align-items-center">
-          <a href="#" @click.prevent="directSingleProduct(item.id)">
-            <img :src="item.imageUrl" class="img-fluid" />
-          </a>
-        </swiper-slide>
-      </swiper> -->
-    </section>
-    <section class="container py-5 my-5">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2 class="fw-bold">今日熱門</h2>
-        <RouterLink
-          to="#"
-          class="btn-more fs-lg-6 fs-7 px-lg-4 px-3 py-lg-2 py-1 text-white rounded-pill"
-          >查看更多
-          <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
-        /></RouterLink>
-      </div>
-      <div class="position-relative px-5 px-xxl-0">
+      <div class="container d-lg-block d-none">
         <swiper
-          :slidesPerView="slidesPerView"
-          :spaceBetween="40"
+          :slidesPerView="bannerSlidesNum"
+          :spaceBetween="80"
           :modules="modules"
           :navigation="true"
+          :autoplay="true"
+          :centeredSlides="true"
+          :centeredSlidesBounds="true"
           :loop="true"
-          class="swiper-today my-5 px-3 position-static"
+          class="banner-swiper my-5 px-3"
         >
           <swiper-slide v-for="item in productList" :key="item.id" class="h-auto">
-            <div class="today-card">
-              <button
-                type="button"
-                class="like-btn btn btn-white position-absolute top-0 end-0 pt-2 pe-2 border-0"
-                @click.prevent="handleCollectBtn(item, isSolid)"
-              >
-                <span class="rounded-circle bg-white shadow-sm">
-                  <font-awesome-icon :icon="icon" class="text-primary" />
-                </span>
-              </button>
+            <RouterLink :to="`/products/${item.id}`">
               <img
                 :src="item.imageUrl"
                 :alt="item.title"
                 class="mb-3 w-100 object-fit-contain"
                 height="300"
               />
+            </RouterLink>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </section>
+    <section class="container py-5 my-5">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold fs-2">今日熱門</h2>
+        <MoreBtn :link="{ name: 'products' }" />
+      </div>
+      <div class="position-relative px-5 px-xxl-0">
+        <swiper
+          :slidesPerView="6"
+          :spaceBetween="40"
+          :modules="modules"
+          :navigation="true"
+          :autoplay="true"
+          :loop="true"
+          class="swiper-today my-5 px-3 position-static"
+        >
+          <swiper-slide v-for="item in productList" :key="item.id" class="h-auto">
+            <div class="today-card position-relative">
+              <button
+                type="button"
+                class="like-btn btn btn-white position-absolute top-0 end-0 pt-2 pe-2 border-0"
+                @click.prevent="handleCollectBtn(item, isSolid)"
+              >
+                <span class="rounded-circle bg-white shadow-sm">
+                  <!-- <font-awesome-icon :icon="icon" class="text-primary" /> -->
+                </span>
+              </button>
+              <div class="today-card-img">
+                <img
+                  :src="item.imageUrl"
+                  :alt="item.title"
+                  class="w-100 h-100 object-fit-contain"
+                />
+              </div>
               <div class="flex-grow-1 w-100">
                 <h4 class="today-card-title fw-bold text-overflow-title flex-grow-1">
                   {{ item.title }}
@@ -77,9 +76,6 @@
                 <p class="today-card-content text-overflow-content">{{ item.content }}</p>
                 <!-- <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink> -->
               </div>
-              <!-- <div class="d-flex justify-content-between align-items-center">
-      <a href="#" class="btn btn-outline-dark w-100 text-nowrap">放入購物車</a>
-    </div> -->
             </div>
           </swiper-slide>
         </swiper>
@@ -88,13 +84,8 @@
     <section class="bg-primary-light py-5">
       <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="fw-bold">最新出版</h2>
-          <RouterLink
-            to="#"
-            class="btn-more fs-lg-6 fs-7 px-lg-4 px-3 py-lg-2 py-1 text-white rounded-pill"
-            >查看更多
-            <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
-          /></RouterLink>
+          <h2 class="fw-bold fs-2">最新出版</h2>
+          <MoreBtn :link="{ name: 'products' }" />
         </div>
         <Tabs />
         <div class="position-relative px-5 px-xxl-0">
@@ -117,24 +108,83 @@
         </div>
       </div>
     </section>
-    <section class="container">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2 class="fw-bold py-5">暢銷排行</h2>
+    <section class="container py-5">
+      <h2 class="fw-bold pt-5 pb-4 fs-2">暢銷排行</h2>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="px-4 py-lg-5">
+            <swiper
+              @swiper="setThumbsSwiper"
+              :spaceBetween="20"
+              :slidesPerView="rankSlidesNum"
+              :freeMode="true"
+              :modules="modules"
+              direction="vertical"
+              class="sold-swiper"
+            >
+              <swiper-slide v-for="(item, index) in productList">
+                <div class="border-bottom py-3 text-truncate">
+                  <span class="me-2 rank-number">{{ index + 1 }}</span> {{ item.title }}
+                </div>
+              </swiper-slide>
+            </swiper>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <swiper
+            :loop="true"
+            :slidesPerView="1"
+            :spaceBetween="10"
+            :thumbs="{ swiper: thumbsSwiper }"
+            :modules="modules"
+            :autoplay="true"
+            class="sold-swiper-product"
+          >
+            <swiper-slide v-for="(item, index) in productList">
+              <div class="today-card position-relative pb-5">
+                <button
+                  type="button"
+                  class="like-btn btn btn-white position-absolute top-0 end-0 pt-2 pe-2 border-0"
+                  @click.prevent="handleCollectBtn(item, isSolid)"
+                >
+                  <span class="rounded-circle bg-white shadow-sm">
+                    <!-- <font-awesome-icon :icon="icon" class="text-primary" /> -->
+                  </span>
+                </button>
+                <div class="today-card-img py-lg-5 py-3">
+                  <img :src="item.imageUrl" :alt="item.title" />
+                </div>
+                <div class="flex-grow-1 w-100 py-lg-5">
+                  <h4
+                    class="fs-4 fs-lg-3 today-card-title fw-bold text-overflow-title flex-grow-1 text-center text-lg-start"
+                  >
+                    {{ item.title }}
+                  </h4>
+                  <div
+                    class="today-card-price align-items-center justify-content-center justify-content-lg-start"
+                  >
+                    <p class="fw-bold me-2 fs-4">${{ item.price }}</p>
+                    <p class="fs-7 text-gray text-decoration-line-through">
+                      ${{ item.origin_price }}
+                    </p>
+                  </div>
+                  <!-- <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink> -->
+                  <p class="today-card-content text-overflow-content">{{ item.content }}</p>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper>
+        </div>
       </div>
     </section>
     <section class="bg-primary-light py-5">
       <div class="container py-5">
-        <div class="d-flex justify-content-between align-items-center">
-          <h2 class="fw-bold">編輯推薦</h2>
-          <RouterLink
-            to="#"
-            class="btn-more fs-lg-6 fs-7 px-lg-4 px-3 py-lg-2 py-1 text-white rounded-pill"
-            >查看更多
-            <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
-          /></RouterLink>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold fs-2">編輯推薦</h2>
+          <MoreBtn :link="{ name: 'articles' }" />
         </div>
         <ul class="row">
-          <li class="col-lg-4 col-6" v-for="item in articleList">
+          <li class="col-lg-4" v-for="item in articleList">
             <ArticleCard :article="item" />
           </li>
         </ul>
@@ -175,9 +225,21 @@ import LoadingComponent from '@/components/Loading.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
 import Tabs from '@/components/user/Tabs.vue'
+import MoreBtn from '@/components/user/MoreBtn.vue'
 
-import { Navigation, Pagination, Scrollbar, A11y, Autoplay, EffectCoverflow } from 'swiper/modules'
+import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+  EffectCoverflow,
+  FreeMode,
+  Thumbs
+} from 'swiper/modules'
 
 export default {
   data() {
@@ -185,16 +247,28 @@ export default {
       // products: [],
       newestProduct: [],
       slidesPerView: 6,
-      slidesPerViewCoverFlow: 5,
-      modules: [Navigation, Pagination, Scrollbar, A11y, Autoplay, EffectCoverflow],
+      bannerSlidesNum: 5,
+      rankSlidesNum: 5,
+      modules: [
+        Navigation,
+        Pagination,
+        Scrollbar,
+        A11y,
+        Autoplay,
+        EffectCoverflow,
+        Thumbs,
+        FreeMode
+      ],
       literalResult: [],
-      commercialResult: []
+      commercialResult: [],
+      thumbsSwiper: null
     }
   },
   components: {
     ProductCard,
     ArticleCard,
     Tabs,
+    MoreBtn,
     Swiper,
     SwiperSlide,
     LoadingComponent
@@ -212,29 +286,27 @@ export default {
       const screenWidth = window.innerWidth
       if (screenWidth <= 576) {
         this.slidesPerView = 1
+        this.rankSlidesNum = 1
       } else if (screenWidth <= 768) {
         this.slidesPerView = 2
+        this.bannerSlidesNum = 3
+        this.rankSlidesNum = 1
       } else if (screenWidth <= 992) {
         this.slidesPerView = 3
+        this.bannerSlidesNum = 3
+        this.rankSlidesNum = 5
       } else if (screenWidth <= 1400) {
         this.slidesPerView = 4
+        this.bannerSlidesNum = 3
+        this.rankSlidesNum = 5
       } else {
         this.slidesPerView = 6
-      }
-    },
-    updateSlidesPerViewCoverFlow() {
-      const screenWidth = window.innerWidth
-      if (screenWidth <= 576) {
-        this.slidesPerViewCoverFlow = 2
-      } else if (screenWidth <= 768) {
-        this.slidesPerViewCoverFlow = 3
-      } else {
-        this.slidesPerViewCoverFlow = 5
+        this.bannerSlidesNum = 5
+        this.rankSlidesNum = 5
       }
     },
     updateSlidersHandler() {
       this.updateSlidesPerView()
-      this.updateSlidesPerViewCoverFlow()
     },
     directProductPage(item) {
       this.getProductsAll()
@@ -254,6 +326,9 @@ export default {
       await this.getProductsAll()
       await this.filterCategoryProduct('文學小說', 'literalResult')
       await this.filterCategoryProduct('商業理財', 'commercialResult')
+    },
+    setThumbsSwiper(swiper) {
+      this.thumbsSwiper = swiper
     }
   },
   created() {
@@ -282,7 +357,7 @@ export default {
   &-title {
     font-size: 2rem;
     text-align: center;
-    color: #ffae63;
+    color: #c9a65c;
     @include min-lg {
       font-size: 3.625rem;
     }
@@ -308,17 +383,15 @@ export default {
   align-items: center;
 }
 
-.btn-more {
-  background: #000;
-
-  * {
-    transition: 0.2s;
+.banner-swiper {
+  .swiper-slide {
+    transition: transform 0.5s;
+    padding: 30px 0;
+    opacity: 0.8;
   }
-  &:hover {
-    background: #c9a65c;
-  }
-  &:hover &-arrow {
-    transform: translateX(3px);
+  .swiper-slide-active {
+    transform: scale(1.2);
+    opacity: 1;
   }
 }
 
@@ -329,9 +402,19 @@ export default {
   .swiper-slide {
     display: flex;
     align-items: center;
-    transform: scale(0.95);
+    // transition: 0.2s;
+    transform-origin: top center;
+    // opacity: 0;
+    @include min-lg {
+      transform: scale(1);
+    }
+    .today-card-img {
+      margin-bottom: 12px;
+      height: 200px;
+    }
   }
   .today-card {
+    padding: 40px 0;
     &-title {
       font-size: 1rem;
     }
@@ -341,38 +424,161 @@ export default {
     &-price {
       display: none;
     }
+
     img {
-      height: 200px;
+      height: 100%;
+      width: 100%;
       object-position: left;
+      object-fit: contain;
     }
   }
   .swiper-slide-active {
-    transition: transform 0.5s;
-    transform: scale(1);
+    // transition: 0.5s;
+    // transform: scale(1);
     width: 100% !important;
-
+    // opacity: 1;
     @include min-lg {
       width: 50% !important;
       height: 300px;
     }
     .today-card {
       display: flex;
+      flex-direction: column;
 
+      @include min-md {
+        flex-direction: row;
+      }
       &-title {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        @include min-lg {
+          font-size: 1.5rem;
+        }
       }
       &-content {
-        margin-top: 40px;
+        margin-top: 20px;
         display: -webkit-box;
+        @include min-lg {
+          margin-top: 40px;
+        }
       }
       &-price {
         display: flex;
       }
+      &-img {
+        height: 350px;
+        width: 100%;
+        padding-right: 20px;
+      }
       img {
-        margin-right: 20px;
-        width: 40% !important;
-        height: auto;
-        object-position: top right;
+        max-height: 400px;
+        object-position: center;
+        width: 100%;
+        @include min-lg {
+          max-height: initial;
+          height: auto;
+          margin-right: 20px;
+          object-position: top right;
+        }
+      }
+    }
+  }
+}
+
+.sold-swiper {
+  height: 100px;
+  @include min-lg {
+    height: 300px;
+  }
+  .swiper-slide {
+    cursor: pointer;
+    &:nth-child(-n + 3) .rank-number {
+      background-image: url('../../assets/img/deco-crown.svg');
+      background-size: contain;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      color: white;
+    }
+    &:nth-child(-n + 9) .rank-number::before {
+      content: '0';
+    }
+    .rank-number {
+      padding: 10px;
+      padding-top: 16px;
+      font-size: 0.875rem;
+    }
+  }
+  .swiper-slide-thumb-active {
+    font-weight: bold;
+  }
+}
+
+.sold-swiper-product {
+  position: relative;
+  &::before,
+  &::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    background-image: url('../../assets/img/deco-star.svg');
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    animation: bling 0.8s ease-in-out infinite alternate;
+  }
+  &::before {
+    top: 0px;
+    left: 0;
+  }
+  &::after {
+    bottom: 0px;
+    right: 0;
+    animation-delay: 1s;
+    @include min-lg {
+      left: 40%;
+    }
+  }
+
+  @keyframes bling {
+    to {
+      transform: scale(0.4);
+    }
+  }
+  .swiper-wrapper {
+    position: static !important;
+  }
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    transform: scale(0.95);
+  }
+  .today-card {
+    display: flex;
+    flex-direction: column;
+    @include min-lg {
+      flex-direction: row;
+    }
+    &-title {
+      font-size: 1.5rem;
+    }
+    &-content {
+      margin-top: 12px;
+      display: -webkit-box;
+      @include min-lg {
+        margin-top: 40px;
+      }
+    }
+    &-price {
+      display: flex;
+    }
+    &-img {
+      margin-right: 20px;
+      padding: 0 60px;
+      object-position: top right;
+
+      img {
+        width: 100%;
+        height: 100%;
       }
     }
   }
