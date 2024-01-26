@@ -1,7 +1,7 @@
 <template>
   <LoadingComponent></LoadingComponent>
   <div class="container py-5">
-    <div class="mb-lg-5 mb-3 ps-2" data-aos="fade-up" data-aos-duration="800">
+    <div class="mb-lg-5 mb-3 ps-2">
       <h1
         class="fw-bold"
         v-if="selectedCategory === '全部' && searchResult.length === 0 && !isEmptyResult"
@@ -28,50 +28,45 @@
         <product-category></product-category>
       </div>
       <div class="col-lg-9">
-        <div v-if="searchResult.length === 0 && !isEmptyResult && filterResult.length === 0">
+        <template v-if="searchResult.length !== 0">
           <ul class="row g-3">
-            <li v-for="item in productList" :key="item.id" class="col-lg-3 col-6 d-flex">
-              <product-card :item="item"></product-card>
+            <li v-for="item in searchResult" :key="item.id" class="col-lg-3 col-6 d-flex">
+              <product-card :item="item" data-aos="fade-up"></product-card>
             </li>
           </ul>
           <Pagination
+            class="py-5"
             :inner-pagination="pagination"
             @emit-page="getProducts"
-            class="py-5"
-            v-if="pagination.total_pages !== 1"
           ></Pagination>
-        </div>
-        <div
-          v-else-if="searchResult.length === 0 && filterResult.length !== 0 && !isEmptyResult"
-          data-aos="fade-up"
-          data-aos-duration="800"
-        >
+        </template>
+
+        <template v-if="!isEmptyResult && searchResult.length === 0">
           <ul class="row g-3">
-            <li v-for="item in filterResult" class="col-lg-3 col-6 d-flex" :key="item.id">
-              <product-card :item="item"></product-card>
+            <li v-for="item in filterResult" :key="item.id" class="col-lg-3 col-6 d-flex">
+              <product-card :item="item" data-aos="fade-up"></product-card>
             </li>
           </ul>
-        </div>
-        <ul
-          class="row g-3"
-          v-else-if="searchResult.length !== 0 && !isEmptyResult"
+          <Pagination
+            class="py-5"
+            :inner-pagination="pagination"
+            @emit-page="getProducts"
+          ></Pagination>
+        </template>
+
+        <div
+          class="d-flex flex-column align-items-center text-center py-5"
           data-aos="fade-up"
+          v-else-if="isEmptyResult"
         >
-          <li v-for="item in searchResult" class="col-lg-3 col-6 d-flex" :key="item.id">
-            <product-card :item="item"></product-card>
-          </li>
-        </ul>
-        <div class="text-center py-3" v-else-if="isEmptyResult" data-aos="fade-up">
           <div class="fw-bold mb-5">
             <p>喔不，沒有找到任何相關書籍</p>
             <p class="fs-2 mb-4">請再次輸入，火速為您尋找</p>
-            <button
-              type="button"
-              class="btn btn-dark rounded-pill px-3"
-              @click="filterProduct('全部')"
-            >
-              瀏覽全部書籍
-            </button>
+            <BtnMore
+              :content="'瀏覽全部書籍'"
+              :link="{ name: 'products' }"
+              @click.prevent="filterProduct('全部')"
+            />
           </div>
           <img src="@/assets/img/noResult.png" alt="" />
         </div>
@@ -82,6 +77,7 @@
 
 <script>
 import ProductCategory from '@/components/user/ProductCategory.vue'
+import BtnMore from '@/components/user/BtnMore.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 import Pagination from '@/components/Pagination.vue'
 
@@ -95,7 +91,8 @@ export default {
     ProductCategory,
     ProductCard,
     LoadingComponent,
-    Pagination
+    Pagination,
+    BtnMore
   },
 
   computed: {
@@ -112,12 +109,12 @@ export default {
   },
 
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductsAll'])
+    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll'])
   },
 
   created() {
     this.getProducts()
-    this.getProductsAll()
+    this.getProductAll()
   }
 }
 </script>

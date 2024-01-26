@@ -8,7 +8,7 @@
       <li class="nav-item" role="presentation" v-for="item in categoryList" :key="item">
         <button
           class="nav-link"
-          :class="{ active: selected === item }"
+          :class="{ active: selectedCategory === item }"
           id="pills-home-tab"
           data-bs-toggle="pill"
           data-bs-target="#pills-home"
@@ -16,6 +16,7 @@
           role="tab"
           aria-controls="pills-home"
           aria-selected="true"
+          @click="filterProduct(item)"
         >
           {{ item }}
         </button>
@@ -28,23 +29,19 @@
 import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/product.js'
 export default {
-  data() {
-    return {
-      selected: '社會科學'
-    }
-  },
   computed: {
     ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductsAll']),
+    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll']),
     directProductPage() {
       this.$router.push('/products')
       this.searchString = ''
     }
   },
-  created() {
-    this.getProducts()
+  async created() {
+    await this.getProducts()
+    await this.filterProduct(this.categoryList[0])
   }
 }
 </script>

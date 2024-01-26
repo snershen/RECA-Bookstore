@@ -33,7 +33,7 @@
     <section class="container py-5 my-5">
       <div class="d-flex justify-content-between align-items-center">
         <h2 class="fw-bold fs-2">今日熱門</h2>
-        <MoreBtn :link="{ name: 'products' }" />
+        <BtnMore :link="{ name: 'products' }" />
       </div>
       <div class="position-relative px-5 px-xxl-0">
         <swiper
@@ -85,7 +85,7 @@
       <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="fw-bold fs-2">最新出版</h2>
-          <MoreBtn :link="{ name: 'products' }" />
+          <BtnMore :link="{ name: 'products' }" />
         </div>
         <Tabs />
         <div class="position-relative px-5 px-xxl-0">
@@ -98,7 +98,7 @@
             class="mySwiper py-5 position-static px-3"
           >
             <swiper-slide
-              v-for="item in productList"
+              v-for="item in filterResult"
               :key="item.id"
               class="h-auto d-flex justify-content-center"
             >
@@ -181,7 +181,7 @@
       <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="fw-bold fs-2">編輯推薦</h2>
-          <MoreBtn :link="{ name: 'articles' }" />
+          <BtnMore :link="{ name: 'articles' }" />
         </div>
         <ul class="row">
           <li class="col-lg-4" v-for="item in articleList">
@@ -225,7 +225,7 @@ import LoadingComponent from '@/components/Loading.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
 import Tabs from '@/components/user/Tabs.vue'
-import MoreBtn from '@/components/user/MoreBtn.vue'
+import BtnMore from '@/components/user/BtnMore.vue'
 
 import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -268,19 +268,25 @@ export default {
     ProductCard,
     ArticleCard,
     Tabs,
-    MoreBtn,
+    BtnMore,
     Swiper,
     SwiperSlide,
     LoadingComponent
   },
 
   computed: {
-    ...mapState(productStore, ['productList', 'categoryList', 'filterResult', 'productAll']),
+    ...mapState(productStore, [
+      'productList',
+      'categoryList',
+      'filterResult',
+      'productAll',
+      'isLoading'
+    ]),
     ...mapState(articleStore, ['articleList'])
   },
 
   methods: {
-    ...mapActions(productStore, ['getProducts', 'getProductsAll', 'filterProduct']),
+    ...mapActions(productStore, ['getProducts', 'getProductAll', 'filterProduct']),
     ...mapActions(articleStore, ['getArticles']),
     updateSlidesPerView() {
       const screenWidth = window.innerWidth
@@ -323,7 +329,7 @@ export default {
       this[list] = result
     },
     async handler() {
-      await this.getProductsAll()
+      await this.getProductAll()
       await this.filterCategoryProduct('文學小說', 'literalResult')
       await this.filterCategoryProduct('商業理財', 'commercialResult')
     },
@@ -334,7 +340,7 @@ export default {
   created() {
     this.getProducts()
     this.getArticles()
-    this.getProductsAll()
+    this.getProductAll()
   },
 
   mounted() {

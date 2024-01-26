@@ -9,7 +9,7 @@
         <input
           type="text"
           class="form-control shadow-none ps-5 py-3"
-          v-model="searchString"
+          v-model.trim="searchString"
           placeholder="請輸入書名"
         />
         <button
@@ -52,7 +52,8 @@ export default {
       'getProducts',
       'updateSearchStr',
       'toggleCollapse',
-      'getProductsAll'
+      'getProductAll',
+      'searchProduct'
     ]),
 
     directProductPage() {
@@ -60,11 +61,12 @@ export default {
     },
 
     handleSearch() {
-      this.updateSearchStr(this.searchString), this.directProductPage(), this.toggleCollapse()
+      this.searchProduct(this.searchString), this.directProductPage(), this.toggleCollapse()
     },
 
     handleHotSearch(item) {
-      this.updateSearchStr(item)
+      // this.updateSearchStr(item)
+      this.searchProduct(item)
       this.directProductPage(), this.toggleCollapse()
     }
     // toggleCollapse() {
@@ -80,7 +82,7 @@ export default {
 
   mounted() {
     // this.getProducts()
-    this.getProductsAll()
+    this.getProductAll()
     this.collapse = new Collapse(this.$refs.collapse)
   }
 }

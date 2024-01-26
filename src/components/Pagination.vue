@@ -2,15 +2,15 @@
   <nav aria-label="Page navigation example" class="d-flex justify-content-center">
     <ul class="pagination">
       <li class="page-item">
-        <a
+        <button
+          type="button"
           class="page-link"
-          href="#"
           aria-label="Previous"
-          :class="{ 'd-none': !pagination.has_pre }"
+          :disabled="!pagination.has_pre"
           @click.prevent="updatePage(pagination.current_page - 1)"
         >
           <font-awesome-icon :icon="['fas', 'chevron-left']" class="fa-sm" />
-        </a>
+        </button>
       </li>
       <li
         class="page-item mx-1"
@@ -21,15 +21,15 @@
         <a class="page-link" href="#" @click.prevent="updatePage(page)">{{ page }}</a>
       </li>
       <li class="page-item">
-        <a
+        <button
+          type="button"
           class="page-link"
-          href="#"
           aria-label="Next"
-          :class="{ 'd-none': !pagination.has_next }"
+          :disabled="!pagination.has_next"
           @click.prevent="updatePage(pagination.current_page + 1)"
         >
           <font-awesome-icon :icon="['fas', 'chevron-right']" class="fa-sm" />
-        </a>
+        </button>
       </li>
     </ul>
   </nav>
@@ -84,8 +84,12 @@ export default {
   border-radius: 4px;
 }
 
-.page-item:not(:first-child, :last-child) .page-link {
+.page-item .page-link {
   color: #868686;
+}
+
+.page-link:disabled {
+  opacity: 0.5;
 }
 
 .page-link:focus {

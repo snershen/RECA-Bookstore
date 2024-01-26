@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { textBreak } from '@/utils/textBreak'
 
 import { userGetProduct } from '@/utils/apis'
+
 import { userGetProductAll } from '@/utils/apis'
 import { userGetSingleProduct } from '@/utils/apis'
 
@@ -32,59 +33,67 @@ export default defineStore('productStore', {
   },
 
   actions: {
-    async getProductsAll() {
+    async getProductAll() {
       try {
         this.isLoading = true
         const res = await userGetProductAll()
         this.productAll = res.data.products
         this.renderCategory()
         this.isLoading = false
-
-        // 返回數據，如果需要的話
+        console.log(res)
         return res.data.products
       } catch (error) {
-        this.isLoading = false
         console.error('Error fetching data:', error)
         throw error
+      } finally {
+        this.isLoading = false
       }
     },
-    getProducts(page = 1) {
-      this.isLoading = true
-      userGetProduct(page).then((res) => {
+    async getProducts(page = 1) {
+      try {
+        this.isLoading = true
+        const res = await userGetProduct(page)
+        const { products, pagination } = res.data
+        this.productList = products
+        this.filterResult = products
+        this.pagination = pagination
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        throw error
+      } finally {
         this.isLoading = false
-        this.productList = res.data.products
-        this.pagination = res.data.pagination
-      })
+      }
     },
-    getSingleProduct(id) {
-      this.singleProductId = id
-      this.isLoading = true
-      userGetSingleProduct(id).then((res) => {
-        this.isLoading = false
+    async getSingleProduct(id) {
+      try {
+        this.isLoading = true
+        this.singleProductId = id
+        const res = await userGetSingleProduct(id)
         this.singleProduct = res.data.product
         this.singleProduct.description = textBreak(this.singleProduct.description)
         this.singleProduct.content = textBreak(this.singleProduct.content)
         this.showAlikeProduct(this.singleProduct)
-      })
-    },
-    filterProduct(target) {
-      this.isEmptyResult = false
-      this.searchResult = []
-      if (target === '全部') {
-        this.selectedCategory = '全部'
-        this.filterResult = this.productList
-        this.getProducts((page = 1))
-        return
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        throw error
+      } finally {
+        this.isLoading = false
       }
-      this.selectedCategory = target
-      const result = [...this.productAll].filter((item) => {
-        return item.category === target
-      })
-      this.filterResult = result
-      return result
     },
-    renderCategory() {
-      this.isEmptyResult = false
+    async filterProduct(target) {
+      try {
+        this.isEmptyResult = false
+        this.searchResult = []
+        this.selectedCategory = target === '全部' ? '全部' : target
+        const res = await userGetProduct(1, target === '全部' ? '' : target)
+        this.filterResult = res.data.products
+        this.pagination = res.data.pagination
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        throw error
+      }
+    },
+    async renderCategory() {
       const categoryObj = {}
       const newProductList = [...this.productAll]
       newProductList.forEach((item) => {
@@ -95,23 +104,24 @@ export default defineStore('productStore', {
         }
       })
       this.categoryList = Object.keys(categoryObj)
-    },
-    searchProduct(searchStr) {
-      this.searchResult = []
-      this.searchString = searchStr
-      const newSearchStr = searchStr.trim()
-      const result = this.productAll.filter((item) => {
-        return item.title.includes(newSearchStr)
-      })
-      this.searchResult = result
       this.selectedCategory = '全部'
-      if (this.searchResult.length === 0) {
-        this.isEmptyResult = true
-      }
     },
-    updateSearchStr(target) {
-      this.searchString = target
-      this.searchProduct(this.searchString)
+    async searchProduct(searchStr) {
+      try {
+        this.searchResult = []
+        this.searchString = searchStr
+        const result = await this.productAll.filter((item) => {
+          return item.title.includes(searchStr)
+        })
+        this.searchResult = result
+        this.selectedCategory = '全部'
+        if (this.searchResult.length === 0) {
+          this.isEmptyResult = true
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        throw error
+      }
     },
     showAlikeProduct(target) {
       const result = this.productList.filter((item) => {

@@ -59,8 +59,8 @@ export const admin_getProductAll = () => {
   return adminRequest.get(`/products/all`)
 }
 
-export const admin_getProductPage = (page) => {
-  return adminRequest.get(`/products/?page=${page}`)
+export const admin_getProductCategory = (category = '') => {
+  return adminRequest.get(`/products/?category=${category}`)
 }
 
 export const admin_postProduct = (data) => {
@@ -138,8 +138,13 @@ export const adminUploadImg = (data) => {
 //=========== user ============
 
 //商品列表
-export const userGetProduct = (page) => {
-  return userRequest.get(`/products?page=${page}`)
+export const userGetProduct = (page, category = '') => {
+  let url = `/products?page=${page}`
+  if (category !== '') {
+    const encodedCategory = encodeURIComponent(category)
+    url = `/products?page=${page}&category=${encodedCategory}`
+  }
+  return userRequest.get(url)
 }
 
 export const userGetProductAll = () => {

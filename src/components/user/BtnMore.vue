@@ -1,6 +1,6 @@
 <template>
   <RouterLink :to="link" class="btn-more fs-7 fs-lg-6 px-lg-4 px-3 py-2 text-white rounded-pill">
-    查看更多
+    {{ content }}
     <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm" />
   </RouterLink>
 </template>
@@ -11,6 +11,10 @@ export default {
     link: {
       type: Object,
       default: '/'
+    },
+    content: {
+      type: String,
+      default: '查看更多'
     }
   }
 }

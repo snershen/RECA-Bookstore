@@ -34,7 +34,7 @@
                 <a
                   href="#"
                   class="btn btn-gray w-100 py-3 rounded-2 border-0"
-                  :class="{ 'bg-secondary text-white': isSolid }"
+                  :class="{ 'bg-danger ': isSolid }"
                   @click.prevent="handleCollectBtn(singleProduct)"
                 >
                   <span class="fa-lg text-white">
@@ -160,7 +160,7 @@ export default {
       'getSingleProduct',
       'getProducts',
       'showAlikeProduct',
-      'getProductsAll',
+      'getProductAll',
       'getStorage',
       'addOrRemoveCollect'
     ]),
@@ -188,7 +188,7 @@ export default {
     const id = pathArr[pathArr.length - 1]
     this.getSingleProduct(this.id)
     this.getProducts()
-    this.getProductsAll()
+    this.getProductAll()
   },
   mounted() {
     this.getStorage()
