@@ -13,12 +13,6 @@ const adminRequest = axios.create({
   //   headers: { 'X-Custom-Header': 'foobar' }
 })
 
-//從 cookie 中取出 token
-const token = document.cookie.replace(/(?:(?:^|.*;\s*)bookstoreAPI\s*=\s*([^;]*).*$)|^.*$/, '$1')
-
-//將 token 放在請求的 header 中一併送出
-adminRequest.defaults.headers.common['Authorization'] = token
-
 export const apiSignIn = (data) => {
   return loginRequest.post(`/admin/signin`, data)
 }
@@ -27,9 +21,14 @@ export const apiLogout = () => {
   return loginRequest.post(`/logout`)
 }
 
-// export const apiCheck = () => {
-//   return loginRequest.post(`/api/user/check`)
-// }
+export const apiCheck = () => {
+  //從 cookie 中取出 token
+  const token = document.cookie.replace(/(?:(?:^|.*;\s*)bookstoreAPI\s*=\s*([^;]*).*$)|^.*$/, '$1')
+  //將 token 放在請求的 header 中一併送出
+  loginRequest.defaults.headers.common['Authorization'] = token
+  adminRequest.defaults.headers.common['Authorization'] = token
+  return loginRequest.post(`/api/user/check`)
+}
 
 const userRequest = axios.create({
   baseURL: `${domain}/api/${apiPath}/`
@@ -114,7 +113,7 @@ export const adminPostArticle = (data) => {
   return adminRequest.post(`/article`, data)
 }
 
-export const adminGetArticleAll = (page) => {
+export const adminGetArticle = (page) => {
   return adminRequest.get(`/articles/?page=${page}`)
 }
 

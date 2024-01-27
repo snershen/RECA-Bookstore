@@ -1,39 +1,48 @@
 <template>
-  <div class="container-fluid px-0 bg-light">
-    <div class="row mx-0 align-items-center">
-      <div class="col-8 px-0">
-        <img src="@/assets/img/login.png" alt="" class="object-fit-cover vh-100 w-100" />
+  <div class="container-fluid px-0 bg-light vh-100">
+    <div class="row mx-0 align-items-center h-100">
+      <div class="col-6 px-0 d-none d-lg-block">
+        <img
+          src="@/assets/img/login.png"
+          alt="login banner"
+          class="object-fit-cover vh-100 w-100"
+        />
       </div>
-      <div class="col-4">
-        <form class="row justify-content-center" @submit.prevent="signin">
+      <div class="col-lg-6 d-flex justify-content-center align-items-center d-md-block">
+        <form class="row justify-content-center w-100" @submit.prevent="signin">
           <div class="col-md-8">
-            <h1 class="fs-4 mb-4 font-weight-normal fw-bold">RECA 書店後台管理</h1>
-            <div class="mb-4">
-              <label for="inputEmail" class="sr-only mb-2">帳號</label>
+            <h1 class="fs-3 mb-4 fw-bold font-sans text-secondary">RECA 書店後台管理</h1>
+            <div class="form-floating mb-3">
               <input
                 type="email"
-                id="inputEmail"
                 class="form-control"
-                placeholder="請輸入電子信箱"
-                required
-                autofocus
+                id="email"
+                placeholder="name@example.com"
                 v-model="user.username"
+                required
               />
+              <label for="email">Email address</label>
             </div>
-            <div class="mb-2">
-              <label for="inputPassword" class="sr-only mb-2">密碼</label>
+            <div class="form-floating mb-3">
               <input
                 type="password"
-                id="inputPassword"
                 class="form-control"
-                placeholder="請輸入密碼"
-                required
+                id="password"
+                placeholder="name@example.com"
                 v-model="user.password"
+                required
               />
+              <label for="password">Password</label>
             </div>
 
             <div class="text-end mt-4">
-              <button class="btn btn btn-secondary btn-block w-100" type="submit">登入</button>
+              <button
+                type="submit"
+                class="btn btn btn-secondary btn-block w-100 py-2"
+                :disabled="user.password === '' || user.username === ''"
+              >
+                登入
+              </button>
             </div>
           </div>
         </form>
@@ -57,12 +66,13 @@ export default {
   },
   mixins: [toastMixin],
   methods: {
-    signin() {
-      apiSignIn(this.user).then((res) => {
-        console.log(res.data)
+    async signin() {
+      try {
+        const res = await apiSignIn(this.user)
         const message = res.data.message
         if (res.data.success) {
           const { token, expired } = res.data
+          sessionStorage.setItem('username', this.user.username)
           //取得的 token 存到 cookie
           document.cookie = `bookstoreAPI=${token}; expires=${new Date(expired)}`
           this.$router.push({ name: 'admin-products' })
@@ -70,18 +80,12 @@ export default {
             title: message,
             icon: 'success'
           })
-        } else {
-          this.showToast({ title: `${message}，請輸入正確的帳號和密碼`, icon: 'warning' })
         }
-      })
+      } catch (err) {
+        this.showToast({ title: `請輸入正確的帳號和密碼`, icon: 'warning' })
+        console.log(err)
+      }
     }
   }
 }
 </script>
-
-<style scoped>
-body {
-  margin: 0;
-  padding: 0;
-}
-</style>

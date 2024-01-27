@@ -37,18 +37,7 @@
                 />
               </div>
             </div>
-            <div class="col-12 col-lg-6">
-              <div class="mb-3">
-                <label for="title" class="form-label">文章描述</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="title"
-                  placeholder="請輸入文章描述"
-                  v-model="tempArticle.description"
-                />
-              </div>
-            </div>
+
             <div class="mb-3 col-12 col-lg-6">
               <label for="category" class="form-label">上傳圖片</label>
               <input
@@ -69,16 +58,21 @@
                 v-model="tempArticle.author"
               />
             </div>
-            <div class="mb-3 col-12 col-lg-6">
-              <label for="origin_price" class="form-label">標籤</label>
-              <input
-                type="text"
-                class="form-control"
-                id="origin_price"
-                placeholder="請輸入標籤"
+
+            <div class="mb-3 col-6">
+              <label for="tag" class="form-label">標籤</label>
+              <select
+                class="form-select w-100"
+                aria-label="Default select example"
+                id="tag"
                 v-model="tempArticle.tag"
-              />
+              >
+                <option value="" disabled selected>選擇標籤</option>
+                <option value="編輯精選">編輯精選</option>
+                <option value="讀者投稿">讀者投稿</option>
+              </select>
             </div>
+
             <div class="mb-3 col-12 col-lg-6">
               <div class="form-check">
                 <input
@@ -92,17 +86,26 @@
                 <label class="form-check-label" for="is_enabled"> 是否公開</label>
               </div>
             </div>
-            <div class="mb-3 col-12">
-              <div class="form-check ps-0">
-                <label for="title" class="form-label">文章內容</label>
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="title" class="form-label">文章描述</label>
                 <textarea
                   type="text"
                   class="form-control"
                   id="title"
-                  rows="10"
-                  placeholder="請輸入文章內容"
-                  v-model="tempArticle.content"
+                  placeholder="請輸入文章描述"
+                  v-model="tempArticle.description"
                 />
+              </div>
+            </div>
+            <div class="mb-3 col-12">
+              <div class="form-check ps-0">
+                <label for="title" class="form-label">文章內容</label>
+                <ckeditor
+                  :editor="editor"
+                  v-model="tempArticle.content"
+                  :config="editorConfig"
+                ></ckeditor>
               </div>
             </div>
           </div>
@@ -111,11 +114,7 @@
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             取消
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="$emit('update-article', tempArticle)"
-          >
+          <button type="button" class="btn btn-dark" @click="$emit('update-article', tempArticle)">
             確認
           </button>
         </div>
@@ -126,12 +125,17 @@
 
 <script>
 import modalMixin from '@/mixins/modalMixin'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default {
   data() {
     return {
-      tempArticle: {},
-      isNew: true
+      tempArticle: { tag: '' },
+      isNew: true,
+
+      editor: ClassicEditor,
+      editorData: '<p>請輸入內容</p>',
+      editorConfig: {}
     }
   },
   mixins: [modalMixin],

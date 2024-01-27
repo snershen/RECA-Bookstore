@@ -1,5 +1,5 @@
 <template>
-  <Loading :active="articleLoading || productLoading || orderLoading || cartLoading">
+  <Loading :active="articleLoading || productLoading || orderLoading || cartLoading || isLoading">
     <div class="loading-box">
       <img src="@/assets/img/icons8-book4.gif" alt="loading" />
     </div>
@@ -14,6 +14,12 @@ import orderStore from '@/stores/order.js'
 import cartStore from '@/stores/cart.js'
 
 export default {
+  props: {
+    isLoading: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     ...mapState(articleStore, { articleLoading: 'isLoading' }),
     ...mapState(productStore, { productLoading: 'isLoading' }),

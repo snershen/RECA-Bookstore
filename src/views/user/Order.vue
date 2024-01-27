@@ -1,5 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
   <div class="container pb-5">
     <div class="offset-lg-4 col-lg-4">
       <h2 class="text-center fw-bold mb-4">訂單明細</h2>
@@ -47,14 +46,12 @@
 import { mapState, mapActions } from 'pinia'
 import orderStore from '@/stores/order.js'
 
-import LoadingComponent from '@/components/Loading.vue'
-
 export default {
   computed: {
     ...mapState(orderStore, ['order'])
   },
   props: ['id'],
-  components: { LoadingComponent },
+
   methods: {
     ...mapActions(orderStore, ['getSingleOrder', 'payMoney'])
   },

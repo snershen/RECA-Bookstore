@@ -1,5 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
   <div class="container py-5">
     <h1 class="fw-bold mb-4">編輯推薦</h1>
     <div class="row">
@@ -59,14 +58,13 @@
 import { mapState, mapActions } from 'pinia'
 import articleStore from '@/stores/article.js'
 
-import LoadingComponent from '@/components/Loading.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
 
 export default {
   data() {
     return { filterResult: [], searchString: '', isSearch: false, newSearchString: '' }
   },
-  components: { ArticleCard, LoadingComponent },
+  components: { ArticleCard },
   computed: {
     ...mapState(articleStore, ['articleList'])
   },

@@ -1,6 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
-
   <main>
     <section class="banner">
       <h1 class="banner-title fw-bold">踏上探索之旅<br />尋找屬於自己的命定之書</h1>
@@ -64,17 +62,22 @@
                 />
               </div>
               <div class="flex-grow-1 w-100">
-                <h4 class="today-card-title fw-bold text-overflow-title flex-grow-1">
+                <h4 class="today-card-title fw-bold text-overflow-title flex-grow-1 mb-1">
                   {{ item.title }}
                 </h4>
-                <div class="today-card-price align-items-center">
-                  <p class="fw-bold me-2 fs-4">${{ item.price }}</p>
-                  <p class="fs-7 text-gray text-decoration-line-through">
-                    ${{ item.origin_price }}
-                  </p>
+                <p class="text-gray">{{ item.author }}</p>
+                <div
+                  class="today-card-price align-items-center align-items-lg-start justify-content-center justify-content-lg-start flex-lg-column"
+                >
+                  <div class="d-flex align-items-center">
+                    <p class="fw-bold me-2 fs-3">${{ item.price }}</p>
+                    <p class="fs-7 text-gray text-decoration-line-through">
+                      ${{ item.origin_price }}
+                    </p>
+                  </div>
                 </div>
-                <p class="today-card-content text-overflow-content">{{ item.content }}</p>
-                <!-- <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink> -->
+                <p class="today-card-content text-overflow-content" v-html="item.content"></p>
+                <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
               </div>
             </div>
           </swiper-slide>
@@ -156,20 +159,23 @@
                 </div>
                 <div class="flex-grow-1 w-100 py-lg-5">
                   <h4
-                    class="fs-4 fs-lg-3 today-card-title fw-bold text-overflow-title flex-grow-1 text-center text-lg-start"
+                    class="fs-4 fs-lg-3 today-card-title fw-bold text-overflow-title flex-grow-1 text-center text-lg-start mb-1"
                   >
                     {{ item.title }}
                   </h4>
                   <div
-                    class="today-card-price align-items-center justify-content-center justify-content-lg-start"
+                    class="today-card-price align-items-center align-items-lg-start justify-content-center justify-content-lg-start flex-lg-column"
                   >
-                    <p class="fw-bold me-2 fs-4">${{ item.price }}</p>
-                    <p class="fs-7 text-gray text-decoration-line-through">
-                      ${{ item.origin_price }}
-                    </p>
+                    <p class="text-gray mb-1">{{ item.author }}</p>
+                    <div class="d-flex align-items-center">
+                      <p class="fw-bold me-2 fs-3">${{ item.price }}</p>
+                      <p class="fs-7 text-gray text-decoration-line-through">
+                        ${{ item.origin_price }}
+                      </p>
+                    </div>
                   </div>
-                  <!-- <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink> -->
-                  <p class="today-card-content text-overflow-content">{{ item.content }}</p>
+                  <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
+                  <p class="today-card-content text-overflow-content" v-html="item.content"></p>
                 </div>
               </div>
             </swiper-slide>
@@ -221,7 +227,6 @@ import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/product.js'
 import articleStore from '@/stores/article.js'
 
-import LoadingComponent from '@/components/Loading.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
 import Tabs from '@/components/user/Tabs.vue'
@@ -270,8 +275,7 @@ export default {
     Tabs,
     BtnMore,
     Swiper,
-    SwiperSlide,
-    LoadingComponent
+    SwiperSlide
   },
 
   computed: {

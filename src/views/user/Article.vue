@@ -1,5 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
   <div>
     <template v-if="isValidURL(article.image)">
       <div class="article-banner" :style="{ backgroundImage: `url(${article.image})` }">
@@ -10,8 +9,10 @@
           <div class="row justify-content-center">
             <div class="col-lg-10">
               <div class="text-center">
-                <span href="#" class="me-3 fs-6"># {{ article.tag }}</span>
-                <h2 class="mb-1 fw-bold mb-1 fs-lg-1 fs-2 ls-lg">{{ article.title }}</h2>
+                <span href="#" class="me-3 fs-6 d-block mb-3 mb-lg-0"># {{ article.tag }}</span>
+                <h2 class="mb-3 mb-lg-0 fw-bold mb-1 fs-lg-1 fs-lg-2 fs-3 ls-lg">
+                  {{ article.title }}
+                </h2>
                 <div class="d-flex align-items-center justify-content-center">
                   <p class="me-3">作者 / {{ article.author }}</p>
                   <p class="fs-7 ls-lg">{{ article.create_at }}</p>
@@ -28,7 +29,7 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <p class="fs-6 py-5" v-html="article.content"></p>
+          <p class="fs-5 py-5" v-html="article.content"></p>
         </div>
       </div>
     </div>
@@ -54,7 +55,6 @@
 <script>
 import Breadcrumb from '@/components/user/Breadcrumb.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
-import LoadingComponent from '@/components/Loading.vue'
 import { mapState, mapActions } from 'pinia'
 import articleStore from '@/stores/article.js'
 
@@ -62,7 +62,7 @@ export default {
   computed: {
     ...mapState(articleStore, ['articleList', 'article'])
   },
-  components: { Breadcrumb, ArticleCard, LoadingComponent },
+  components: { Breadcrumb, ArticleCard },
   methods: {
     ...mapActions(articleStore, ['getArticles', 'getSingleArticle']),
 

@@ -56,7 +56,7 @@
                   <button type="button" class="btn btn-outline-danger">移除</button>
                 </div>
                 <div>
-                  <button class="btn btn-outline-primary btn-sm d-block w-100">新增圖片</button>
+                  <button class="btn btn-dark btn-sm d-block w-100">新增圖片</button>
                 </div>
               </div>
             </div>
@@ -75,13 +75,6 @@
               <div class="row gx-2">
                 <div class="mb-3 col-md-6">
                   <label for="category" class="form-label">分類</label>
-                  <!-- <input
-                    type="text"
-                    class="form-control"
-                    id="category"
-                    placeholder="請輸入分類"
-                    v-model="tempProduct.category"
-                  /> -->
                   <select
                     class="form-select"
                     aria-label="Default select example"
@@ -109,9 +102,6 @@
                     v-model="tempProduct.unit"
                   />
                 </div>
-              </div>
-
-              <div class="row gx-2">
                 <div class="mb-3 col-md-6">
                   <label for="origin_price" class="form-label">原價</label>
                   <input
@@ -132,59 +122,77 @@
                     v-model="tempProduct.price"
                   />
                 </div>
+                <div class="mb-3 col-md-6">
+                  <label for="publish" class="form-label">出版社</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="publish"
+                    placeholder="請輸入出版社"
+                    v-model="tempProduct.publish"
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="time" class="form-label">出版年份</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="time"
+                    placeholder="請輸入"
+                    v-model="tempProduct.time"
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="author" class="form-label">作者</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="author"
+                    placeholder="請輸入作者"
+                    v-model="tempProduct.author"
+                  />
+                </div>
               </div>
+
               <hr />
+              <div class="mb-3">
+                <label for="author_content" class="form-label">作者介紹</label>
+                <ckeditor
+                  :editor="editor"
+                  v-model="tempProduct.author_content"
+                  :config="editorConfig"
+                ></ckeditor>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">目錄</label>
+                <ckeditor
+                  :editor="editor"
+                  v-model="tempProduct.description"
+                  :config="editorConfig"
+                ></ckeditor>
+              </div>
 
               <div class="mb-3">
-                <label for="description" class="form-label">產品描述</label>
-                <textarea
-                  type="text"
-                  class="form-control"
-                  id="description"
-                  placeholder="請輸入產品描述"
-                  v-model="tempProduct.description"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="content" class="form-label">說明內容</label>
-                <textarea
-                  type="text"
-                  class="form-control"
-                  id="content"
-                  placeholder="請輸入產品說明內容"
+                <label for="content" class="form-label">內容簡介</label>
+                <ckeditor
+                  :editor="editor"
                   v-model="tempProduct.content"
-                ></textarea>
+                  :config="editorConfig"
+                ></ckeditor>
               </div>
-              <!-- <div class="mb-3">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    :true-value="1"
-                    :false-value="0"
-                    id="is_enabled"
-                    v-model="tempProduct.is_enabled"
-                  />
-                  <label class="form-check-label" for="is_enabled"> 是否啟用 </label>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-outline-secondary"
+            class="btn btn-outline-gray"
             data-bs-dismiss="modal"
             @click.prevent="hideModal"
           >
             取消
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="$emit('update-product', tempProduct)"
-          >
+          <button type="button" class="btn btn-dark" @click="$emit('update-product', tempProduct)">
             確認
           </button>
         </div>
@@ -195,13 +203,17 @@
 
 <script>
 import Modal from 'bootstrap/js/dist/modal'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { adminUploadImg } from '@/utils/apis'
 
 export default {
   data() {
     return {
       modal: {},
-      tempProduct: {}
+      tempProduct: {},
+      editor: ClassicEditor,
+      editorData: '<p>請輸入內容</p>',
+      editorConfig: {}
     }
   },
   props: {
@@ -210,12 +222,15 @@ export default {
       default() {
         return {}
       }
+    },
+    isNew: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
     product() {
       this.tempProduct = this.product
-      console.log('watch')
     }
   },
   methods: {
@@ -242,7 +257,7 @@ export default {
     }
   },
   mounted() {
-    this.modal = new Modal(this.$refs.modal)
+    this.modal = new Modal(this.$refs.modal, { keyboard: false, backdrop: 'static' })
   }
 }
 </script>

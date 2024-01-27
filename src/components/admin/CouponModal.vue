@@ -90,11 +90,7 @@
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             取消
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="$emit('update-product', tempCoupon)"
-          >
+          <button type="button" class="btn btn-dark" @click="$emit('update-product', tempCoupon)">
             確認
           </button>
         </div>

@@ -19,22 +19,38 @@ const router = createRouter({
         {
           path: 'products',
           name: 'admin-products',
-          component: () => import('../views/admin/Products.vue')
+          component: () => import('../views/admin/Products.vue'),
+          meta: {
+            title: '產品管理',
+            requiresAuth: true
+          }
         },
         {
           path: 'orders',
           name: 'admin-orders',
-          component: () => import('../views/admin/Orders.vue')
+          component: () => import('../views/admin/Orders.vue'),
+          meta: {
+            title: '訂單管理',
+            requiresAuth: true
+          }
         },
         {
           path: 'articles',
           name: 'admin-articles',
-          component: () => import('../views/admin/Articles.vue')
+          component: () => import('../views/admin/Articles.vue'),
+          meta: {
+            title: '文章管理',
+            requiresAuth: true
+          }
         },
         {
           path: 'coupons',
           name: 'admin-coupons',
-          component: () => import('../views/admin/Coupons.vue')
+          component: () => import('../views/admin/Coupons.vue'),
+          meta: {
+            title: '優惠券管理',
+            requiresAuth: true
+          }
         }
       ]
     },

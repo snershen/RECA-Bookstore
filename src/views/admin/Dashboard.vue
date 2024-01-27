@@ -1,42 +1,55 @@
 <template>
-  <div class="d-flex">
-    <Navbar />
+  <div class="d-flex bg-light min-height-100">
+    <Navbar class="border-end" />
     <div class="view-area ms-auto">
-      <div class="container p-4">
-        <RouterView />
+      <div class="border-bottom py-3 bg-white">
+        <div class="container d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <font-awesome-icon :icon="['fas', 'user']" class="me-2" />
+            <p>Hi, {{ username }}</p>
+          </div>
+          <RouterLink :to="{ name: 'index' }" target="_blank">回到前台</RouterLink>
+        </div>
+      </div>
+      <div class="container py-4">
+        <RouterView :isLoading="isLoading" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { apiCheck } from '@/utils/apis.js'
 import Navbar from '@/components/admin/Navbar.vue'
 
-import axios from 'axios'
-
 export default {
+  data() {
+    return {
+      username: ''
+    }
+  },
   components: {
     Navbar
   },
   created() {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)bookstoreAPI\s*=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    )
-    axios.defaults.headers.common.Authorization = token
-    axios.post(`${import.meta.env.VITE_API_URL}/api/user/check`).then((res) => {
-      console.log(res)
-      this.$router.push({ name: 'admin-products' })
-      if (!res.data.success) {
+    apiCheck()
+      .then((res) => {
+        this.$router.push({ name: 'admin-products' })
+        this.username = sessionStorage.getItem('username')
+        if (!res.data.success) {
+          this.$router.push({ name: 'admin-login' })
+        }
+      })
+      .catch((err) => {
         this.$router.push({ name: 'admin-login' })
-      }
-    })
+        console.error(err)
+      })
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .view-area {
-  width: calc(100% - 250px);
+  width: calc(100% - 240px);
 }
 </style>

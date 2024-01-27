@@ -1,69 +1,69 @@
 <template>
-  <Loading :active="isLoading">
-    <img src="@/assets/img/icons8-book4.gif" alt="" />
-  </Loading>
-
-  <div class="d-flex justify-content-between align-items-center">
-    <h1 class="fs-3 fw-bold">產品列表管理</h1>
-    <button class="btn btn-primary" type="button" @click="openModal(true)">新增產品</button>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fs-3 fw-bold font-sans">產品管理</h1>
+    <button class="btn btn-dark" type="button" @click="openModal(true)">新增產品</button>
   </div>
-  {{ productChecked }}
-  <table class="table table-hover mt-4 align-middle">
-    <thead>
-      <tr>
-        <th width="120">分類</th>
-        <th>產品名稱</th>
-        <th width="120">原價</th>
-        <th width="120">售價</th>
-        <th width="100">是否啟用</th>
-        <th width="200">編輯</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="product in products" :key="product.id">
-        <td>{{ product.category }}</td>
-        <td>{{ product.title }}</td>
-        <td class="text-right">{{ product.origin_price }}</td>
-        <td class="text-right">{{ product.price }}</td>
-        <td>
-          <!-- <span class="text-success" v-if="product.is_enabled">啟用</span>
-          <span class="text-muted" v-else>未啟用</span> -->
-          <div class="d-flex">
-            <input
-              type="checkbox"
-              :id="product.id"
-              :true-value="1"
-              :false-value="0"
-              :class="{ active: product.is_enabled }"
-              @click.prevent="updateIsAble(product)"
-            />
-            <label :for="product.id"> Toggle </label>
-          </div>
-        </td>
-        <td>
-          <div>
-            <button class="btn btn-outline-primary btn-sm" @click="openModal(false, product)">
-              編輯
-            </button>
-            <button class="btn btn-outline-danger btn-sm" @click="deleteProduct(product)">
-              刪除
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <Pagination
-    :inner-pagination="pagination"
-    @emit-page="getProducts"
-    v-if="pagination.total_pages !== 1"
-    class="py-5"
-  ></Pagination>
-  <ProductModal
-    ref="productModal"
-    :product="tempProduct"
-    @update-product="updateProduct"
-  ></ProductModal>
+  <div :class="{ isLoading: isLoading }" class="px-4 py-2 bg-white rounded-3">
+    <div class="table-overflow">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th width="5%"></th>
+            <th width="10%">分類</th>
+            <th width="40%">產品名稱</th>
+            <th width="10%">原價</th>
+            <th width="10%">售價</th>
+            <th width="10%">是否啟用</th>
+            <th width="12%">編輯</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="product in products" :key="product.id">
+            <td class="py-2">
+              <img :src="product.imageUrl" :alt="product.title" height="100" />
+            </td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.title }}</td>
+            <td class="text-right">{{ product.origin_price }}</td>
+            <td class="text-right">{{ product.price }}</td>
+            <td>
+              <div class="d-flex">
+                <input
+                  type="checkbox"
+                  :id="product.id"
+                  :true-value="1"
+                  :false-value="0"
+                  :class="{ active: product.is_enabled }"
+                  @click.prevent="updateIsAble(product)"
+                />
+                <label :for="product.id"> Toggle </label>
+              </div>
+            </td>
+            <td>
+              <div>
+                <button
+                  class="btn btn-dark btn-sm me-1 mb-xxl-0"
+                  @click="openModal(false, product)"
+                >
+                  編輯
+                </button>
+                <button class="btn btn-outline-danger btn-sm" @click="deleteProduct(product)">
+                  刪除
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <Pagination :inner-pagination="pagination" @emit-page="getProducts" class="py-5"></Pagination>
+    <ProductModal
+      ref="productModal"
+      :product="tempProduct"
+      :isNew="isNew"
+      @update-product="updateProduct"
+    ></ProductModal>
+  </div>
 </template>
 
 <script>
@@ -85,7 +85,8 @@ export default {
       products: [],
       pagination: {},
       tempProduct: {},
-      isNew: true
+      isNew: true,
+      isLoading: false
     }
   },
   components: {
@@ -95,9 +96,9 @@ export default {
   mixins: [toastMixin, alertMixin, loadingMixin],
   methods: {
     getProducts(page = 1) {
-      this.startLoading()
+      this.isLoading = true
       admin_getProducts(page).then((res) => {
-        this.stopLoading()
+        this.isLoading = false
         if (res.data.success) {
           this.products = res.data.products
           this.pagination = res.data.pagination
@@ -177,7 +178,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/mixin.scss';
 input[type='checkbox'] {
   height: 0;
   width: 0;
@@ -187,8 +189,8 @@ input[type='checkbox'] {
 label {
   cursor: pointer;
   text-indent: -9999px;
-  width: 50px;
-  height: 30px;
+  width: 44px;
+  height: 26px;
   background: rgb(189, 189, 189);
   display: block;
   border-radius: 100px;
@@ -198,8 +200,8 @@ label {
 label:after {
   content: '';
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 3px;
+  left: 3px;
   width: 20px;
   height: 20px;
   background: #fff;
@@ -208,11 +210,11 @@ label:after {
 }
 
 input.active + label {
-  background: #ff5a26;
+  background: #198754;
 }
 
 input.active + label:after {
-  left: calc(100% - 5px);
+  left: calc(100% - 3px);
   transform: translateX(-100%);
 }
 

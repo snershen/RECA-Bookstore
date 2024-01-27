@@ -1,6 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
-
   <div class="container">
     <div class="row pb-5">
       <div class="offset-lg-2 col-lg-8">
@@ -91,8 +89,6 @@
 import { mapState, mapActions } from 'pinia'
 import orderStore from '@/stores/order.js'
 
-import LoadingComponent from '@/components/Loading.vue'
-
 export default {
   data() {
     return {
@@ -103,8 +99,6 @@ export default {
   computed: {
     ...mapState(orderStore, ['orderList', 'orderResult', 'orderId', 'searchStr', 'isEmptyResult'])
   },
-
-  components: { LoadingComponent },
 
   methods: {
     ...mapActions(orderStore, ['getOrders', 'filterOrder', 'getOrderId'])

@@ -1,48 +1,69 @@
 <template>
-  <h1 class="fs-3 fw-bold">訂單管理</h1>
-  <table class="table table-hover mt-4 align-middle w-100">
-    <thead>
-      <tr>
-        <th width="30%">訂單編號</th>
-        <th width="20%">付款日期</th>
-        <th width="10%">付款狀態</th>
-        <th width="20%">客戶姓名</th>
-        <th width="10%">合計</th>
-        <th width="10%">編輯</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="order in orderList">
-        <td>{{ order.id }}</td>
-        <td class="text-right">{{ order.create_at }}</td>
-        <td>
-          <span class="badge text-bg-success" v-if="order.is_paid">已付款</span>
-          <span class="badge text-bg-warning" v-else>未付款</span>
-        </td>
-        <td>{{ order.user.name }}</td>
-        <td>{{ order.total }}</td>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fs-3 fw-bold font-sans">訂單管理</h1>
+  </div>
 
-        <td>
-          <div>
-            <button class="btn btn-dark btn-sm me-1" @click="openModal(order)">
-              <font-awesome-icon :icon="['far', 'file-lines']" />
-            </button>
-            <button class="btn btn-danger btn-sm" @click.prevent="delOrder(order)">
-              <font-awesome-icon :icon="['fas', 'trash-can']" />
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
+  <div :class="{ isLoading: isLoading }" class="px-4 py-2 bg-white rounded-3">
+    <div class="table-overflow">
+      <table class="table table-hover mt-4 align-middle w-100">
+        <thead>
+          <tr>
+            <th width="30%">訂單編號</th>
+            <th width="20%">付款日期</th>
+            <th width="10%">付款狀態</th>
+            <th width="20%">客戶姓名</th>
+            <th width="10%">合計</th>
+            <th width="10%">編輯</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="order in orderList">
+            <td>{{ order.id }}</td>
+            <td class="text-right">{{ order.create_at }}</td>
+            <td>
+              <span class="badge text-white bg-success fs-7 fw-normal" v-if="order.is_paid"
+                >已付款</span
+              >
+              <span class="badge text-white bg-gray fs-7 fw-normal" v-else>未付款</span>
+            </td>
+            <td>{{ order.user.name }}</td>
+            <td>{{ order.total }}</td>
 
-    <OrderModal ref="orderModal" :inner-order="tempOrder"></OrderModal>
-  </table>
+            <td>
+              <div>
+                <button class="btn btn-dark btn-sm me-1" @click="openModal(order)">
+                  <font-awesome-icon :icon="['far', 'file-lines']" />
+                </button>
+                <button class="btn btn-danger btn-sm" @click.prevent="delOrder(order)">
+                  <font-awesome-icon :icon="['fas', 'trash-can']" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <OrderModal ref="orderModal" :inner-order="tempOrder"></OrderModal>
+      </table>
+    </div>
+    <Pagination
+      :inner-pagination="pagination"
+      @emit-page="getProducts"
+      v-if="pagination.total_pages !== 1"
+      class="py-5"
+    ></Pagination>
+    <ProductModal
+      ref="productModal"
+      :product="tempProduct"
+      @update-product="updateProduct"
+    ></ProductModal>
+  </div>
 </template>
 
 <script>
 import { adminGetOrder } from '@/utils/apis'
 import { deleteOrder } from '@/utils/apis'
 import OrderModal from '@/components/admin/OrderModal.vue'
+import Pagination from '@/components/Pagination.vue'
 
 import { timeFormat } from '@/utils/timeFormat'
 
@@ -50,18 +71,23 @@ export default {
   data() {
     return {
       orderList: [],
-      tempOrder: {}
+      pagination: {},
+      tempOrder: {},
+      isLoading: false
     }
   },
   components: {
-    OrderModal
+    OrderModal,
+    Pagination
   },
   methods: {
-    getOrderAll() {
-      adminGetOrder().then((res) => {
+    getOrder(page = 1) {
+      this.isLoading = true
+      adminGetOrder(page).then((res) => {
         this.orderList = res.data.orders
+        this.pagination = res.data.pagination
         timeFormat(this.orderList)
-
+        this.isLoading = false
         this.orderList.forEach((item) => {
           item.total = Math.round(item.total)
           timeFormat(item, 'create_at')
@@ -81,7 +107,7 @@ export default {
     }
   },
   created() {
-    this.getOrderAll()
+    this.getOrder()
   }
 }
 </script>

@@ -1,58 +1,53 @@
 <template>
-  <Loading :active="isLoading"></Loading>
-
-  <div class="d-flex justify-content-between align-items-center">
-    <h1 class="fs-3 fw-bold">優惠券管理</h1>
-    <button class="btn btn-primary" type="button" @click.prevent="openModal(true)">
-      新增優惠券
-    </button>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fs-3 fw-bold font-sans">優惠券管理</h1>
+    <button class="btn btn-dark" type="button" @click.prevent="openModal(true)">新增優惠券</button>
   </div>
-
-  <table class="table table-hover mt-4 align-middle">
-    <thead>
-      <tr>
-        <th>折扣碼</th>
-        <th>優惠券類型</th>
-        <th>優惠券折扣</th>
-        <th>到期日</th>
-        <th width="150">是否啟用</th>
-        <th width="200">編輯</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="coupon in coupons">
-        <td>{{ coupon.code }}</td>
-        <td>{{ coupon.title }}</td>
-        <td class="text-right">{{ coupon.percent }}</td>
-        <td class="text-right">{{ coupon.due_date }}</td>
-        <td>
-          <span class="text-success" v-if="coupon.is_enabled">啟用</span>
-          <span class="text-muted" v-else>未啟用</span>
-        </td>
-        <td>
-          <div>
-            <button class="btn btn-success btn-sm me-1" @click="openModal(false, coupon)">
-              <font-awesome-icon :icon="['fas', 'pen']" />
-            </button>
-            <button class="btn btn-danger btn-sm" @click.prevent="delCoupon(coupon)">
-              <font-awesome-icon :icon="['fas', 'trash-can']" />
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <Pagination
-    :inner-pagination="pagination"
-    @emit-page="getCoupons"
-    v-if="pagination.total_pages !== 1"
-  ></Pagination>
-  <CouponModal
-    ref="CouponModal"
-    :inner-coupon="tempCoupon"
-    :inner-new="isNew"
-    @update-product="updateCoupon"
-  ></CouponModal>
+  <div :class="{ isLoading: isLoading }" class="px-4 py-2 bg-white rounded-3">
+    <div class="table-overflow">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th width="15%">折扣碼</th>
+            <th width="10%">優惠券類型</th>
+            <th width="10%">優惠券折扣</th>
+            <th width="10%">到期日</th>
+            <th width="10%">是否啟用</th>
+            <th width="10%">編輯</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="coupon in coupons">
+            <td>{{ coupon.code }}</td>
+            <td>{{ coupon.title }}</td>
+            <td class="text-right">{{ coupon.percent }}</td>
+            <td class="text-right">{{ coupon.due_date }}</td>
+            <td>
+              <span class="text-success" v-if="coupon.is_enabled">啟用</span>
+              <span class="text-muted" v-else>未啟用</span>
+            </td>
+            <td>
+              <div>
+                <button class="btn btn-success btn-sm me-1" @click="openModal(false, coupon)">
+                  <font-awesome-icon :icon="['fas', 'pen']" />
+                </button>
+                <button class="btn btn-danger btn-sm" @click.prevent="delCoupon(coupon)">
+                  <font-awesome-icon :icon="['fas', 'trash-can']" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <Pagination :inner-pagination="pagination" @emit-page="getCoupons" class="py-5"></Pagination>
+    <CouponModal
+      ref="CouponModal"
+      :inner-coupon="tempCoupon"
+      :inner-new="isNew"
+      @update-product="updateCoupon"
+    ></CouponModal>
+  </div>
 </template>
 
 <script>
@@ -100,11 +95,17 @@ export default {
       })
     },
     delCoupon(coupon) {
-      adminDeleteCoupon(coupon.id).then((res) => {
-        console.log(res)
-        this.getCoupons()
-        this.showAlert({ icon: 'success', title: res.data.message })
-      })
+      this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true }).then(
+        (result) => {
+          if (result.isConfirmed) {
+            adminDeleteCoupon(coupon.id).then((res) => {
+              console.log(res)
+              this.getCoupons()
+              this.showAlert({ icon: 'success', title: res.data.message })
+            })
+          }
+        }
+      )
     },
     updateCoupon(coupon) {
       const couponComponent = this.$refs.CouponModal

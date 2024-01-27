@@ -1,6 +1,9 @@
 <template>
-  <nav class="bg-dark vh-100 d-flex flex-column position-fixed start-0">
-    <a class="navbar-brand fw-bold px-4 pt-4 text-white fs-4" href="#">RECA 書店後台管理</a>
+  <nav class="dashboard position-fixed start-0 top-0 vh-100 d-flex flex-column py-3 pt-4">
+    <a class="navbar-brand fs-4 text-white d-flex align-items-center gap-2" href="#">
+      <span class="fs-4 fw-bold border-secondary border-4 ps-4">RECA書店</span>
+    </a>
+
     <button
       class="navbar-toggler"
       type="button"
@@ -18,34 +21,18 @@
       id="navbarNav"
     >
       <ul class="navbar-nav flex-column w-100">
-        <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3 active" :to="{ name: 'admin-products' }"
-            >產品列表管理</RouterLink
-          >
-        </li>
-        <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3" :to="{ name: 'admin-orders' }"
-            >訂單管理</RouterLink
-          >
-        </li>
-        <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3" :to="{ name: 'admin-coupons' }"
-            >優惠券管理</RouterLink
-          >
-        </li>
-        <li class="nav-item">
-          <RouterLink class="nav-link text-white px-4 py-3" :to="{ name: 'admin-articles' }"
-            >文章管理</RouterLink
+        <li class="nav-item" v-for="item in childrenRoute">
+          <RouterLink
+            class="nav-link"
+            :to="{ name: item.name }"
+            :class="{ active: currentRoute === item.meta.title }"
+            @click.prevent="currentRoute = item.meta.title"
+            >{{ item.meta.title }}</RouterLink
           >
         </li>
       </ul>
 
-      <a
-        class="nav-link text-white px-4 py-3 text-start w-100 mt-5"
-        href="#"
-        @click.prevent="logout"
-        >登出</a
-      >
+      <a class="nav-link text-start w-100 mt-5" href="#" @click.prevent="logout">登出</a>
     </div>
   </nav>
 </template>
@@ -55,23 +42,61 @@ import { apiLogout } from '@/utils/apis.js'
 import toastMixin from '@/mixins/toastMixin.js'
 
 export default {
+  data() {
+    return {
+      childrenRoute: [],
+      currentRoute: '產品管理'
+    }
+  },
   mixins: [toastMixin],
   methods: {
     logout() {
-      apiLogout().then((res) => {
-        // const message = res.data.message
-        this.$router.push({ name: 'login' })
-        this.showToast({ title: '已登出', icon: 'success' })
-      })
-      console.log('logout')
+      apiLogout()
+        .then((res) => {
+          this.$router.push({ name: 'admin-login' })
+          this.showToast({ title: '已登出', icon: 'success' })
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
+  },
+  created() {
+    this.childrenRoute = this.$router.options.routes.find(
+      (route) => route.path === '/admin'
+    ).children
   }
 }
 </script>
 
-<style scoped>
-.nav-link:hover {
-  background: #434343;
+<style lang="scss" scoped>
+.dashboard {
+  background: #1a1a1a;
+}
+.nav-link {
+  color: rgb(163, 163, 163);
+  position: relative;
+  margin-bottom: 10px;
+  padding: 16px 140px 16px 20px;
+  border-radius: 4px;
+  &.active {
+    color: white;
+
+    background: #000;
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   width: 4px;
+    //   height: 100%;
+    //   background: #c9a65c;
+    //   left: 0;
+    //   top: 0;
+    // }
+  }
+}
+
+.nav-link .nav-link:hover {
+  background: #797979;
   color: #fff;
 }
 </style>

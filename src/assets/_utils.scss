@@ -26,6 +26,10 @@
   font-family: 'Noto Serif TC', 'Roboto', serif;
 }
 
+.min-height-100 {
+  min-height: 100vh;
+}
+
 .overflow-x-scroll {
   overflow-x: scroll !important;
   &::-webkit-scrollbar {
@@ -79,4 +83,42 @@
   width: 90%;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.isLoading {
+  position: relative;
+  &::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 1) 30%);
+    position: absolute;
+    opacity: 0.7;
+    top: 0;
+    animation: loading 1s infinite linear;
+  }
+  @keyframes loading {
+    50% {
+      opacity: 0.5;
+    }
+  }
+}
+
+.swal2-title {
+  font-family: 'Noto Sans TC', 'Roboto', sans-serif;
+}
+
+.table-overflow {
+  overflow: scroll;
+  @include min-lg {
+    overflow: initial;
+  }
+  .table {
+    height: 100vh;
+    width: 100vw;
+    @include min-lg {
+      height: auto;
+      width: auto;
+    }
+  }
 }

@@ -1,5 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
   <div class="container mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="fw-bold">購物車</h1>
@@ -142,8 +141,6 @@ import toastMixin from '@/mixins/toastMixin.js'
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
 
-import LoadingComponent from '@/components/Loading.vue'
-
 export default {
   data() {
     return {
@@ -151,7 +148,7 @@ export default {
       hasCoupon: false
     }
   },
-  components: { LoadingComponent },
+
   mixins: [toastMixin],
   computed: {
     ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength'])

@@ -1,6 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
-
   <div class="container py-5">
     <Breadcrumb
       :breadConfig="{ path: 'products', subNav: '書籍類別', title: '書籍介紹' }"
@@ -125,7 +123,6 @@ import ProductCard from '@/components/user/ProductCard.vue'
 
 import ProductCategory from '@/components/user/ProductCategory.vue'
 import Breadcrumb from '@/components/user/Breadcrumb.vue'
-import LoadingComponent from '@/components/Loading.vue'
 
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
@@ -138,7 +135,7 @@ export default {
     }
   },
   props: ['id'],
-  components: { ProductCard, ProductCategory, Breadcrumb, LoadingComponent },
+  components: { ProductCard, ProductCategory, Breadcrumb },
   computed: {
     ...mapState(productStore, [
       'singleProduct',

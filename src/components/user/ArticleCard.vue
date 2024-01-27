@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="col-12 card-content-wrapper">
-        <h2 class="fw-bold text-overflow-title fs-3">
+        <h2 class="fw-bold text-overflow-title fs-lg-3 fs-4">
           <RouterLink
             :to="`/articles/${article.id}`"
             class="stretched-link"

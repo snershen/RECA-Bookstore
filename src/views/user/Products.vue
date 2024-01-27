@@ -1,5 +1,4 @@
 <template>
-  <LoadingComponent></LoadingComponent>
   <div class="container py-5">
     <div class="mb-lg-5 mb-3 ps-2">
       <h1
@@ -81,8 +80,6 @@ import BtnMore from '@/components/user/BtnMore.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 import Pagination from '@/components/Pagination.vue'
 
-import LoadingComponent from '@/components/Loading.vue'
-
 import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/product.js'
 
@@ -90,7 +87,6 @@ export default {
   components: {
     ProductCategory,
     ProductCard,
-    LoadingComponent,
     Pagination,
     BtnMore
   },

@@ -29,7 +29,8 @@ import {
   faTrashCan,
   faBars,
   faArrowLeft,
-  faArrowRight
+  faArrowRight,
+  faUser
 } from '@fortawesome/free-solid-svg-icons'
 
 import { faClipboard, faFileLines, faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
@@ -37,7 +38,7 @@ import { faClipboard, faFileLines, faHeart as farHeart } from '@fortawesome/free
 import { faInstagram, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
+import CKEditor from '@ckeditor/ckeditor5-vue'
 // Init plugin
 import App from './App.vue'
 import router from './router'
@@ -47,6 +48,7 @@ library.add(farHeart)
 library.add(faChevronLeft)
 library.add(faChevronRight)
 library.add(faXmark)
+library.add(faUser)
 library.add(faInstagram)
 library.add(faFacebookF)
 library.add(faXTwitter)
@@ -95,6 +97,7 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(router)
 app.use(VueAxios, axios)
 app.use(pinia)
+app.use(CKEditor)
 
 app.component('Loading', Loading)
 
