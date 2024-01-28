@@ -179,19 +179,20 @@ export default {
     }
   },
 
-  created() {
-    const path = this.$route.path
-    const pathArr = path.split('/')
-    const id = pathArr[pathArr.length - 1]
-    this.getSingleProduct(this.id)
-    this.getProducts()
-    this.getProductAll()
+  async created() {
+    await this.getSingleProduct(this.id)
+    await this.getProducts()
+    await this.getProductAll()
+    document.title = `${this.singleProduct.title}｜RECA BOOKSTORE`
   },
   mounted() {
     this.getStorage()
     setTimeout(() => {
       this.initializeIsSolid()
     }, 500)
+  },
+  watch: {
+    'singleProduct.title': 'updateDocumentTitle'
   }
 }
 </script>

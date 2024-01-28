@@ -4,7 +4,7 @@
       <div class="article-banner" :style="{ backgroundImage: `url(${article.image})` }">
         <div class="container py-lg-5 pb-5 pt-4 article-content">
           <Breadcrumb
-            :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: article.title }"
+            :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: '文章' }"
           ></Breadcrumb>
           <div class="row justify-content-center">
             <div class="col-lg-10">
@@ -69,12 +69,21 @@ export default {
     isValidURL(str) {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
       return urlPattern.test(str) ? true : false
+    },
+
+    updateDocumentTitle() {
+      document.title = `${this.article.title}｜RECA BOOKSTORE`
     }
   },
   props: ['id'],
-  created() {
-    this.getSingleArticle(this.id)
-    this.getArticles()
+  async created() {
+    await this.getSingleArticle(this.id)
+    await this.getArticles()
+    this.updateDocumentTitle()
+  },
+
+  watch: {
+    'article.title': 'updateDocumentTitle'
   }
 }
 </script>

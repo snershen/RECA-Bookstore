@@ -12,7 +12,9 @@
       >
     </li>
     <li class="breadcrumb-item">
-      <span class="px-3"> 文章 </span>
+      <span class="px-3">
+        {{ breadConfig.title }}
+      </span>
     </li>
   </ol>
 </template>

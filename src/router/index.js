@@ -2,14 +2,17 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
-  scrollBehavior(to, from, savedPosition) {
-    return { top: 0 }
+  scrollBehavior() {
+    return { top: 0, behavior: 'smooth' }
   },
   routes: [
     {
       path: '/login',
       name: 'admin-login',
-      component: () => import('../views/admin/Login.vue')
+      component: () => import('../views/admin/Login.vue'),
+      meta: {
+        title: 'RECA | 登入'
+      }
     },
     {
       path: '/admin',
@@ -61,12 +64,18 @@ const router = createRouter({
         {
           path: '',
           name: 'index',
-          component: () => import('../views/user/Index.vue')
+          component: () => import('../views/user/Index.vue'),
+          meta: {
+            title: '首頁｜RECA BOOKSTORE'
+          }
         },
         {
           path: 'products',
           name: 'products',
-          component: () => import('../views/user/Products.vue')
+          component: () => import('../views/user/Products.vue'),
+          meta: {
+            title: '產品類別｜RECA BOOKSTORE'
+          }
         },
         {
           path: 'products/:id',
@@ -81,17 +90,26 @@ const router = createRouter({
         {
           path: 'cart',
           name: 'cart',
-          component: () => import('../views/user/Cart.vue')
+          component: () => import('../views/user/Cart.vue'),
+          meta: {
+            title: '購物車｜RECA BOOKSTORE'
+          }
         },
         {
           path: 'pay',
           name: 'pay',
-          component: () => import('../views/user/CartPay.vue')
+          component: () => import('../views/user/CartPay.vue'),
+          meta: {
+            title: '付款頁面｜RECA BOOKSTORE'
+          }
         },
         {
           path: 'orders',
           name: 'orders',
-          component: () => import('../views/user/Orders.vue')
+          component: () => import('../views/user/Orders.vue'),
+          meta: {
+            title: '訂單總覽｜RECA BOOKSTORE'
+          }
         },
         {
           path: 'orders/:id',
@@ -99,17 +117,26 @@ const router = createRouter({
           component: () => import('../views/user/Order.vue'),
           props: (route) => {
             return { id: route.params.id }
+          },
+          meta: {
+            title: '訂單詳細｜RECA BOOKSTORE'
           }
         },
         {
           path: 'collect',
           name: 'collect',
-          component: () => import('../views/user/Collect.vue')
+          component: () => import('../views/user/Collect.vue'),
+          meta: {
+            title: '收藏清單｜RECA BOOKSTORE'
+          }
         },
         {
           path: 'articles',
           name: 'articles',
-          component: () => import('../views/user/articles.vue')
+          component: () => import('../views/user/articles.vue'),
+          meta: {
+            title: '精選書｜RECA BOOKSTORE'
+          }
         },
         {
           path: 'articles/:id',
@@ -124,6 +151,13 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
 })
 
 export default router
