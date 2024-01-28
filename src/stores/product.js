@@ -54,9 +54,11 @@ export default defineStore('productStore', {
         this.isLoading = true
         const res = await userGetProduct(page)
         const { products, pagination } = res.data
+        if (this.selectedCategory === '全部') {
+          this.filterResult = products
+          this.pagination = pagination
+        }
         this.productList = products
-        this.filterResult = products
-        this.pagination = pagination
       } catch (error) {
         console.error('Error fetching data:', error)
         throw error
@@ -86,8 +88,10 @@ export default defineStore('productStore', {
         this.searchResult = []
         this.selectedCategory = target === '全部' ? '全部' : target
         const res = await userGetProduct(1, target === '全部' ? '' : target)
-        this.filterResult = res.data.products
-        this.pagination = res.data.pagination
+        const { products, pagination } = res.data
+        this.filterResult = products
+        this.pagination = pagination
+        this.singleProduct = ''
       } catch (error) {
         console.error('Error fetching data:', error)
         throw error
@@ -104,7 +108,6 @@ export default defineStore('productStore', {
         }
       })
       this.categoryList = Object.keys(categoryObj)
-      this.selectedCategory = '全部'
     },
     async searchProduct(searchStr) {
       try {

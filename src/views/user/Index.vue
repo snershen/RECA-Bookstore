@@ -28,6 +28,7 @@
         </swiper>
       </div>
     </section>
+
     <section class="container py-5 my-5">
       <div class="d-flex justify-content-between align-items-center">
         <h2 class="fw-bold fs-2">今日熱門</h2>
@@ -246,6 +247,9 @@ import {
   Thumbs
 } from 'swiper/modules'
 
+import BarLoaderJSON from '@/assets/js/BarLoading.js'
+import { Vue3Lottie } from 'vue3-lottie'
+
 export default {
   data() {
     return {
@@ -266,7 +270,8 @@ export default {
       ],
       literalResult: [],
       commercialResult: [],
-      thumbsSwiper: null
+      thumbsSwiper: null,
+      BarLoaderJSON
     }
   },
   components: {
@@ -275,7 +280,9 @@ export default {
     Tabs,
     BtnMore,
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+
+    Vue3Lottie
   },
 
   computed: {

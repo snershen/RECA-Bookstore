@@ -16,18 +16,29 @@
           </div>
           <div class="col-lg-8 d-flex flex-column justify-content-between">
             <div class="mb-3 mb-lg-0">
-              <h3 class="font-sans fw-bold mb-3 mb-lg-0 fs-lg-2 fs-4">{{ singleProduct.title }}</h3>
+              <h3 class="font-sans fw-bold mb-3 mb-lg-5 fs-lg-2 fs-4">{{ singleProduct.title }}</h3>
+              <ul>
+                <li class="mb-3 row">
+                  <div class="col-1 text-nowrap">作者：</div>
+                  <div class="col-6 ms-3">{{ singleProduct.author }}</div>
+                </li>
+                <li class="mb-3 row">
+                  <div class="col-1 text-nowrap">出版社：</div>
+                  <div class="col-6 ms-3">{{ singleProduct.publish }}</div>
+                </li>
+                <li class="mb-2 align-items-center row">
+                  <div class="col-1 text-nowrap">價格：</div>
+                  <div class="col-6 ms-3 d-flex align-items-center">
+                    <p class="fs-3 fw-bold me-2">${{ singleProduct.price }}</p>
+                    <p class="fs-7 text-gray text-decoration-line-through">
+                      ${{ singleProduct.origin_price }}
+                    </p>
+                  </div>
+                </li>
+              </ul>
               <!-- <p v-html="singleProduct.description"></p> -->
             </div>
             <div class="row">
-              <div class="col-12">
-                <div class="mb-4 d-flex align-items-center">
-                  <span class="fs-3 me-2 text-secondary fw-bold">${{ singleProduct.price }}</span>
-                  <del class="opacity-50 fs-6 text-decoration-line-through"
-                    >${{ singleProduct.origin_price }}</del
-                  >
-                </div>
-              </div>
               <div class="col-2 order-1 order-lg-0">
                 <a
                   href="#"
@@ -61,8 +72,7 @@
             </div>
           </div>
           <div class="col-12 py-5">
-            <h2 class="fs-4 fw-bold mb-3">本書介紹</h2>
-            <p v-html="singleProduct.content" class="fs-6"></p>
+            <ProductTab />
           </div>
         </div>
       </div>
@@ -122,6 +132,7 @@
 import ProductCard from '@/components/user/ProductCard.vue'
 
 import ProductCategory from '@/components/user/ProductCategory.vue'
+import ProductTab from '@/components/user/ProductTab.vue'
 import Breadcrumb from '@/components/user/Breadcrumb.vue'
 
 import { mapState, mapActions } from 'pinia'
@@ -135,7 +146,7 @@ export default {
     }
   },
   props: ['id'],
-  components: { ProductCard, ProductCategory, Breadcrumb },
+  components: { ProductCard, ProductTab, ProductCategory, Breadcrumb },
   computed: {
     ...mapState(productStore, [
       'singleProduct',
@@ -157,7 +168,6 @@ export default {
       'getSingleProduct',
       'getProducts',
       'showAlikeProduct',
-      'getProductAll',
       'getStorage',
       'addOrRemoveCollect'
     ]),
@@ -182,7 +192,6 @@ export default {
   async created() {
     await this.getSingleProduct(this.id)
     await this.getProducts()
-    await this.getProductAll()
     document.title = `${this.singleProduct.title}｜RECA BOOKSTORE`
   },
   mounted() {

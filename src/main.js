@@ -8,8 +8,11 @@ import VueAxios from 'vue-axios'
 import Loading from 'vue3-loading-overlay'
 import { createPinia } from 'pinia'
 
+import { Vue3Lottie } from 'vue3-lottie'
+
 // Import stylesheet
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
+// import 'vue3-lottie/dist/style.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -98,6 +101,7 @@ app.use(router)
 app.use(VueAxios, axios)
 app.use(pinia)
 app.use(CKEditor)
+app.use(Vue3Lottie)
 
 app.component('Loading', Loading)
 

@@ -93,14 +93,12 @@ export default {
 
   computed: {
     ...mapState(productStore, [
-      'productAll',
+      'pagination',
       'filterResult',
       'searchResult',
       'searchString',
       'selectedCategory',
-      'isEmptyResult',
-      'productList',
-      'pagination'
+      'isEmptyResult'
     ])
   },
 
@@ -110,7 +108,6 @@ export default {
 
   created() {
     this.getProducts()
-    this.getProductAll()
   }
 }
 </script>

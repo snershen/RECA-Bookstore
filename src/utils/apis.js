@@ -9,8 +9,6 @@ const loginRequest = axios.create({
 
 const adminRequest = axios.create({
   baseURL: `${domain}/api/${apiPath}/admin/`
-  // timeout: 1000
-  //   headers: { 'X-Custom-Header': 'foobar' }
 })
 
 export const apiSignIn = (data) => {
@@ -32,26 +30,7 @@ export const apiCheck = () => {
 
 const userRequest = axios.create({
   baseURL: `${domain}/api/${apiPath}/`
-  // timeout: 1000
 })
-
-userRequest.interceptors.response.use(
-  function (res) {
-    return res
-  },
-  function (err) {
-    return err
-  }
-)
-
-adminRequest.interceptors.response.use(
-  function (res) {
-    return res
-  },
-  function (err) {
-    return err
-  }
-)
 
 //產品列表
 export const admin_getProductAll = () => {

@@ -55,8 +55,12 @@ export default {
     }
   },
   watch: {
-    innerPagination() {
-      this.pagination = this.innerPagination
+    innerPagination: {
+      // deep: true,
+      handler(newPagination) {
+        this.pagination = newPagination
+        this.$forceUpdate()
+      }
     }
   }
 }

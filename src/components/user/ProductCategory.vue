@@ -12,14 +12,26 @@
         >
       </li>
       <li v-for="item in categoryList">
-        <a
-          href="#"
-          class="px-4 py-lg-3 py-2 w-100 fs-6"
-          :class="{ 'bg-selected': selectedCategory === item }"
-          @click.prevent="filterProduct(item), directProductPage()"
-        >
-          {{ item }}
-        </a>
+        <template v-if="singleProduct.title">
+          <a
+            href="#"
+            class="px-4 py-lg-3 py-2 w-100 fs-6"
+            :class="{ 'bg-selected': singleProduct.category === item }"
+            @click.prevent="filterProduct(item), directProductPage()"
+          >
+            {{ item }}
+          </a>
+        </template>
+        <template v-else>
+          <a
+            href="#"
+            class="px-4 py-lg-3 py-2 w-100 fs-6"
+            :class="{ 'bg-selected': selectedCategory === item }"
+            @click.prevent="filterProduct(item), directProductPage()"
+          >
+            {{ item }}
+          </a>
+        </template>
       </li>
     </ul>
   </div>
@@ -67,7 +79,7 @@ import productStore from '@/stores/product.js'
 
 export default {
   computed: {
-    ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
+    ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory', 'singleProduct'])
   },
   methods: {
     ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll']),
