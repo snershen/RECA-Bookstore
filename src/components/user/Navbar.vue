@@ -7,10 +7,11 @@
             <img src="@/assets/img/logo.svg" alt="" class="px-2 img-fluid"
           /></RouterLink>
 
-          <div ref="headerCollapse" class="position-absolute top-100 start-0 d-lg-none w-100 px-0">
+          <div class="position-absolute top-100 start-0 d-lg-none w-100 px-0">
             <div
               class="collapse navbar-collapse bg-white py-3 shadow-sm"
               id="navbarSupportedContent"
+              ref="headerCollapse"
             >
               <div class="container">
                 <ul class="navbar-nav me-auto mb-3 mb-lg-0">
@@ -18,13 +19,13 @@
                     <RouterLink :to="{ name: 'products' }" class="nav-link">書籍類別</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <RouterLink :to="{ name: 'articles' }" class="nav-link">編輯推薦</RouterLink>
+                    <RouterLink :to="{ name: 'articles' }" class="nav-link">精選書評</RouterLink>
                   </li>
                   <li class="nav-item">
                     <RouterLink :to="{ name: 'orders' }" class="nav-link">查看訂單</RouterLink>
                   </li>
                 </ul>
-                <SearchModal></SearchModal>
+                <SearchModal ref="SearchModal"></SearchModal>
               </div>
             </div>
           </div>
@@ -35,7 +36,7 @@
             <li>
               <RouterLink :to="{ name: 'products' }" class="pe-2">書籍類別</RouterLink>
             </li>
-            <li><RouterLink :to="{ name: 'articles' }" class="px-2">編輯推薦</RouterLink></li>
+            <li><RouterLink :to="{ name: 'articles' }" class="px-2">精選書評</RouterLink></li>
           </ul>
 
           <div class="col-lg-4 col-7">
@@ -90,7 +91,7 @@
       <div class="position-absolute w-100 d-none d-lg-block">
         <div class="bg-light border-bottom">
           <div class="container">
-            <SearchModal v-if="isShowCollapse" class="bg-light"></SearchModal>
+            <SearchModal ref="SearchModal" class="bg-light"></SearchModal>
           </div>
         </div>
       </div>
@@ -122,22 +123,28 @@ export default {
     ...mapState(productStore, ['collectList', 'collectStorage', 'isShowCollapse'])
   },
   methods: {
-    ...mapActions(productStore, ['toggleCollapse', 'getStorage'])
-    // toggleCollapse() {
-    //   // const searchComponent = this.$refs.SearchModal
-    //   this.isShow = !this.isShow
-    // }
-    // showCollapse() {
-    //   const searchComponent = this.$refs.SearchModal
-    //   searchComponent.showCollapse()
-    // }
+    ...mapActions(productStore, ['toggleCollapse', 'getStorage']),
+    toggleCollapse() {
+      const searchComponent = this.$refs.SearchModal
+      searchComponent.toggleCollapse()
+    }
+
     // getCollectListLength() {
     //   // this.collectListStorage = JSON.parse(localStorage.getItem('collectList'))
     // }
   },
+
   created() {
     this.getStorage()
   },
+
+  watch: {
+    $route(to, from) {
+      this.collapse = new Collapse(this.$refs.headerCollapse)
+      this.collapse.hide()
+    }
+  },
+
   mounted() {
     this.collapse = new Collapse(this.$refs.headerCollapse)
     this.collapse.hide()
@@ -147,7 +154,7 @@ export default {
 
 <style scoped>
 header {
-  z-index: 1000;
+  z-index: 10;
 }
 
 .button-count {

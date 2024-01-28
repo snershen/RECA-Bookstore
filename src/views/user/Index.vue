@@ -247,9 +247,6 @@ import {
   Thumbs
 } from 'swiper/modules'
 
-import BarLoaderJSON from '@/assets/js/BarLoading.js'
-import { Vue3Lottie } from 'vue3-lottie'
-
 export default {
   data() {
     return {
@@ -270,8 +267,7 @@ export default {
       ],
       literalResult: [],
       commercialResult: [],
-      thumbsSwiper: null,
-      BarLoaderJSON
+      thumbsSwiper: null
     }
   },
   components: {
@@ -280,9 +276,7 @@ export default {
     Tabs,
     BtnMore,
     Swiper,
-    SwiperSlide,
-
-    Vue3Lottie
+    SwiperSlide
   },
 
   computed: {

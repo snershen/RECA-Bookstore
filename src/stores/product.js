@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
-import { textBreak } from '@/utils/textBreak'
 
 import { userGetProduct } from '@/utils/apis'
-
-import { userGetProductAll } from '@/utils/apis'
 import { userGetSingleProduct } from '@/utils/apis'
+import { userGetProductAll } from '@/utils/apis'
 
 export default defineStore('productStore', {
   state: () => {
@@ -13,7 +11,6 @@ export default defineStore('productStore', {
       productAll: [],
       pagination: {},
       singleProduct: {},
-      singleProductId: '',
       //篩選：分類
       categoryList: [],
       filterResult: [],
@@ -35,12 +32,9 @@ export default defineStore('productStore', {
   actions: {
     async getProductAll() {
       try {
-        this.isLoading = true
         const res = await userGetProductAll()
         this.productAll = res.data.products
         this.renderCategory()
-        this.isLoading = false
-        console.log(res)
         return res.data.products
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -69,11 +63,8 @@ export default defineStore('productStore', {
     async getSingleProduct(id) {
       try {
         this.isLoading = true
-        this.singleProductId = id
         const res = await userGetSingleProduct(id)
         this.singleProduct = res.data.product
-        this.singleProduct.description = textBreak(this.singleProduct.description)
-        this.singleProduct.content = textBreak(this.singleProduct.content)
         this.showAlikeProduct(this.singleProduct)
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -81,6 +72,20 @@ export default defineStore('productStore', {
       } finally {
         this.isLoading = false
       }
+    },
+
+    // 篩選
+    async renderCategory() {
+      const categoryObj = {}
+      const newProductList = [...this.productAll]
+      newProductList.forEach((item) => {
+        if (!categoryObj[item.category]) {
+          categoryObj[item.category] = 1
+        } else {
+          categoryObj[item.category]++
+        }
+      })
+      this.categoryList = Object.keys(categoryObj)
     },
     async filterProduct(target) {
       try {
@@ -97,20 +102,10 @@ export default defineStore('productStore', {
         throw error
       }
     },
-    async renderCategory() {
-      const categoryObj = {}
-      const newProductList = [...this.productAll]
-      newProductList.forEach((item) => {
-        if (!categoryObj[item.category]) {
-          categoryObj[item.category] = 1
-        } else {
-          categoryObj[item.category]++
-        }
-      })
-      this.categoryList = Object.keys(categoryObj)
-    },
+    //搜尋
     async searchProduct(searchStr) {
       try {
+        this.isEmptyResult = false
         this.searchResult = []
         this.searchString = searchStr
         const result = await this.productAll.filter((item) => {
@@ -126,22 +121,22 @@ export default defineStore('productStore', {
         throw error
       }
     },
+
+    //相關產品
     showAlikeProduct(target) {
-      const result = this.productList.filter((item) => {
+      const result = this.productAll.filter((item) => {
         if (item.id !== target.id) return item.category === target.category
       })
       this.alikeProduct = result
     },
-    toggleCollapse() {
-      this.isShowCollapse = !this.isShowCollapse
-    },
+
+    //收藏
     getStorage() {
       if (localStorage.getItem('collectList')) {
         this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
       }
       return
     },
-
     addOrRemoveCollect(item, isSolid) {
       if (!localStorage.getItem('collectList')) {
         if (isSolid) {

@@ -55,35 +55,39 @@ export default {
       'getProductAll',
       'searchProduct'
     ]),
-
-    directProductPage() {
-      this.$router.push('/products')
+    toggleCollapse() {
+      this.collapse.toggle()
     },
-
-    handleSearch() {
-      this.searchProduct(this.searchString), this.directProductPage(), this.toggleCollapse()
+    hideCollapse() {
+      this.collapse.hide()
     },
-
+    showCollapse() {
+      this.collapse.show()
+    },
     handleHotSearch(item) {
       // this.updateSearchStr(item)
+      this.$router.push('/products')
       this.searchProduct(item)
-      this.directProductPage(), this.toggleCollapse()
+      this.toggleCollapse()
+    },
+    handleSearch() {
+      this.searchProduct(this.searchString)
+      this.$router.push('/products')
+      this.hideCollapse()
     }
-    // toggleCollapse() {
-    //   this.collapse.toggle()
-    // },
-    // showCollapse() {
-    //   this.collapse.show()
-    // },
-    // hideCollapse() {
-    //   this.collapse.hide()
-    // }
   },
-
+  watch: {
+    $route(to, from) {
+      this.hideCollapse()
+    }
+  },
   mounted() {
     // this.getProducts()
     this.getProductAll()
     this.collapse = new Collapse(this.$refs.collapse)
+    setTimeout(() => {
+      this.$refs.collapse.classList.remove('show')
+    }, 500)
   }
 }
 </script>

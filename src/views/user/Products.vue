@@ -13,6 +13,7 @@
       >
         分類：{{ selectedCategory }}
       </h1>
+
       <h1 class="fw-bold" v-else-if="searchResult.length !== 0 && !isEmptyResult">
         "{{ searchString }}"搜尋結果
         <span class="fs-4 ms-4">共有 {{ searchResult.length }} 筆商品符合</span>
@@ -22,6 +23,7 @@
         <span class="fs-4 ms-4">查無商品符合</span>
       </h1>
     </div>
+
     <div class="row">
       <div class="col-lg-3 mb-5 mb-lg-0">
         <product-category></product-category>

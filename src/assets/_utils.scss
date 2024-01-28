@@ -41,6 +41,7 @@
 .swiper-button-next {
   width: 44px;
   height: 44px;
+  z-index: 5;
 }
 
 .swiper-button-prev::after,
@@ -48,6 +49,7 @@
   width: 36px !important;
   height: 36px !important;
   font-size: 1rem !important;
+
   @include min-lg {
     width: 44px !important;
     height: 44px !important;
