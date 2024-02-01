@@ -120,7 +120,9 @@
             id="rank-thumbs"
           >
             <swiper-slide v-for="(item, index) in productList">
-              <div class="rank-card d-flex flex-column flex-md-row position-relative">
+              <div
+                class="rank-card d-flex flex-column flex-md-row position-relative text-center text-lg-start"
+              >
                 <div class="rank-card-img mb-3 mb-lg-0">
                   <img :src="item.imageUrl" :alt="item.title" class="w-100 object-fit-contain" />
                 </div>
@@ -216,6 +218,7 @@ export default {
         slidesPerView: 1,
         spaceBetween: 20,
         navigation: true,
+        loop: false,
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -304,29 +307,29 @@ export default {
       swiperEl.initialize()
     }
   },
-  // watch: {
-  //   filterResult() {
-  //     console.log('initial')
-  //     this.$nextTick(() => {
-  //       this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
-  //     })
-  //   }
-  // },
+  watch: {
+    filterResult() {
+      console.log('initial')
+      this.$nextTick(() => {
+        this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
+      })
+    }
+  },
   created() {
     this.getProducts()
     this.getArticles()
     this.getProductAll()
   },
   mounted() {
-    setTimeout(() => {
-      this.initializeSwiper(this.$refs.bannerSwiper, this.bannerSwiper)
-      this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)
-      this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
-    }, 500)
-    setTimeout(() => {
-      this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
-      this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
-    }, 1500)
+    // setTimeout(() => {
+    this.initializeSwiper(this.$refs.bannerSwiper, this.bannerSwiper)
+    this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)
+    this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
+    // }, 500)
+    // setTimeout(() => {
+    this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
+    this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
+    // }, 1500)
   }
 }
 </script>
@@ -375,6 +378,9 @@ export default {
   }
   .today-card {
     height: 500px;
+    @include min-lg {
+      height: 400px;
+    }
     &-title {
       font-size: 1.1rem;
     }
@@ -494,15 +500,15 @@ export default {
   }
   &::before {
     top: 0px;
-    left: 10%;
+    left: 0px;
     @include min-lg {
       top: -40px;
       left: -20px;
     }
   }
   &::after {
-    bottom: 50%;
-    right: 10%;
+    bottom: 30%;
+    right: 0;
     animation-delay: 1s;
 
     @include min-lg {
@@ -524,6 +530,8 @@ export default {
   }
   .rank-card {
     // padding: 60px 0;
+    height: 500px;
+
     @include min-lg {
       padding: 0;
     }
