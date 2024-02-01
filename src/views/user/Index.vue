@@ -218,7 +218,7 @@ export default {
         slidesPerView: 1,
         spaceBetween: 20,
         navigation: true,
-        loop: false,
+        loop: true,
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -236,6 +236,7 @@ export default {
         spaceBetween: 18,
         scrollbar: true,
         navigation: true,
+        loop: false,
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -298,8 +299,8 @@ export default {
     initializeSwiper(el, config) {
       const swiperEl = el
       const params = {
-        autoplay: true,
         loop: true,
+        autoplay: true,
         injectStylesUrls: ['./custom_swiper.css'],
         ...config
       }
@@ -326,10 +327,10 @@ export default {
     this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)
     this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
     // }, 500)
-    // setTimeout(() => {
-    this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
-    this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
-    // }, 1500)
+    setTimeout(() => {
+      this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
+      this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
+    }, 1500)
   }
 }
 </script>
