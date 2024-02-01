@@ -44,10 +44,9 @@
               </div>
               <div class="flex-grow-1 w-100">
                 <h4
-                  class="today-card-title fw-bold text-overflow-1 flex-grow-1 mb-1 text-center text-lg-start"
-                >
-                  {{ item.title }}
-                </h4>
+                  class="today-card-title fw-bold text-overflow-2 flex-grow-1 mb-1 text-center text-lg-start"
+                  v-html="item.title"
+                ></h4>
                 <p class="text-gray text-overflow-1 text-center text-lg-start">{{ item.author }}</p>
                 <div
                   class="today-card-price align-items-center align-items-lg-start justify-content-center justify-content-lg-start flex-lg-column"
@@ -305,14 +304,14 @@ export default {
       swiperEl.initialize()
     }
   },
-  watch: {
-    filterResult() {
-      console.log('initial')
-      this.$nextTick(() => {
-        this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
-      })
-    }
-  },
+  // watch: {
+  //   filterResult() {
+  //     console.log('initial')
+  //     this.$nextTick(() => {
+  //       this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
+  //     })
+  //   }
+  // },
   created() {
     this.getProducts()
     this.getArticles()
@@ -323,9 +322,11 @@ export default {
       this.initializeSwiper(this.$refs.bannerSwiper, this.bannerSwiper)
       this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)
       this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
+    }, 500)
+    setTimeout(() => {
       this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
       this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
-    }, 500)
+    }, 1500)
   }
 }
 </script>
@@ -373,6 +374,7 @@ export default {
     // padding-left: 30px;
   }
   .today-card {
+    height: 500px;
     &-title {
       font-size: 1.1rem;
     }
