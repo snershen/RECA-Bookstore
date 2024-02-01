@@ -3,15 +3,21 @@
     <section class="banner py-6">
       <h1 class="banner-title text-center fw-bold">踏上探索之旅<br />尋找屬於自己的命定之書</h1>
       <p class="banner-subtitle text-center mt-2 fs-4 text-white">上萬本書籍等待你的閱讀</p>
-      <div class="container banner-swiper">
-        <swiper-container init="false" ref="bannerSwiper" class="container">
+      <div class="container">
+        <swiper-container init="false" ref="bannerSwiper" class="container banner-swiper pt-5">
           <swiper-slide
             v-for="item in productList"
             :key="`banner${item.id}`"
-            class="h-auto d-flex justify-content-center py-5"
+            class="h-auto d-flex justify-content-center"
+            lazy="true"
           >
             <RouterLink :to="`/products/${item.id}`">
-              <img :src="item.imageUrl" :alt="item.title" class="w-100 h-100 object-fit-contain" />
+              <img
+                :src="item.imageUrl"
+                :alt="item.title"
+                class="w-100 h-100 object-fit-contain"
+                loading="lazy"
+              />
             </RouterLink>
           </swiper-slide>
         </swiper-container>
@@ -25,9 +31,9 @@
           <BtnMore />
         </RouterLink>
       </div>
-      <div class="position-relative my-5 swiper-today">
-        <swiper-container init="false" ref="todaySwiper" class="container">
-          <swiper-slide v-for="item in productList" :key="`today${item.id}`" class="h-auto px-3">
+      <div class="position-relative">
+        <swiper-container init="false" ref="todaySwiper" class="container swiper-today my-5">
+          <swiper-slide v-for="item in productList" :key="`today${item.id}`" class="h-auto">
             <div class="today-card">
               <div class="today-card-img mb-3">
                 <img
@@ -107,8 +113,13 @@
             </swiper-slide>
           </swiper-container>
         </div>
-        <div class="col-lg-9 rank-content-swiper">
-          <swiper-container init="false" ref="rankContentSwiper" class="container" id="rank-thumbs">
+        <div class="col-lg-9">
+          <swiper-container
+            init="false"
+            ref="rankContentSwiper"
+            class="container rank-content-swiper"
+            id="rank-thumbs"
+          >
             <swiper-slide v-for="(item, index) in productList">
               <div class="rank-card d-flex flex-column flex-md-row position-relative">
                 <div class="rank-card-img mb-3 mb-lg-0">
@@ -178,18 +189,18 @@ import ArticleCard from '@/components/user/ArticleCard.vue'
 import Tabs from '@/components/user/Tabs.vue'
 import BtnMore from '@/components/user/BtnMore.vue'
 
-// import SwiperCore from 'swiper'
+import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+// import { Thumbs } from 'swiper/modules'
 import { Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Thumbs } from 'swiper/modules'
 
 export default {
   data() {
     return {
-      modules: [Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Thumbs],
+      // modules: [Navigation, Pagination, Scrollbar, Autoplay, FreeMode],
       bannerSwiper: {
-        spaceBetween: 80,
+        spaceBetween: 60,
         centeredSlides: true,
-        centeredSlidesBounds: true,
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -239,7 +250,6 @@ export default {
         }
       },
       rankSwiper: {
-        // modules: [Thumbs],
         slidesPerView: 5,
         direction: 'vertical',
         watchSlidesProgress: true,
@@ -286,9 +296,9 @@ export default {
     initializeSwiper(el, config) {
       const swiperEl = el
       const params = {
-        // autoplay: true,
+        autoplay: true,
         loop: true,
-        injectStylesUrls: ['./custom_swiper.scss'],
+        injectStylesUrls: ['./custom_swiper.css'],
         ...config
       }
       Object.assign(swiperEl, params)
@@ -301,15 +311,13 @@ export default {
     this.getProductAll()
   },
   mounted() {
-    // this.$nextTick(() => {
-    this.initializeSwiper(this.$refs.bannerSwiper, this.bannerSwiper)
-    this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)
-    this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
-    this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
-    this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
-    // 在 Web Component 渲染后手动触发 Vue 更新
-    this.$forceUpdate()
-    // })
+    setTimeout(() => {
+      this.initializeSwiper(this.$refs.bannerSwiper, this.bannerSwiper)
+      this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)
+      this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
+      this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
+      this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
+    }, 500)
   }
 }
 </script>
@@ -335,28 +343,26 @@ export default {
     max-height: 300px;
   }
   .swiper-slide {
-    opacity: 0.8;
     padding: 30px 0;
-    // transition: transform 0.5s;
+    transition: transform 0.5s;
+    opacity: 0.8;
   }
   .swiper-slide-active {
-    transition: transform 0.5s;
     transform: scale(1.2);
     opacity: 1;
   }
 }
 
 .swiper-today {
+  padding-left: 60px;
+  padding-right: 60px;
   .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
     transform-origin: bottom center;
     transition: 0.3s;
-    padding-left: 0;
-    @include min-lg {
-      padding-left: 40px;
-    }
+    padding-left: 30px;
   }
   .today-card {
     &-title {
@@ -373,7 +379,7 @@ export default {
       }
     }
     &-img {
-      height: 220px;
+      height: 240px;
     }
   }
   .swiper-slide-active {
@@ -440,7 +446,7 @@ export default {
     cursor: pointer;
     @for $i from 1 through 3 {
       &[data-index='#{$i}'] .rank-number {
-        background-image: url('/deco-crown.svg');
+        background-image: url('../../assets/img/deco-crown.svg');
         background-size: contain;
         background-position: center 30%;
         background-repeat: no-repeat;
