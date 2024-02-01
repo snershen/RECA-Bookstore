@@ -407,8 +407,8 @@ export default {
       display: flex;
       flex-direction: column;
       // max-width: 240px;
-      padding-right: 40px;
-      padding-left: 40px;
+      margin-right: 40px;
+      margin-left: 40px;
       @include min-lg {
         padding: 0;
         flex-direction: row;
