@@ -11,14 +11,17 @@
   border: 1px solid #d3d3d3;
   color: black !important;
 
-  svg {
-    width: 16px !important;
-    height: 16px !important;
-    display: none;
-  }
   &:hover {
     opacity: 0.5;
   }
+}
+
+.swiper-button-prev svg,
+.swiper-button-next svg {
+  width: 16px !important;
+  height: 16px !important;
+  display: none;
+  opacity: 0;
 }
 
 .swiper-button-prev {
@@ -67,38 +70,4 @@
 .swiper-horizontal > .swiper-scrollbar,
 .swiper-scrollbar.swiper-scrollbar-horizontal {
   left: 0;
-}
-
-.rank-swiper {
-  height: 50px;
-  margin-bottom: 40px;
-  /* @include min-lg {
-    height: 300px;
-  } */
-  .swiper-slide {
-    cursor: pointer;
-
-    /* @for $i from 1 through 3 {
-      &[data-index='#{$i}'] .rank-number {
-        background-image: url('/deco-crown.svg');
-        background-size: contain;
-        background-position: center 30%;
-        background-repeat: no-repeat;
-        color: white;
-      }
-    }
-    @for $i from 1 through 9 {
-      &[data-index='#{$i}'] .rank-number::before {
-        content: '0';
-      }
-    } */
-    .rank-number {
-      padding: 10px;
-      padding-top: 16px;
-      font-size: 0.875rem;
-    }
-  }
-  .swiper-slide-active {
-    font-weight: bold;
-  }
 }
