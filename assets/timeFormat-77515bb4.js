@@ -1,0 +1,1 @@
+function l(r,n){let e=0;Array.isArray(r)?r.forEach(g=>{String(g[n]).length===10?e=new Date(g[n]*1e3):e=new Date(g[n]),g[n]=`${e.getFullYear()}-${e.getMonth()+1}-${e.getDate()}`}):(String(r[n]).length===10?e=new Date(r[n]*1e3):e=new Date(r[n]),r[n]=`${e.getFullYear()}-${e.getMonth()+1}-${e.getDate()}`)}export{l as t};

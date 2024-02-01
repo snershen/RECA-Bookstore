@@ -1,0 +1,78 @@
+.swiper {
+  position: static !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  position: absolute !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 100%;
+  border: 1px solid #d3d3d3;
+  color: black !important;
+  svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.swiper-button-prev {
+  left: 0 !important;
+}
+
+.swiper-button-next {
+  right: 0 !important;
+}
+
+.swiper-horizontal > .swiper-scrollbar,
+.swiper-scrollbar.swiper-scrollbar-horizontal {
+  width: 90%;
+  left: 50%;
+  /* transform: translateX(-50%); */
+}
+
+@media (min-width: 1200px) {
+  .swiper-button-prev {
+    left: -40px !important;
+  }
+  .swiper-button-next {
+    right: -40px !important;
+  }
+}
+
+.rank-swiper {
+  height: 50px;
+  margin-bottom: 40px;
+  /* @include min-lg {
+    height: 300px;
+  } */
+  .swiper-slide {
+    cursor: pointer;
+
+    /* @for $i from 1 through 3 {
+      &[data-index='#{$i}'] .rank-number {
+        background-image: url('/deco-crown.svg');
+        background-size: contain;
+        background-position: center 30%;
+        background-repeat: no-repeat;
+        color: white;
+      }
+    }
+    @for $i from 1 through 9 {
+      &[data-index='#{$i}'] .rank-number::before {
+        content: '0';
+      }
+    } */
+    .rank-number {
+      padding: 10px;
+      padding-top: 16px;
+      font-size: 0.875rem;
+    }
+  }
+  .swiper-slide-active {
+    font-weight: bold;
+  }
+}
