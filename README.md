@@ -4,7 +4,7 @@
 
 ![alt 網頁首頁](reca_bookstore.png)
 
-[Demo 網址](https://snershen.github.io/RECA-Bookstore/#/user/home)
+[Demo 網址](https://snershen.github.io/RECA-Bookstore/#/)
 
 ## 技術與套件
 

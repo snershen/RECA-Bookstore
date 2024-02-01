@@ -31,6 +31,9 @@ export default {
   },
   mounted() {
     this.collapse = new Collapse(this.$refs.collapse)
+    setTimeout(() => {
+      this.$refs.collapse.classList.remove('show')
+    }, 500)
   }
 }
 </script>

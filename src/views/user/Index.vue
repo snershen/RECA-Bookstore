@@ -1,9 +1,7 @@
 <template>
   <main>
     <section class="banner py-6 vh-100">
-      <h1 class="banner-title text-center fw-bold pt-5">
-        踏上探索之旅<br />尋找屬於自己的命定之書
-      </h1>
+      <h1 class="banner-title text-center fw-bold">踏上探索之旅<br />尋找屬於自己的命定之書</h1>
       <p class="banner-subtitle text-center mt-2 fs-4 text-white">上萬本書籍等待你的閱讀</p>
       <div class="container">
         <swiper-container init="false" ref="bannerSwiper" class="container banner-swiper pt-5">

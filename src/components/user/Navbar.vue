@@ -97,7 +97,7 @@
 
         <div class="bg-light position-absolute top-100 w-100 start-0 d-lg-block d-none">
           <div class="container">
-            <SearchModal ref="SearchModal"></SearchModal>
+            <SearchCollapse ref="SearchCollapse"></SearchCollapse>
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@
 <script>
 import Collapse from 'bootstrap/js/dist/collapse'
 
-import SearchModal from './SearchCollapse.vue'
+import SearchCollapse from './SearchCollapse.vue'
 import SearchInput from './SearchInput.vue'
 
 import { mapState, mapActions } from 'pinia'
@@ -122,7 +122,7 @@ export default {
     }
   },
   components: {
-    SearchModal,
+    SearchCollapse,
     SearchInput
   },
   computed: {
@@ -132,7 +132,7 @@ export default {
   methods: {
     ...mapActions(productStore, ['getStorage']),
     toggleCollapse() {
-      const searchComponent = this.$refs.SearchModal
+      const searchComponent = this.$refs.SearchCollapse
       searchComponent.toggleCollapse()
     }
   },
@@ -149,7 +149,9 @@ export default {
 
   mounted() {
     this.headerCollapse = new Collapse(this.$refs.headerCollapse)
-    this.headerCollapse.hide()
+    setTimeout(() => {
+      this.$refs.headerCollapse.classList.remove('show')
+    }, 500)
   }
 }
 </script>

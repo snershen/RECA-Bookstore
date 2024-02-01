@@ -2,7 +2,7 @@
   <LoadingComponent></LoadingComponent>
   <div class="main-content">
     <Navbar />
-    <RouterView :key="$route.fullPath" />
+    <RouterView :key="$route.fullPath" class="mt-5" />
   </div>
   <Footer></Footer>
 </template>
