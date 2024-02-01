@@ -1,17 +1,25 @@
-.text-overflow-title {
+@mixin text-overflow($line: 1) {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: $line;
   overflow: hidden;
   width: 100%;
 }
 
-.text-overflow-content {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  height: auto;
-  overflow: hidden;
+.text-overflow-1 {
+  @include text-overflow(1);
+}
+
+.text-overflow-2 {
+  @include text-overflow(2);
+}
+
+.text-overflow-3 {
+  @include text-overflow(3);
+}
+
+.text-overflow-4 {
+  @include text-overflow(4);
 }
 
 .ls-lg {
@@ -30,61 +38,26 @@
   min-height: 100vh;
 }
 
+.table-overflow {
+  overflow: scroll;
+  @include min-lg {
+    overflow: initial;
+  }
+  .table {
+    height: 100vh;
+    width: 100vw;
+    @include min-lg {
+      height: auto;
+      width: auto;
+    }
+  }
+}
+
 .overflow-x-scroll {
   overflow-x: scroll !important;
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-.swiper-button-prev,
-.swiper-button-next {
-  width: 44px;
-  height: 44px;
-  z-index: 5;
-}
-
-.swiper-button-prev::after,
-.swiper-button-next::after {
-  width: 36px !important;
-  height: 36px !important;
-  font-size: 1rem !important;
-
-  @include min-lg {
-    width: 44px !important;
-    height: 44px !important;
-  }
-}
-
-.swiper-button-prev {
-  position: absolute;
-  left: 0;
-  @include min-xl {
-    display: block;
-    left: -72px;
-  }
-  &:hover {
-    opacity: 0.5;
-  }
-}
-
-.swiper-button-next {
-  position: absolute;
-  right: 0;
-  @include min-xl {
-    display: block;
-    right: -72px;
-  }
-  &:hover {
-    opacity: 0.3;
-  }
-}
-
-.swiper-horizontal > .swiper-scrollbar,
-.swiper-scrollbar.swiper-scrollbar-horizontal {
-  width: 90%;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .isLoading {
@@ -110,17 +83,6 @@
   font-family: 'Noto Sans TC', 'Roboto', sans-serif;
 }
 
-.table-overflow {
-  overflow: scroll;
-  @include min-lg {
-    overflow: initial;
-  }
-  .table {
-    height: 100vh;
-    width: 100vw;
-    @include min-lg {
-      height: auto;
-      width: auto;
-    }
-  }
+.ck-editor__editable {
+  min-height: 200px;
 }

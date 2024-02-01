@@ -16,16 +16,16 @@
         </div>
       </div>
       <div class="col-12 card-content-wrapper">
-        <h2 class="fw-bold text-overflow-title fs-lg-3 fs-4">
+        <h2 class="fw-bold fs-lg-3 fs-4 mb-2">
           <RouterLink
             :to="`/articles/${article.id}`"
-            class="stretched-link"
+            class="stretched-link text-overflow-2"
             @click.prevent="directArticle(article)"
             >{{ article.title }}</RouterLink
           >
         </h2>
-        <p class="fs-7 text-gray text-nowrap mb-2">作者 / {{ article.author }}</p>
-        <p class="text-overflow-content w-100 fs-7 text-gray">{{ article.description }}</p>
+        <p class="fs-6 text-gray text-nowrap mb-2">作者 / {{ article.author }}</p>
+        <p class="text-overflow-2 w-100 fs-6 text-gray">{{ article.description }}</p>
       </div>
     </div>
   </div>

@@ -39,7 +39,7 @@
               <!-- <p v-html="singleProduct.description"></p> -->
             </div>
             <div class="row">
-              <div class="col-2 order-1 order-lg-0">
+              <div class="col-3 order-1 order-lg-0">
                 <a
                   href="#"
                   class="btn btn-gray w-100 py-3 rounded-2 border-0"
@@ -53,7 +53,7 @@
                   <span v-else>加入收藏</span> -->
                 </a>
               </div>
-              <div class="col-lg-5 col-10 order-1 order-lg-0">
+              <div class="col-lg-5 col-9 order-1 order-lg-0">
                 <a
                   href="#"
                   class="btn btn-gray text-white w-100 py-3 rounded-0 mb-lg-0 mb-0 rounded-2"
@@ -74,9 +74,20 @@
           <div class="col-12 py-5">
             <ProductTab />
           </div>
-          <template v-if="alikeProduct.length !== 0">
+          <div>
             <h3 class="font-sans fs-4 ms-2 mb-3">更多相關商品</h3>
             <div class="position-relative">
+              <swiper-container init="false" ref="relatedSwiper" class="container px-5">
+                <swiper-slide
+                  v-for="item in productList"
+                  :key="item.id"
+                  class="h-auto d-flex justify-content-center my-5"
+                >
+                  <ProductCard :item="item" />
+                </swiper-slide>
+              </swiper-container>
+            </div>
+            <!-- <div class="position-relative">
               <swiper
                 :slidesPerView="5"
                 :spaceBetween="20"
@@ -88,8 +99,8 @@
                   <ProductCard :item="item"></ProductCard>
                 </swiper-slide>
               </swiper>
-            </div>
-          </template>
+            </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -99,10 +110,7 @@
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
-import { Navigation, Pagination } from 'swiper/modules'
-
 import ProductCard from '@/components/user/ProductCard.vue'
-
 import ProductCategory from '@/components/user/ProductCategory.vue'
 import ProductTab from '@/components/user/ProductTab.vue'
 import Breadcrumb from '@/components/user/Breadcrumb.vue'
@@ -115,7 +123,23 @@ export default {
   data() {
     return {
       isSolid: false,
-      modules: [Navigation, Pagination]
+      modules: [Navigation],
+      relatedSwiper: {
+        slidesPerView: 1,
+        spaceBetween: 18,
+        navigation: true,
+        breakpoints: {
+          576: {
+            slidesPerView: 2
+          },
+          768: {
+            slidesPerView: 3
+          },
+          1024: {
+            slidesPerView: 4
+          }
+        }
+      }
     }
   },
   props: ['id'],
@@ -158,6 +182,18 @@ export default {
     handleCollectBtn(item) {
       this.changeCollectIcon()
       this.addOrRemoveCollect(item, this.isSolid)
+    },
+    initializeSwiper(el, config) {
+      const swiperEl = el
+      const params = {
+        autoplay: true,
+        loop: true,
+        injectStylesUrls: ['./custom_swiper.css'],
+        ...config
+      }
+      console.log(el)
+      Object.assign(swiperEl, params)
+      swiperEl.initialize()
     }
   },
 
@@ -168,9 +204,11 @@ export default {
     document.title = `${this.singleProduct.title}｜RECA BOOKSTORE`
   },
   mounted() {
+    console.log(this.$refs.relatedSwiper)
     this.getStorage()
     setTimeout(() => {
       this.initializeIsSolid()
+      this.initializeSwiper(this.$refs.relatedSwiper, this.relatedSwiper)
     }, 500)
   },
   watch: {

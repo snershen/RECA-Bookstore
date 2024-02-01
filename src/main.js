@@ -9,6 +9,7 @@ import Loading from 'vue3-loading-overlay'
 import { createPinia } from 'pinia'
 
 import { Vue3Lottie } from 'vue3-lottie'
+import { register } from 'swiper/element/bundle'
 
 // Import stylesheet
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
@@ -105,4 +106,5 @@ app.use(Vue3Lottie)
 
 app.component('Loading', Loading)
 
+register()
 app.mount('#app')

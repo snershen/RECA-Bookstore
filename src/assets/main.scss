@@ -11,14 +11,16 @@
 @import '../assets/helper';
 @import 'bootstrap/scss/utilities/api';
 
-@import 'swiper/css';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
-@import 'swiper/css/scrollbar';
-@import 'swiper/css/effect-coverflow';
-@import 'swiper/css/free-mode';
+// @import 'swiper/css';
+// @import 'swiper/css/navigation';
+// @import 'swiper/css/pagination';
+// @import 'swiper/css/scrollbar';
+// @import 'swiper/css/effect-coverflow';
+// @import 'swiper/css/free-mode';
 
-@import 'swiper/css/thumbs';
+// @import 'swiper/css/thumbs';
+
+// @import 'swiper/swiper-bundle.css';
 
 @import '../assets/mixin';
 @import '../assets/utils.scss';
@@ -27,15 +29,6 @@
 
 @import '../node_modules/sweetalert2/src/sweetalert2.scss';
 
-.swiper-button-prev:after,
-.swiper-button-next:after {
-  font-size: 0.5rem;
-  border-radius: 50%;
-  border: solid 1px #000;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #000;
+* {
+  // outline: solid 1px;
 }

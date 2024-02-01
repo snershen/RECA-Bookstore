@@ -17,7 +17,8 @@
     />
     <div class="text-center flex-grow-1 d-flex flex-column">
       <p class="category fs-7 text-gray mb-1">{{ item.category }}</p>
-      <h4 class="fs-6 fw-bold text-overflow-title flex-grow-1">{{ item.title }}</h4>
+
+      <h4 class="fs-6 fw-bold text-overflow-2 flex-grow-1">{{ item.title }}</h4>
       <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
       <div class="d-flex justify-content-center align-items-center">
         <p class="fw-bold me-2">${{ item.price }}</p>

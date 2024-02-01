@@ -1,24 +1,11 @@
 <template>
-  <RouterLink :to="link" class="btn-more fs-7 fs-lg-6 px-lg-4 px-3 py-2 text-white rounded-pill">
-    {{ content }}
-    <font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm" />
-  </RouterLink>
+  <button type="button" class="btn btn-more fs-7 fs-lg-6 px-lg-4 px-3 py-2 text-white rounded-pill">
+    <slot name="text">查看更多</slot>
+    <slot name="icon"
+      ><font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
+    /></slot>
+  </button>
 </template>
-
-<script>
-export default {
-  props: {
-    link: {
-      type: Object,
-      default: '/'
-    },
-    content: {
-      type: String,
-      default: '查看更多'
-    }
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .btn-more {
