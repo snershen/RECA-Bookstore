@@ -1,7 +1,9 @@
 <template>
   <main>
-    <section class="banner py-6">
-      <h1 class="banner-title text-center fw-bold">踏上探索之旅<br />尋找屬於自己的命定之書</h1>
+    <section class="banner py-6 vh-100">
+      <h1 class="banner-title text-center fw-bold pt-5">
+        踏上探索之旅<br />尋找屬於自己的命定之書
+      </h1>
       <p class="banner-subtitle text-center mt-2 fs-4 text-white">上萬本書籍等待你的閱讀</p>
       <div class="container">
         <swiper-container init="false" ref="bannerSwiper" class="container banner-swiper pt-5">
@@ -81,7 +83,7 @@
         <div class="position-relative">
           <swiper-container init="false" ref="publishSwiper" class="container px-5">
             <swiper-slide
-              v-for="item in productList"
+              v-for="item in filterResult"
               :key="`publish${item.id}`"
               class="h-auto d-flex justify-content-center my-5"
             >
@@ -215,7 +217,7 @@ export default {
       },
       todaySwiper: {
         slidesPerView: 1,
-        spaceBetween: 0,
+        spaceBetween: 20,
         navigation: true,
         breakpoints: {
           576: {
@@ -291,7 +293,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(productStore, ['getProducts', 'getProductAll', 'filterProduct']),
+    ...mapActions(productStore, ['getProducts', 'getProductAll', 'filterProduct', 'sortProduct']),
     ...mapActions(articleStore, ['getArticles']),
     initializeSwiper(el, config) {
       const swiperEl = el
@@ -303,6 +305,14 @@ export default {
       }
       Object.assign(swiperEl, params)
       swiperEl.initialize()
+    }
+  },
+  watch: {
+    filterResult() {
+      console.log('initial')
+      this.$nextTick(() => {
+        this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
+      })
     }
   },
   created() {
@@ -340,7 +350,7 @@ export default {
     letter-spacing: 9px;
   }
   img {
-    max-height: 300px;
+    max-height: 250px;
   }
   .swiper-slide {
     padding: 30px 0;
@@ -354,15 +364,15 @@ export default {
 }
 
 .swiper-today {
-  padding-left: 60px;
-  padding-right: 60px;
+  // padding-left: 60px;
+  // padding-right: 60px;
   .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
     transform-origin: bottom center;
     transition: 0.3s;
-    padding-left: 30px;
+    // padding-left: 30px;
   }
   .today-card {
     &-title {

@@ -36,10 +36,9 @@
                   </div>
                 </li>
               </ul>
-              <!-- <p v-html="singleProduct.description"></p> -->
             </div>
             <div class="row">
-              <div class="col-3 order-1 order-lg-0">
+              <div class="col-3 col-lg-2 order-1 order-lg-0">
                 <a
                   href="#"
                   class="btn btn-gray w-100 py-3 rounded-2 border-0"
@@ -62,11 +61,11 @@
                 >
               </div>
               <div class="col-lg-5">
-                <a
-                  href="#"
+                <RouterLink
+                  :to="{ name: 'cart' }"
                   class="btn btn-primary text-white w-100 py-3 rounded-0 mb-lg-0 mb-2 rounded-2"
                   @click.prevent="addCart(singleProduct.id)"
-                  >立即購買</a
+                  >立即購買</RouterLink
                 >
               </div>
             </div>
@@ -75,31 +74,18 @@
             <ProductTab />
           </div>
           <div>
-            <h3 class="font-sans fs-4 ms-2 mb-3">更多相關商品</h3>
+            <h3 class="font-sans fs-4 ms-2 mb-3 fw-bold">更多相關商品</h3>
             <div class="position-relative">
               <swiper-container init="false" ref="relatedSwiper" class="container px-5">
                 <swiper-slide
-                  v-for="item in productList"
+                  v-for="item in relatedResult"
                   :key="item.id"
-                  class="h-auto d-flex justify-content-center my-5"
+                  class="h-auto d-flex justify-content-center my-3 px-2"
                 >
                   <ProductCard :item="item" />
                 </swiper-slide>
               </swiper-container>
             </div>
-            <!-- <div class="position-relative">
-              <swiper
-                :slidesPerView="5"
-                :spaceBetween="20"
-                :modules="modules"
-                :navigation="true"
-                class="px-3 py-3 position-static"
-              >
-                <swiper-slide v-for="item in productList" :key="item.id" class="h-auto">
-                  <ProductCard :item="item"></ProductCard>
-                </swiper-slide>
-              </swiper>
-            </div> -->
           </div>
         </div>
       </div>
@@ -123,7 +109,7 @@ export default {
   data() {
     return {
       isSolid: false,
-      modules: [Navigation],
+      relatedResult: [],
       relatedSwiper: {
         slidesPerView: 1,
         spaceBetween: 18,
@@ -151,7 +137,9 @@ export default {
       'alikeProduct',
       'collectList',
       'collectStorage',
-      'isSolid'
+      'isSolid',
+      'selectedSingle',
+      'filterResult'
     ]),
     icon() {
       return this.isSolid ? ['fas', 'heart'] : ['far', 'heart']
@@ -163,6 +151,7 @@ export default {
     ...mapActions(productStore, [
       'getSingleProduct',
       'getProducts',
+      'filterProduct',
       'showAlikeProduct',
       'getStorage',
       'addOrRemoveCollect'
@@ -187,24 +176,22 @@ export default {
       const swiperEl = el
       const params = {
         autoplay: true,
-        loop: true,
         injectStylesUrls: ['./custom_swiper.css'],
         ...config
       }
-      console.log(el)
       Object.assign(swiperEl, params)
       swiperEl.initialize()
     }
   },
 
   async created() {
-    this.getSingleProduct(this.id)
+    await this.getSingleProduct(this.id)
+    const relatedData = await this.filterProduct(this.singleProduct.category, 'related')
+    this.relatedResult = await relatedData.filter((item) => item.id !== this.singleProduct.id)
 
-    this.getProducts()
     document.title = `${this.singleProduct.title}｜RECA BOOKSTORE`
   },
   mounted() {
-    console.log(this.$refs.relatedSwiper)
     this.getStorage()
     setTimeout(() => {
       this.initializeIsSolid()

@@ -16,7 +16,7 @@
           role="tab"
           aria-controls="pills-home"
           aria-selected="true"
-          @click="filterProduct(item)"
+          @click="handleFilter(item)"
         >
           {{ item }}
         </button>
@@ -33,15 +33,20 @@ export default {
     ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll']),
+    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll', 'sortProduct']),
     directProductPage() {
       this.$router.push('/products')
       this.searchString = ''
+    },
+    async handleFilter(item) {
+      await this.filterProduct(item)
+      await this.sortProduct('time')
     }
   },
   async created() {
     await this.getProducts()
     await this.filterProduct(this.categoryList[0])
+    await this.sortProduct('time')
   }
 }
 </script>

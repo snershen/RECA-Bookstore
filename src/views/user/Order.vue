@@ -1,5 +1,5 @@
 <template>
-  <div class="container pb-5">
+  <div class="container py-5">
     <div class="offset-lg-4 col-lg-4">
       <h2 class="text-center fw-bold mb-4">訂單明細</h2>
       <table class="w-100 mb-5">
@@ -31,7 +31,7 @@
       <a
         href="#"
         class="btn btn-secondary w-100 mb-3 py-2"
-        @click.prevent="payMoney"
+        @click.prevent="payMoney(order.id)"
         v-if="!order.is_paid"
         >立刻付款</a
       >

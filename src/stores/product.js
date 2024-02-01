@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import Swal from 'sweetalert2'
 
 import { userGetProduct } from '@/utils/apis'
 import { userGetSingleProduct } from '@/utils/apis'
@@ -15,11 +16,12 @@ export default defineStore('productStore', {
       categoryList: [],
       filterResult: [],
       selectedCategory: '全部',
+      sortStatus: false,
+      sortTarget: '',
       //篩選：文字搜尋
       searchString: '',
       searchResult: [],
       isEmptyResult: false,
-      isShowCollapse: false,
       //更多類似產品
       alikeProduct: [],
       isLoading: false,
@@ -30,6 +32,16 @@ export default defineStore('productStore', {
   },
 
   actions: {
+    showToast(options) {
+      Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        ...options
+      }).fire()
+    },
     async getProductAll() {
       try {
         const res = await userGetProductAll()
@@ -87,7 +99,7 @@ export default defineStore('productStore', {
       })
       this.categoryList = Object.keys(categoryObj)
     },
-    async filterProduct(target) {
+    async filterProduct(target, tool) {
       try {
         this.isEmptyResult = false
         this.searchResult = []
@@ -96,7 +108,10 @@ export default defineStore('productStore', {
         const { products, pagination } = res.data
         this.filterResult = products
         this.pagination = pagination
-        this.singleProduct = ''
+        if (!tool) {
+          this.singleProduct = ''
+        }
+        return products
       } catch (error) {
         console.error('Error fetching data:', error)
         throw error
@@ -143,6 +158,10 @@ export default defineStore('productStore', {
           this.collectList.push({ ...item, isSolid })
           localStorage.setItem('collectList', JSON.stringify(this.collectList))
           this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
+          this.showToast({
+            title: '收藏成功',
+            icon: 'success'
+          })
           return
         }
       }
@@ -156,6 +175,10 @@ export default defineStore('productStore', {
           return
         }
         this.collectList.push({ ...item, isSolid })
+        this.showToast({
+          title: '收藏成功',
+          icon: 'success'
+        })
         localStorage.setItem('collectList', JSON.stringify(this.collectList))
         this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
       } else {
@@ -164,8 +187,50 @@ export default defineStore('productStore', {
         })
         this.collectList.splice(index, 1)
         localStorage.setItem('collectList', JSON.stringify(this.collectList))
+        this.showToast({
+          title: `已取消收藏`,
+          icon: 'info'
+        })
         this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
       }
+    },
+    //排序
+    sortProduct(sort) {
+      if (sort === 'price') {
+        this.sortTarget = 'price'
+      } else if (sort === 'time') {
+        this.sortTarget = 'time'
+      } else if (sort === 'soldNum') {
+        this.sortTarget = 'soldNum'
+      }
+
+      if (sort === 'time') {
+        if (!this.sortStatus) {
+          this.filterResult = [...this.filterResult].sort((a, b) => {
+            return a.time.localeCompare(b.time)
+          })
+          this.sortStatus = !this.sortStatus
+        } else {
+          this.filterResult = [...this.filterResult].sort((a, b) => {
+            return b.time.localeCompare(a.time)
+          })
+          this.sortStatus = !this.sortStatus
+        }
+        return
+      }
+
+      if (!this.sortStatus) {
+        this.filterResult = [...this.filterResult].sort((a, b) => {
+          return a[this.sortTarget] - b[this.sortTarget]
+        })
+        this.sortStatus = !this.sortStatus
+      } else {
+        this.filterResult = [...this.filterResult].sort((a, b) => {
+          return b[this.sortTarget] - a[this.sortTarget]
+        })
+        this.sortStatus = !this.sortStatus
+      }
+      console.log(this.filterResult)
     }
   }
 })

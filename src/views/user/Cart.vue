@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-5">
+  <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="fw-bold">購物車</h1>
       <a
@@ -49,7 +49,7 @@
                 class="form-control text-center"
                 type="number"
                 v-model="item.qty"
-                @change.prevent="changeCartNum(item)"
+                @blur.prevent="changeCartNum(item)"
                 style="width: 70px"
               />
               <a href="#" @click.prevent="editCart(item, true)" class="ps-3 py-3"
@@ -106,7 +106,9 @@
     </ul>
     <div class="text-center fs-3 fw-bold" v-else>
       <p class="mb-5">購物車目前沒有商品<br />為自己創造閱讀時光吧</p>
-      <div class="text-center"><img src="@/assets/img/cart-empty.png" alt="" /></div>
+      <div class="text-center">
+        <img src="@/assets/img/cart-empty.png" alt="" class="img-fluid" />
+      </div>
     </div>
     <div class="row justify-content-between py-5" v-if="cartLength">
       <div class="col-lg-4 col-12">
@@ -172,7 +174,6 @@ export default {
       userCheckCoupon(data).then((res) => {
         if (res.data.success) {
           this.hasCoupon = true
-          console.log(res)
           this.getCart()
         }
         const message = res.data.message

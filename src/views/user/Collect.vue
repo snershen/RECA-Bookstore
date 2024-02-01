@@ -1,5 +1,5 @@
 <template>
-  <div class="container pb-5 mb-5">
+  <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="fw-bold mb-5">收藏清單</h1>
     </div>
@@ -23,9 +23,6 @@ import ProductCard from '@/components/user/ProductCard.vue'
 import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/product.js'
 export default {
-  data() {
-    // return { collectListStorage: [] }
-  },
   computed: {
     ...mapState(productStore, ['collectStorage'])
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-5">
+  <div class="container py-5">
     <div class="row">
       <div class="offset-1 col-10">
         <h1 class="fw-bold mb-4">訂單明細</h1>

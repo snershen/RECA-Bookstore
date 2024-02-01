@@ -29,6 +29,44 @@
         <product-category></product-category>
       </div>
       <div class="col-lg-9">
+        <div class="d-flex justify-content-end mb-3">
+          <button
+            type="button"
+            class="sort-btn btn border-0"
+            :class="{ active: sortTarget === 'time' }"
+            @click="sortProduct('time')"
+          >
+            出版日期
+            <template v-if="sortTarget === 'time'">
+              <span v-if="!sortStatus">由新到舊</span>
+              <span v-else>由舊到新 </span>
+            </template>
+          </button>
+          <button
+            type="button"
+            class="sort-btn btn border-0"
+            @click="sortProduct('price')"
+            :class="{ active: sortTarget === 'price' }"
+          >
+            價格
+            <template v-if="sortTarget === 'price'">
+              <span v-if="!sortStatus">由高到低</span>
+              <span v-else>由低到高 </span>
+            </template>
+          </button>
+          <button
+            type="button"
+            class="sort-btn btn border-0"
+            @click="sortProduct('soldNum')"
+            :class="{ active: sortTarget === 'soldNum' }"
+          >
+            暢銷度
+            <template v-if="sortTarget === 'soldNum'">
+              <span v-if="!sortStatus">由高到低</span>
+              <span v-else>由低到高 </span>
+            </template>
+          </button>
+        </div>
         <template v-if="searchResult.length !== 0">
           <ul class="row g-3">
             <li v-for="item in searchResult" :key="item.id" class="col-lg-3 col-6 d-flex">
@@ -69,7 +107,7 @@
               @click.prevent="filterProduct('全部')"
             />
           </div>
-          <img src="@/assets/img/noResult.png" alt="" />
+          <img src="@/assets/img/noResult.png" alt="" class="img-fluid" />
         </div>
       </div>
     </div>
@@ -100,12 +138,14 @@ export default {
       'searchResult',
       'searchString',
       'selectedCategory',
-      'isEmptyResult'
+      'isEmptyResult',
+      'sortStatus',
+      'sortTarget'
     ])
   },
 
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll'])
+    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll', 'sortProduct'])
   },
 
   created() {
@@ -113,3 +153,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.sort-btn {
+  opacity: 0.5;
+  &.active {
+    opacity: 1;
+  }
+}
+</style>

@@ -3,39 +3,34 @@
     <div class="text-white bg-dark py-3 text-start w-100 rounded-0 px-4">所有分類</div>
     <ul class="border">
       <li>
-        <a
-          href="#"
+        <RouterLink
+          :to="{ name: 'products' }"
           class="px-4 py-lg-3 py-2 d-block fs-6"
-          :class="{ 'bg-selected': selectedCategory === '全部' }"
-          @click.prevent="filterProduct('全部'), directProductPage()"
-          >全部</a
+          :class="{
+            'bg-selected': !Object.keys(singleProduct).length && selectedCategory === '全部'
+          }"
+          @click.prevent="filterProduct('全部')"
+          >全部</RouterLink
         >
       </li>
       <li v-for="item in categoryList">
-        <template v-if="singleProduct.title">
-          <a
-            href="#"
-            class="px-4 py-lg-3 py-2 w-100 fs-6"
-            :class="{ 'bg-selected': singleProduct.category === item }"
-            @click.prevent="filterProduct(item), directProductPage()"
-          >
-            {{ item }}
-          </a>
-        </template>
-        <template v-else>
-          <a
-            href="#"
-            class="px-4 py-lg-3 py-2 w-100 fs-6"
-            :class="{ 'bg-selected': selectedCategory === item }"
-            @click.prevent="filterProduct(item), directProductPage()"
-          >
-            {{ item }}
-          </a>
-        </template>
+        <RouterLink
+          :to="{ name: 'products' }"
+          class="px-4 py-lg-3 py-2 w-100 fs-6"
+          :class="{
+            'bg-selected':
+              (singleProduct && singleProduct.category === item) ||
+              (!Object.keys(singleProduct).length && selectedCategory === item)
+          }"
+          @click.prevent="filterProduct(item)"
+        >
+          {{ item }}
+        </RouterLink>
       </li>
     </ul>
   </div>
 
+  <!-- phone -->
   <div class="d-md-none d-block">
     <a
       class="btn btn-dark py-3 fw-bold text-start w-100 rounded-0"
@@ -50,23 +45,29 @@
     <div class="collapse border" id="collapseExample">
       <ul>
         <li>
-          <a
-            href="#"
+          <RouterLink
+            :to="{ name: 'products' }"
             class="ps-3 py-lg-3 py-2 d-block fs-6"
-            :class="{ 'bg-selected': selectedCategory === '全部' }"
-            @click.prevent="filterProduct('全部'), directProductPage()"
-            >全部</a
+            :class="{
+              'bg-selected': !Object.keys(singleProduct).length && selectedCategory === '全部'
+            }"
+            @click="filterProduct('全部')"
+            >全部</RouterLink
           >
         </li>
         <li v-for="item in categoryList">
-          <a
-            href="#"
+          <RouterLink
+            :to="{ name: 'products' }"
             class="px-3 py-lg-3 py-2 w-100 fs-6"
-            :class="{ 'bg-selected': selectedCategory === item }"
-            @click.prevent="filterProduct(item), directProductPage()"
+            :class="{
+              'bg-selected':
+                (singleProduct && singleProduct.category === item) ||
+                (!Object.keys(singleProduct).length && selectedCategory === item)
+            }"
+            @click.prevent="filterProduct(item)"
           >
             {{ item }}
-          </a>
+          </RouterLink>
         </li>
       </ul>
     </div>
@@ -79,17 +80,13 @@ import productStore from '@/stores/product.js'
 
 export default {
   computed: {
-    ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory', 'singleProduct'])
+    ...mapState(productStore, ['categoryList', 'selectedCategory', 'singleProduct'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll']),
-    directProductPage() {
-      this.$router.push('/products')
-      this.searchString = ''
-    }
+    ...mapActions(productStore, ['filterProduct', 'getProductAll'])
   },
   created() {
-    this.getProducts()
+    this.getProductAll()
   }
 }
 </script>
@@ -97,7 +94,7 @@ export default {
 <style lang="scss" scoped>
 .bg-selected {
   background: rgb(243, 243, 243);
-  // font-weight: bold;
+  font-weight: bold;
   &:hover {
     color: inherit;
   }

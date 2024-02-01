@@ -18,7 +18,8 @@
     <div class="text-center flex-grow-1 d-flex flex-column">
       <p class="category fs-7 text-gray mb-1">{{ item.category }}</p>
 
-      <h4 class="fs-6 fw-bold text-overflow-2 flex-grow-1">{{ item.title }}</h4>
+      <h4 class="fs-6 fw-bold text-overflow-2 flex-grow-1" v-html="item.title"></h4>
+      <time class="time fs-7 text-gray">{{ item.time }}</time>
       <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
       <div class="d-flex justify-content-center align-items-center">
         <p class="fw-bold me-2">${{ item.price }}</p>
@@ -49,13 +50,11 @@ export default {
     icon() {
       return this.isSolid ? ['fas', 'heart'] : ['far', 'heart']
     },
-    ...mapState(productStore, ['collectList', 'collectStorage'])
+    ...mapState(productStore, ['collectList', 'collectStorage', 'singleSelected'])
   },
   methods: {
     ...mapActions(productStore, ['addOrRemoveCollect', 'getStorage']),
-    directSingleProduct(id) {
-      this.$router.push(`/products/${id}`)
-    },
+
     changeCollectIcon() {
       this.isSolid = !this.isSolid
     },
@@ -121,9 +120,7 @@ export default {
       transform: scale(1.1);
     }
   }
-  .category {
-    display: block;
-  }
+  .category,
   .like-btn {
     display: none;
   }

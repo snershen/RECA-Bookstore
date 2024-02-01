@@ -135,7 +135,7 @@ const router = createRouter({
           name: 'articles',
           component: () => import('../views/user/articles.vue'),
           meta: {
-            title: '精選書｜RECA BOOKSTORE'
+            title: '書評推薦｜RECA BOOKSTORE'
           }
         },
         {

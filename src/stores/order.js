@@ -48,6 +48,7 @@ export default defineStore('orderStore', {
     payMoney(id) {
       userPay(id).then((res) => {
         this.getSingleOrder()
+        console.log(res)
       })
     },
     filterOrder(str) {

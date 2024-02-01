@@ -12,7 +12,7 @@ import Navbar from '@/components/user/Navbar.vue'
 import Footer from '@/components/user/Footer.vue'
 import LoadingComponent from '@/components/Loading.vue'
 
-import { mapState, mapActions } from 'pinia'
+import { mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
 
 export default {
