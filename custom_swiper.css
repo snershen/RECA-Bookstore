@@ -10,9 +10,11 @@
   border-radius: 100%;
   border: 1px solid #d3d3d3;
   color: black !important;
+
   svg {
     width: 16px !important;
     height: 16px !important;
+    display: none;
   }
   &:hover {
     opacity: 0.5;
@@ -20,18 +22,37 @@
 }
 
 .swiper-button-prev {
+  position: relative;
   left: 0 !important;
 }
 
 .swiper-button-next {
+  position: relative;
   right: 0 !important;
 }
 
-.swiper-horizontal > .swiper-scrollbar,
-.swiper-scrollbar.swiper-scrollbar-horizontal {
-  width: 90%;
-  left: 50%;
-  /* transform: translateX(-50%); */
+.swiper-button-prev::after {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  left: 54%;
+  position: absolute;
+  border-bottom: solid 1px black;
+  border-left: solid 1px black;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.swiper-button-next::after {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  left: 44%;
+  position: absolute;
+  border-bottom: solid 1px black;
+  border-right: solid 1px black;
+  transform: translateX(-50%) rotate(-45deg);
 }
 
 @media (min-width: 1200px) {
@@ -41,6 +62,11 @@
   .swiper-button-next {
     right: -40px !important;
   }
+}
+
+.swiper-horizontal > .swiper-scrollbar,
+.swiper-scrollbar.swiper-scrollbar-horizontal {
+  left: 0;
 }
 
 .rank-swiper {
