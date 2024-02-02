@@ -24,16 +24,14 @@
           <li class="col-1"></li>
         </ul>
       </li>
-      <li
-        class="row border-bottom py-3"
-        v-for="item in cartList.carts"
-        :class="{ 'd-none': item.qty === 0 }"
-      >
+
+      <!-- :class="{ 'd-none': item.qty === 0 }" -->
+      <li class="row border-bottom py-3" v-for="item in cartList.carts">
         <div class="col-lg-1 col-3">
           <img :src="item.product.imageUrl" alt="" class="img-fluid" />
         </div>
         <ul class="row list-unstyled col-lg-11 col-9 align-items-center">
-          <li class="col-lg-5 col-12">{{ item.product.title }}</li>
+          <li class="col-lg-5 col-12 text-lg-start">{{ item.product.title }}</li>
           <li class="col-lg-2 col-6">
             ${{ item.product.price }}
             <span class="text-decoration-line-through text-gray">
@@ -42,19 +40,24 @@
           </li>
           <li class="col-lg-2 col-6 ms-auto text-end text-lg-center">
             <div class="d-flex align-items-center justify-content-center">
-              <a href="#" @click.prevent="editCart(item, false)" class="pe-3 py-3"
-                ><font-awesome-icon :icon="['fas', 'minus']"
-              /></a>
+              <button
+                @click="editCart(item, false)"
+                class="btn pe-3 py-3 border-0"
+                :class="{ 'disabled opacity-25': item.qty <= 1 }"
+              >
+                <font-awesome-icon :icon="['fas', 'minus']" />
+              </button>
               <input
                 class="form-control text-center"
                 type="number"
+                min="1"
                 v-model="item.qty"
                 @blur.prevent="changeCartNum(item)"
                 style="width: 70px"
               />
-              <a href="#" @click.prevent="editCart(item, true)" class="ps-3 py-3"
-                ><font-awesome-icon :icon="['fas', 'plus']"
-              /></a>
+              <button @click="editCart(item, true)" class="btn ps-3 py-3 border-0">
+                <font-awesome-icon :icon="['fas', 'plus']" />
+              </button>
             </div>
           </li>
           <li class="col-lg-2 col-6">
@@ -104,9 +107,9 @@
         </div>
       </li>
     </ul>
-    <div class="text-center fs-3 fw-bold" v-else>
-      <p class="mb-5">購物車目前沒有商品<br />為自己創造閱讀時光吧</p>
-      <div class="text-center">
+    <div class="text-center fw-bold" v-else>
+      <p class="mb-5 fs-lg-3 fs-4">購物車目前沒有商品<br />為自己創造閱讀時光吧</p>
+      <div class="text-center px-5">
         <img src="@/assets/img/cart-empty.png" alt="" class="img-fluid" />
       </div>
     </div>

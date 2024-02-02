@@ -9,7 +9,6 @@ export default defineStore('orderStore', {
     return {
       orderList: [],
       orderResult: [],
-      //   orderId: '',
       order: {},
       searchStr: '',
       isLoading: false,
@@ -20,36 +19,45 @@ export default defineStore('orderStore', {
     getOrders() {
       this.isEmptyResult = false
       this.isLoading = true
-      userGetOrder().then((res) => {
-        this.isLoading = false
-        this.orderList = res.data.orders
-        timeFormat(this.orderList, 'create_at')
-        this.orderResult = []
-        this.orderList.forEach((item) => {
-          item.total = Math.round(item.total)
+      userGetOrder()
+        .then((res) => {
+          this.isLoading = false
+          this.orderList = res.data.orders
+          timeFormat(this.orderList, 'create_at')
+          this.orderResult = []
+          this.orderList.forEach((item) => {
+            item.total = Math.round(item.total)
+          })
         })
-      })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
-    getSingleOrder(id) {
+    async getSingleOrder(id) {
       this.isLoading = true
-      userSingleOrder(id).then((res) => {
-        this.isLoading = false
-        console.log(res)
+      try {
+        const res = await userSingleOrder(id)
         this.order = res.data.order
-        console.log(this.order)
         timeFormat(this.order, 'create_at')
         this.order.total = Math.round(this.order.total)
         if (this.order.is_paid) {
           timeFormat(this.order, 'paid_date')
         }
-      })
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.isLoading = false
+      }
     },
     payMoney(id) {
-      userPay(id).then((res) => {
-        this.getSingleOrder()
-        console.log(res)
-      })
+      userPay(id)
+        .then((res) => {
+          this.getSingleOrder(id)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     filterOrder(str) {
       this.searchStr = str.trim()

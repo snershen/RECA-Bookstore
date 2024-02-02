@@ -2,7 +2,7 @@
   <button type="button" class="btn btn-more fs-7 fs-lg-6 px-lg-4 px-3 py-2 text-white rounded-pill">
     <slot name="text">查看更多</slot>
     <slot name="icon"
-      ><font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm"
+      ><font-awesome-icon :icon="['fas', 'chevron-right']" class="btn-more-arrow fa-sm ms-2"
     /></slot>
   </button>
 </template>

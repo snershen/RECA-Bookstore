@@ -156,7 +156,9 @@ export default {
     sendOrder() {
       userPostOrder(this.orderData).then((res) => {
         const orderId = res.data.orderId
-        this.$router.push(`/user/order/${orderId}`)
+        this.$router.push(`/orders/${orderId}`)
+        console.log(orderId)
+        console.log(res.data)
       })
     },
     async submitForm() {
@@ -170,6 +172,9 @@ export default {
   },
   created() {
     this.getCart()
+    if (this.cartList.length === 0) {
+      this.$router.push('/cart')
+    }
   }
 }
 </script>

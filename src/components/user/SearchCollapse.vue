@@ -1,15 +1,19 @@
 <template>
-  <div class="collapse border-0" id="collapseExample" ref="collapse">
-    <SearchInput />
+  <div class="border-0" ref="collapse">
+    <SearchInput @close-collapse="hideCollapse" />
   </div>
 </template>
 
 <script>
 import Collapse from 'bootstrap/js/dist/collapse'
-
 import SearchInput from './SearchInput.vue'
 
 export default {
+  data() {
+    return {
+      collapse: {}
+    }
+  },
   components: {
     SearchInput
   },

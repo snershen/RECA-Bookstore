@@ -22,6 +22,14 @@
   @include text-overflow(4);
 }
 
+.list-unordered {
+  list-style: disc !important;
+}
+
+.list-order {
+  list-style: decimal !important;
+}
+
 .ls-lg {
   letter-spacing: 5px;
 }

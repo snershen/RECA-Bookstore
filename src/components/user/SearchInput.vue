@@ -59,8 +59,8 @@ export default {
       this.searchString = ''
     },
     handleSearch() {
-      this.searchString = ''
       this.searchProduct(this.searchString)
+      this.$emit('close-collapse')
       this.$router.push('/products')
     }
   },

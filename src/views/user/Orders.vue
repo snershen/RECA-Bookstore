@@ -6,7 +6,7 @@
           <div>
             <h1 class="mb-4 fw-bold">所有訂單</h1>
             {{ orderId }}
-            <div class="mb-5 row align-items-center gx-3">
+            <div class="mb-3 row align-items-center gx-3">
               <div class="col-auto">
                 <label for="orderInput" class="form-label mb-0 pb-0">搜尋訂單</label>
               </div>

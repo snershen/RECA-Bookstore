@@ -1,6 +1,7 @@
 <template>
   <div class="container py-5">
     <Breadcrumb
+      class="mb-4"
       :breadConfig="{ path: 'products', subNav: '書籍類別', title: '書籍介紹' }"
     ></Breadcrumb>
     <div class="row">
@@ -19,15 +20,15 @@
               <h3 class="font-sans fw-bold mb-3 mb-lg-5 fs-lg-2 fs-4">{{ singleProduct.title }}</h3>
               <ul>
                 <li class="mb-3 row">
-                  <div class="col-1 text-nowrap">作者：</div>
+                  <div class="col-lg-1 col-2 text-nowrap">作者：</div>
                   <div class="col-6 ms-3">{{ singleProduct.author }}</div>
                 </li>
                 <li class="mb-3 row">
-                  <div class="col-1 text-nowrap">出版社：</div>
+                  <div class="col-lg-1 col-2 text-nowrap">出版社：</div>
                   <div class="col-6 ms-3">{{ singleProduct.publish }}</div>
                 </li>
                 <li class="mb-2 align-items-center row">
-                  <div class="col-1 text-nowrap">價格：</div>
+                  <div class="col-lg-1 col-2 text-nowrap">價格：</div>
                   <div class="col-6 ms-3 d-flex align-items-center">
                     <p class="fs-3 fw-bold me-2">${{ singleProduct.price }}</p>
                     <p class="fs-7 text-gray text-decoration-line-through">

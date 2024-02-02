@@ -1,16 +1,25 @@
 <template>
   <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="fw-bold mb-5">收藏清單</h1>
+    <div class="d-flex justify-content-between align-items-center mb-lg-2">
+      <h1 class="fw-bold">收藏清單</h1>
     </div>
     <ul class="row g-4" v-if="collectStorage.length !== 0">
-      <li v-for="item in collectStorage" :key="item.id" class="col-lg-2 col-md-4 col-sm-6 mb-lg-0">
+      <li
+        v-for="item in collectStorage"
+        :key="item.id"
+        class="col-xl-2 col-lg-3 col-md-4 col-6 mb-lg-0"
+      >
         <ProductCard :item="item"></ProductCard>
       </li>
     </ul>
-    <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center" v-else>
-      <p class="fs-3 col-lg-4 fw-bold text-center mb-5">尚未收藏書本，<br />快去逛逛吧！</p>
-      <div class="col-lg-4">
+    <div class="row mt-4" v-else>
+      <div class="col-lg-6 offset-lg-3 text-center">
+        <p class="fs-4 fs-lg-3 fw-bold mb-2">尚未收藏書本，<br />快去逛逛吧！</p>
+        <RouterLink :to="{ name: 'products' }" class="mb-4"
+          ><BtnMore><template v-slot:text>瀏覽書籍</template></BtnMore></RouterLink
+        >
+      </div>
+      <div class="col-lg-4 offset-lg-4 text-center">
         <img src="@/assets/img/collect-empty.png" alt="" class="img-fluid" />
       </div>
     </div>
@@ -18,6 +27,7 @@
 </template>
 
 <script>
+import BtnMore from '@/components/user/BtnMore.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 
 import { mapState, mapActions } from 'pinia'
@@ -26,7 +36,7 @@ export default {
   computed: {
     ...mapState(productStore, ['collectStorage'])
   },
-  components: { ProductCard },
+  components: { ProductCard, BtnMore },
   methods: {
     ...mapActions(productStore, ['getStorage'])
   },
@@ -35,3 +45,5 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped></style>

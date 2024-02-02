@@ -50,12 +50,12 @@ export default defineStore('cartStore', {
     getCart() {
       userGetCart().then((res) => {
         this.cartList = res.data.data
-        // console.log(this.cartList)
+
         this.cartList.carts.forEach((item) => {
           item.final_total = addThousandsSeparator(item.final_total)
           item.total = addThousandsSeparator(item.total)
         })
-        console.log(this.cartList)
+
         this.cartList.final_total = Math.round(this.cartList.final_total)
         this.cartLength = res.data.data.carts.length
         this.saveMoney = Math.round(res.data.data.total - res.data.data.final_total)
@@ -74,25 +74,76 @@ export default defineStore('cartStore', {
       if (isPlus) {
         this.productCount++
       } else {
-        this.productCount--
+        if (this.productCount > 0) {
+          this.productCount--
+        }
       }
-      const info = { data: { product_id: item.id, qty: this.productCount } }
+      const info = { data: { product_id: item.product_id, qty: this.productCount } }
       userPutCart(item.id, info).then((res) => {
         item.qty = this.productCount
+
         if (item.qty === 0) {
-          this.deleteCart(item.id)
+          this.showAlert({
+            title: '確定要移除該商品嗎？',
+            showCancelButton: true,
+            icon: 'info'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.deleteCart(item.id)
+              this.getCart()
+            }
+          })
         }
+        // if (item.qty === 0) {
+        //   this.showAlert({
+        //     title: '確定要移除該商品嗎？',
+        //     showCancelButton: true,
+        //     icon: 'info'
+        //   })
+        //   this.deleteCart(item.id)
+        // }
         this.getCart()
       })
     },
     changeCartNum(item) {
       this.productCount = item.qty
-      const info = { data: { product_id: item.id, qty: this.productCount } }
+      if (!Number(item.qty) && item.qty !== 0) {
+        this.showToast({
+          title: '數量必須為數字',
+          icon: 'error'
+        })
+        item.qty = 1
+        return
+      }
+      if (item.qty < 0) {
+        item.qty = 1
+        this.productCount = item.qty
+        let info = { data: { product_id: item.product_id, qty: this.productCount } }
+        userPutCart(item.id, info).then((res) => {
+          this.getCart()
+        })
+        return
+      } else if (item.qty === 0) {
+        this.showAlert({
+          title: '確定要移除該商品嗎？',
+          showDenyButton: true,
+          icon: 'info',
+          denyButtonText: `保留`
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.deleteCart(item.id)
+            this.getCart()
+            return
+          } else if (result.isDenied) {
+            item.qty = 1
+          }
+        })
+
+        return
+      }
+
+      let info = { data: { product_id: item.product_id, qty: this.productCount } }
       userPutCart(item.id, info).then((res) => {
-        item.qty = this.productCount
-        if (item.qty === 0) {
-          this.deleteCart(item.id)
-        }
         this.getCart()
       })
     },
@@ -104,10 +155,9 @@ export default defineStore('cartStore', {
         icon: 'info'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.isLoading = true
+          // this.isLoading = true
           userDeleteCartAll().then((res) => {
             this.isLoading = false
-            console.log(res)
             this.getCart()
           })
         }

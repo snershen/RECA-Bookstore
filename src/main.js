@@ -34,7 +34,8 @@ import {
   faBars,
   faArrowLeft,
   faArrowRight,
-  faUser
+  faUser,
+  faCircleArrowLeft
 } from '@fortawesome/free-solid-svg-icons'
 
 import { faClipboard, faFileLines, faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
@@ -68,6 +69,7 @@ library.add(faFileLines)
 library.add(faBars)
 library.add(faArrowLeft)
 library.add(faArrowRight)
+library.add(faCircleArrowLeft)
 
 import { defineRule } from 'vee-validate'
 

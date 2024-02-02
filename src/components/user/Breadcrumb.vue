@@ -1,5 +1,5 @@
 <template>
-  <ol class="breadcrumb mb-5">
+  <ol class="breadcrumb">
     <li class="breadcrumb-item">
       <router-link :to="{ name: 'index' }" class="pe-lg-3">首頁</router-link>
     </li>
