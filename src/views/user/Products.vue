@@ -78,11 +78,6 @@
               <product-card :item="item" data-aos="fade-up"></product-card>
             </li>
           </ul>
-          <Pagination
-            class="py-5"
-            :inner-pagination="pagination"
-            @emit-page="getProducts"
-          ></Pagination>
         </template>
 
         <template v-if="!isEmptyResult && searchResult.length === 0">

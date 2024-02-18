@@ -26,6 +26,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
+  faStar as fasStar,
   faXmark,
   faPlus,
   faMinus,
@@ -38,7 +39,12 @@ import {
   faCircleArrowLeft
 } from '@fortawesome/free-solid-svg-icons'
 
-import { faClipboard, faFileLines, faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
+import {
+  faClipboard,
+  faFileLines,
+  faStar,
+  faHeart as farHeart
+} from '@fortawesome/free-regular-svg-icons'
 
 import { faInstagram, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons'
 
@@ -50,6 +56,7 @@ import router from './router'
 
 library.add(fasHeart)
 library.add(farHeart)
+library.add(faStar)
 library.add(faChevronLeft)
 library.add(faChevronRight)
 library.add(faXmark)
@@ -70,6 +77,7 @@ library.add(faBars)
 library.add(faArrowLeft)
 library.add(faArrowRight)
 library.add(faCircleArrowLeft)
+library.add(fasStar)
 
 import { defineRule } from 'vee-validate'
 

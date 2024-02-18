@@ -58,13 +58,19 @@ export default defineStore('productStore', {
     async getProducts(page = 1) {
       try {
         this.isLoading = true
-        const res = await userGetProduct(page)
-        const { products, pagination } = res.data
         if (this.selectedCategory === '全部') {
+          const res = await userGetProduct(page)
+          const { products, pagination } = res.data
           this.filterResult = products
           this.pagination = pagination
+          this.productList = products
+        } else {
+          const res = await userGetProduct(page, this.selectedCategory)
+          const { products, pagination } = res.data
+          this.filterResult = products
+          this.pagination = pagination
+          this.productList = products
         }
-        this.productList = products
       } catch (error) {
         console.error('Error fetching data:', error)
         throw error
@@ -108,6 +114,7 @@ export default defineStore('productStore', {
         const { products, pagination } = res.data
         this.filterResult = products
         this.pagination = pagination
+
         if (!tool) {
           this.singleProduct = ''
         }
@@ -207,12 +214,16 @@ export default defineStore('productStore', {
       if (sort === 'time') {
         if (!this.sortStatus) {
           this.filterResult = [...this.filterResult].sort((a, b) => {
-            return a.time.localeCompare(b.time)
+            if (a.time && b.time) {
+              return a.time.localeCompare(b.time)
+            }
           })
           this.sortStatus = !this.sortStatus
         } else {
           this.filterResult = [...this.filterResult].sort((a, b) => {
-            return b.time.localeCompare(a.time)
+            if (a.time && b.time) {
+              return b.time.localeCompare(a.time)
+            }
           })
           this.sortStatus = !this.sortStatus
         }
@@ -230,7 +241,13 @@ export default defineStore('productStore', {
         })
         this.sortStatus = !this.sortStatus
       }
-      console.log(this.filterResult)
+    },
+    sortTimeLower() {
+      this.filterResult = [...this.filterResult].sort((a, b) => {
+        if (a.time && b.time) {
+          return b.time.localeCompare(a.time)
+        }
+      })
     }
   }
 })

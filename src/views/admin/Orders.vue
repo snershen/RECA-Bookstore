@@ -41,63 +41,98 @@
             </td>
           </tr>
         </tbody>
-
         <OrderModal ref="orderModal" :inner-order="tempOrder"></OrderModal>
       </table>
     </div>
-    <Pagination
-      :inner-pagination="pagination"
-      @emit-page="getProducts"
-      v-if="pagination.total_pages !== 1"
-      class="py-5"
-    ></Pagination>
-    <ProductModal
-      ref="productModal"
-      :product="tempProduct"
-      @update-product="updateProduct"
-    ></ProductModal>
+    <Pagination :inner-pagination="pagination" @emit-page="getOrder" class="py-5"></Pagination>
   </div>
 </template>
 
 <script>
-import { adminGetOrder } from '@/utils/apis'
+// import { adminGetOrder } from '@/utils/apis'
 import { deleteOrder } from '@/utils/apis'
+// import { admin_getProductAll } from '@/utils/apis.js'
+// import { admin_putProduct } from '@/utils/apis.js'
 import OrderModal from '@/components/admin/OrderModal.vue'
 import Pagination from '@/components/Pagination.vue'
+
+import { mapState, mapActions } from 'pinia'
+import adminOrderStore from '@/stores/admin/order.js'
 
 import { timeFormat } from '@/utils/timeFormat'
 
 export default {
   data() {
     return {
-      orderList: [],
-      pagination: {},
-      tempOrder: {},
-      isLoading: false
+      // orderList: [],
+      // pagination: {},
+      tempOrder: {}
+
+      // productSoldNum: {}
     }
   },
   components: {
     OrderModal,
     Pagination
   },
+  computed: {
+    ...mapState(adminOrderStore, ['orderList', 'pagination', 'isLoading'])
+  },
   methods: {
-    getOrder(page = 1) {
-      this.isLoading = true
-      adminGetOrder(page).then((res) => {
-        this.orderList = res.data.orders
-        this.pagination = res.data.pagination
-        timeFormat(this.orderList)
-        this.isLoading = false
-        this.orderList.forEach((item) => {
-          item.total = Math.round(item.total)
-          timeFormat(item, 'create_at')
-        })
-      })
-    },
+    ...mapActions(adminOrderStore, ['getOrder', 'getOrderAll']),
+    // getOrder(page = 1) {
+    //   this.isLoading = true
+    //   adminGetOrder(page).then((res) => {
+    //     this.orderList = res.data.orders
+    //     this.pagination = res.data.pagination
+    //     timeFormat(this.orderList)
+    //     this.isLoading = false
+    //     this.orderList.forEach((item) => {
+    //       item.total = Math.round(item.total)
+    //       timeFormat(item, 'create_at')
+    //       this.calculateSoldNum()
+    //     })
+    //   })
+    // },
+
+    // calculateSoldNum() {
+    //   const orderId = this.orderList.map((item) => {
+    //     return Object.keys(item.products)
+    //   })
+    //   let result = []
+    //   orderId.forEach((id, index) => {
+    //     id.forEach((item) => {
+    //       result.push(this.orderList[index].products[item])
+    //     })
+    //   })
+    //   let productSoldNum = {}
+    //   result.forEach((item) => {
+    //     if (!productSoldNum[item.product_id]) {
+    //       productSoldNum[item.product_id] = item.qty
+    //     } else {
+    //       productSoldNum[item.product_id] += item.qty
+    //     }
+    //   })
+    //   console.clear()
+    //   console.log(this.orderList)
+    //   console.log(productSoldNum)
+
+    //   // this.orderList.forEach((item) => {
+    //   //   console.log(item)
+    //   //   this.tempProduct = item
+    //   //   productSoldNum[item.id].qty
+    //   //   admin_putProduct({ data: this.tempOrder }, item.id).then((res) => {
+    //   //     if (res.data.success) {
+    //   //       this.showToast({ title: res.data.message, icon: 'success' })
+    //   //       this.getProducts(this.pagination.current_page)
+    //   //     }
+    //   //   })
+    //   // })
+    //   // this.tempProduct = item
+    // },
     delOrder(order) {
       deleteOrder(order.id).then((res) => {
-        // console.log(res)
-        this.getOrderAll()
+        this.getOrder()
       })
     },
     openModal(item) {
@@ -108,6 +143,9 @@ export default {
   },
   created() {
     this.getOrder()
+    this.getOrderAll()
+    // await this.calculateSoldNum()
+    // await this.getProductsAll()
   }
 }
 </script>

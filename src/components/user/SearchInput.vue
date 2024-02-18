@@ -53,8 +53,8 @@ export default {
   methods: {
     ...mapActions(productStore, ['getProducts', 'getProductAll', 'searchProduct']),
     handleHotSearch(item) {
-      console.log('click')
       this.searchProduct(item)
+      this.$emit('close-collapse')
       this.$router.push('/products')
       this.searchString = ''
     },

@@ -157,8 +157,6 @@ export default {
       userPostOrder(this.orderData).then((res) => {
         const orderId = res.data.orderId
         this.$router.push(`/orders/${orderId}`)
-        console.log(orderId)
-        console.log(res.data)
       })
     },
     async submitForm() {

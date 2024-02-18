@@ -56,10 +56,8 @@ export default {
   },
   watch: {
     innerPagination: {
-      // deep: true,
       handler(newPagination) {
         this.pagination = newPagination
-        this.$forceUpdate()
       }
     }
   }

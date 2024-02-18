@@ -112,7 +112,7 @@ export default {
       this.tempCoupon = coupon
       //將日期轉換為時間戳記
       this.tempCoupon.due_date = Number(new Date(this.tempCoupon.due_date).getTime())
-      console.log(this.tempCoupon.due_date)
+
       if (this.isNew) {
         adminPostCoupon({ data: this.tempCoupon }).then((res) => {
           this.getCoupons()

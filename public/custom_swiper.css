@@ -58,7 +58,7 @@
   transform: translateX(-50%) rotate(-45deg);
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 992px) {
   .swiper-button-prev {
     left: -40px !important;
   }

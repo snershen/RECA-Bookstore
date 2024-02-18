@@ -88,6 +88,7 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import orderStore from '@/stores/order.js'
+import cartStore from '@/stores/cart.js'
 
 export default {
   data() {
@@ -101,10 +102,12 @@ export default {
   },
 
   methods: {
+    ...mapActions(cartStore, ['getCart']),
     ...mapActions(orderStore, ['getOrders', 'filterOrder', 'getOrderId'])
   },
   created() {
     this.getOrders()
+    this.getCart()
   }
 }
 </script>

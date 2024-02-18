@@ -32,7 +32,7 @@
             <td class="fw-bold">訂購品項</td>
             <td>
               <ul class="list-unordered ps-3">
-                <li v-for="item in orderProductList" class="mb-1 mb-lg-2">
+                <li v-for="item in orderProductList" class="mb-1">
                   <div class="row">
                     <span class="col-9 col-lg-10">
                       {{ item.product.title }}
@@ -68,6 +68,7 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import orderStore from '@/stores/order.js'
+import cartStore from '@/stores/cart.js'
 
 export default {
   data() {
@@ -80,6 +81,7 @@ export default {
   },
   props: ['id'],
   methods: {
+    ...mapActions(cartStore, ['getCart']),
     ...mapActions(orderStore, ['getSingleOrder', 'payMoney']),
     getOrderItem() {
       const idGroup = Object.keys(this.order.products)
@@ -93,6 +95,7 @@ export default {
   async created() {
     await this.getSingleOrder(this.id)
     this.getOrderItem()
+    this.getCart()
   }
 }
 </script>

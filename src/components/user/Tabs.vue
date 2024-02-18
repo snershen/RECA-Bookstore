@@ -33,20 +33,26 @@ export default {
     ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll', 'sortProduct']),
+    ...mapActions(productStore, [
+      'getProducts',
+      'filterProduct',
+      'getProductAll',
+      'sortProduct',
+      'sortTimeLower'
+    ]),
     directProductPage() {
       this.$router.push('/products')
       this.searchString = ''
     },
     async handleFilter(item) {
       await this.filterProduct(item)
-      await this.sortProduct('time')
+      await this.sortTimeLower()
     }
   },
   async created() {
     await this.getProducts()
     await this.filterProduct(this.categoryList[0])
-    await this.sortProduct('time')
+    await this.sortTimeLower()
   }
 }
 </script>

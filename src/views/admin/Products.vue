@@ -14,7 +14,8 @@
             <th width="10%">原價</th>
             <th width="10%">售價</th>
             <th width="10%">是否啟用</th>
-            <th width="12%">編輯</th>
+            <th width="5%">精選</th>
+            <th width="10%">編輯</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +39,24 @@
                 />
                 <label :for="product.id"> Toggle </label>
               </div>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn border-0 ps-0"
+                @click.prevent="updateIsFeature(product)"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'star']"
+                  class="text-gray fa-lg"
+                  v-show="product.is_feature === false || !product.is_feature"
+                />
+                <font-awesome-icon
+                  :icon="['fas', 'star']"
+                  class="text-dark fa-lg"
+                  v-show="product.is_feature === true"
+                />
+              </button>
             </td>
             <td>
               <div>
@@ -126,7 +145,7 @@ export default {
           if (res.data.success) {
             console.log(res)
             productComponent.hideModal()
-            this.getProducts()
+            this.getProducts(this.pagination.current_page)
           }
         })
         // api = `${import.meta.env.VITE_API_URL}/api/${import.meta.env.VITE_API_PATH}/admin/product/${
@@ -137,7 +156,7 @@ export default {
         admin_postProduct({ data: this.tempProduct }).then((res) => {
           this.showToast({ title: res.data.message, icon: 'success' })
           productComponent.hideModal()
-          this.getProducts()
+          this.getProducts(this.pagination.current_page)
         })
       }
       // this.$http[httpMethod](api, { data: this.tempProduct }).then((res) => {
@@ -152,7 +171,17 @@ export default {
       admin_putProduct({ data: this.tempProduct }, item.id).then((res) => {
         if (res.data.success) {
           this.showToast({ title: res.data.message, icon: 'success' })
-          this.getProducts()
+          this.getProducts(this.pagination.current_page)
+        }
+      })
+    },
+    updateIsFeature(item) {
+      this.tempProduct = item
+      this.tempProduct.is_feature = !this.tempProduct.is_feature
+      admin_putProduct({ data: this.tempProduct }, item.id).then((res) => {
+        if (res.data.success) {
+          this.showToast({ title: res.data.message, icon: 'success' })
+          this.getProducts(this.pagination.current_page)
         }
       })
     },
@@ -161,7 +190,7 @@ export default {
         (result) => {
           if (result.isConfirmed) {
             admin_deleteProduct(item.id).then((res) => {
-              this.getProducts()
+              this.getProducts(this.pagination.current_page)
               this.showToast({ title: res.data.message, icon: 'success' })
             })
           }

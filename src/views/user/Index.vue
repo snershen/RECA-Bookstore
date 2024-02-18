@@ -6,7 +6,7 @@
       <div class="container">
         <swiper-container init="false" ref="bannerSwiper" class="container banner-swiper pt-5">
           <swiper-slide
-            v-for="item in productList"
+            v-for="item in featureList"
             :key="`banner${item.id}`"
             class="h-auto d-flex justify-content-center"
             lazy="true"
@@ -90,7 +90,7 @@
         </div>
       </div>
     </section>
-
+    {{ sortSoldNum }}
     <section class="container py-6">
       <h2 class="fw-bold fs-2 mb-5">暢銷排行</h2>
       <div class="row">
@@ -107,11 +107,13 @@
               :data-index="index + 1"
             >
               <div class="border-bottom py-2 text-truncate">
-                <span class="me-2 rank-number">{{ index + 1 }}</span> {{ item.title }}
+                <span class="me-2 rank-number">{{ index + 1 }}</span>
+                {{ item.title }}
               </div>
             </swiper-slide>
           </swiper-container>
         </div>
+
         <div class="col-lg-9">
           <swiper-container
             init="false"
@@ -184,13 +186,14 @@
 import { mapState, mapActions } from 'pinia'
 import productStore from '@/stores/product.js'
 import articleStore from '@/stores/article.js'
+import adminOrderStore from '@/stores/admin/order.js'
 
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
 import Tabs from '@/components/user/Tabs.vue'
 import BtnMore from '@/components/user/BtnMore.vue'
 
-import SwiperCore from 'swiper'
+// import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // import { Thumbs } from 'swiper/modules'
 import { Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Thumbs } from 'swiper/modules'
@@ -198,6 +201,8 @@ import { Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Thumbs } from 's
 export default {
   data() {
     return {
+      featureList: [],
+      soldList: [],
       // modules: [Navigation, Pagination, Scrollbar, Autoplay, FreeMode],
       bannerSwiper: {
         spaceBetween: 60,
@@ -237,6 +242,7 @@ export default {
         scrollbar: true,
         navigation: true,
         loop: false,
+
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -257,6 +263,8 @@ export default {
         direction: 'vertical',
         watchSlidesProgress: true,
         autoScrollOffset: 1,
+        observer: true,
+        observeParents: true,
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -268,6 +276,8 @@ export default {
       },
       rankContentSwiper: {
         modules: [Thumbs],
+        observer: true,
+        observeParents: true,
         slidesPerView: 1
       }
     }
@@ -290,15 +300,19 @@ export default {
       'productAll',
       'isLoading'
     ]),
-    ...mapState(articleStore, ['articleList'])
+    ...mapState(articleStore, ['articleList']),
+    ...mapState(adminOrderStore, ['sortSoldNum'])
   },
 
   methods: {
     ...mapActions(productStore, ['getProducts', 'getProductAll', 'filterProduct', 'sortProduct']),
     ...mapActions(articleStore, ['getArticles']),
+
     initializeSwiper(el, config) {
       const swiperEl = el
       const params = {
+        observer: true,
+        observeParents: true,
         loop: true,
         autoplay: true,
         injectStylesUrls: ['./custom_swiper.css'],
@@ -306,20 +320,19 @@ export default {
       }
       Object.assign(swiperEl, params)
       swiperEl.initialize()
-    }
-  },
-  watch: {
-    filterResult() {
-      console.log('initial')
-      this.$nextTick(() => {
-        this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
+    },
+    filterFeature() {
+      this.featureList = this.productAll.filter((item) => {
+        return item.is_feature
       })
     }
   },
-  created() {
-    this.getProducts()
+
+  async created() {
+    await this.getProducts()
     this.getArticles()
-    this.getProductAll()
+    await this.getProductAll()
+    this.filterFeature()
   },
   mounted() {
     // setTimeout(() => {
@@ -338,6 +351,10 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/mixin';
 
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari 兼容*/
+}
+
 .banner {
   background-image: url('../../assets/img/banner-bg.png');
   background-position: center;
@@ -355,6 +372,7 @@ export default {
   img {
     max-height: 250px;
   }
+
   .swiper-slide {
     padding: 30px 0;
     transition: transform 0.5s;
@@ -366,7 +384,7 @@ export default {
   }
 }
 
-.swiper-today {
+:deep(.swiper-today) {
   // padding-left: 60px;
   // padding-right: 60px;
   .swiper-slide {
