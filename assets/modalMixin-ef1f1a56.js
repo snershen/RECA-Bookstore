@@ -1,0 +1,1 @@
+import{M as o}from"./modal-72184a1d.js";const d={data(){return{modal:{}}},methods:{showModal(){this.modal.show()},hideModal(){this.modal.hide()}},mounted(){this.modal=new o(this.$refs.modal,{keyboard:!1,backdrop:"static"})}};export{d as m};
