@@ -27,13 +27,13 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 export default {
   computed: {
-    ...mapState(productStore, ['productList', 'categoryList', 'selectedCategory'])
+    ...mapState(useProductStore, ['productList', 'categoryList', 'selectedCategory'])
   },
   methods: {
-    ...mapActions(productStore, [
+    ...mapActions(useProductStore, [
       'getProducts',
       'filterProduct',
       'getProductAll',
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/mixin';
+@import '@/assets/scss/mixin';
 
 .nav-wrapper {
   position: relative;
@@ -74,7 +74,6 @@ export default {
   &::before {
     left: -20px;
     background: linear-gradient(90deg, rgba(255, 252, 246, 1) 30%, rgba(255, 252, 246, 0.2) 60%);
-    // display: none;
   }
   &::after {
     right: 0px;
@@ -85,7 +84,6 @@ export default {
 .nav {
   margin-left: -20px;
   overflow: hidden;
-  // position: relative;
 }
 
 .nav-link {

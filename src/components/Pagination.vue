@@ -12,14 +12,24 @@
           <font-awesome-icon :icon="['fas', 'chevron-left']" class="fa-sm" />
         </button>
       </li>
+      <li v-show="pagination.current_page !== 1 && pagination.current_page > 3" class="px-2 pt-1">
+        ⋯
+      </li>
       <li
         class="page-item mx-1"
         v-for="page in pagination.total_pages"
         :key="page"
         :class="{ active: pagination.current_page === page }"
       >
-        <a class="page-link" href="#" @click.prevent="updatePage(page)">{{ page }}</a>
+        <a
+          class="page-link"
+          href="#"
+          @click.prevent="updatePage(page)"
+          v-show="page < pagination.current_page + 3 && page > pagination.current_page - 3"
+          >{{ page }}</a
+        >
       </li>
+      <li v-show="pagination.current_page + 2 < pagination.total_pages" class="px-2 pt-1">⋯</li>
       <li class="page-item">
         <button
           type="button"

@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 import Swal from 'sweetalert2'
 
-import { userGetProduct } from '@/utils/apis'
-import { userGetSingleProduct } from '@/utils/apis'
-import { userGetProductAll } from '@/utils/apis'
+import { userGetProduct } from '@/assets/js/apis'
+import { userGetSingleProduct } from '@/assets/js/apis'
+import { userGetProductAll } from '@/assets/js/apis'
 
-export default defineStore('productStore', {
+export const useProductStore = defineStore('productStore', {
   state: () => {
     return {
       productList: [],
@@ -30,7 +30,14 @@ export default defineStore('productStore', {
       collectStorage: []
     }
   },
-
+  getters: {
+    filterToday: (state) =>
+      state.productAll.sort((a, b) => {
+        if (a.time && b.time) {
+          return b.time.localeCompare(a.time)
+        }
+      })
+  },
   actions: {
     showToast(options) {
       Swal.mixin({
@@ -43,6 +50,7 @@ export default defineStore('productStore', {
       }).fire()
     },
     async getProductAll() {
+      this.isLoading = true
       try {
         const res = await userGetProductAll()
         this.productAll = res.data.products
@@ -248,6 +256,9 @@ export default defineStore('productStore', {
           return b.time.localeCompare(a.time)
         }
       })
+    },
+    setLoading(value) {
+      this.isLoading = value
     }
   }
 })

@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import Swal from 'sweetalert2'
-import { addThousandsSeparator } from '@/utils/thousandNumber.js'
+import { addThousandsSeparator } from '@/assets/js/thousandNumber.js'
 
-import { userGetCart } from '@/utils/apis'
-import { userDeleteCart } from '@/utils/apis'
-import { userPutCart } from '@/utils/apis'
-import { userPostCart } from '@/utils/apis'
-import { userDeleteCartAll } from '@/utils/apis'
+import { userGetCart } from '@/assets/js/apis'
+import { userDeleteCart } from '@/assets/js/apis'
+import { userPutCart } from '@/assets/js/apis'
+import { userPostCart } from '@/assets/js/apis'
+import { userDeleteCartAll } from '@/assets/js/apis'
 
 export default defineStore('cartStore', {
   state: () => {
@@ -40,8 +40,6 @@ export default defineStore('cartStore', {
     },
     showAlert(options) {
       return Swal.fire({
-        // icon: 'warning',
-        // showCancelButton: true,
         confirmButtonText: '確定',
         cancelButtonText: '取消',
         ...options
@@ -94,14 +92,6 @@ export default defineStore('cartStore', {
             }
           })
         }
-        // if (item.qty === 0) {
-        //   this.showAlert({
-        //     title: '確定要移除該商品嗎？',
-        //     showCancelButton: true,
-        //     icon: 'info'
-        //   })
-        //   this.deleteCart(item.id)
-        // }
         this.getCart()
       })
     },
@@ -155,7 +145,6 @@ export default defineStore('cartStore', {
         icon: 'info'
       }).then((result) => {
         if (result.isConfirmed) {
-          // this.isLoading = true
           userDeleteCartAll().then((res) => {
             this.isLoading = false
             this.getCart()

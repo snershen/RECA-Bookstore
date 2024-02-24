@@ -9,7 +9,7 @@
         :key="item.id"
         class="col-xl-2 col-lg-3 col-md-4 col-6 mb-lg-0"
       >
-        <ProductCard :item="item"></ProductCard>
+        <ProductCard :item="item" />
       </li>
     </ul>
     <div class="row mt-4" v-else>
@@ -20,7 +20,7 @@
         >
       </div>
       <div class="col-lg-4 offset-lg-4 text-center">
-        <img src="@/assets/img/collect-empty.png" alt="" class="img-fluid" />
+        <img src="@/assets/img/collect-empty.png" alt="無收藏清單" class="img-fluid" />
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@ export default {
     ...mapActions(productStore, ['getStorage'])
   },
   created() {
-    this.getStorage
+    this.getStorage()
   }
 }
 </script>

@@ -13,7 +13,6 @@
       >
         分類：{{ selectedCategory }}
       </h1>
-
       <h1 class="fw-bold" v-else-if="searchResult.length !== 0 && !isEmptyResult">
         "{{ searchString }}" 搜尋結果<br />
         <span class="fs-4">共有 {{ searchResult.length }} 筆商品符合</span>
@@ -69,13 +68,13 @@
     </div>
     <div class="row">
       <div class="col-lg-3 mb-5 mb-lg-0">
-        <product-category></product-category>
+        <ProductCategory />
       </div>
       <div class="col-lg-9">
         <template v-if="searchResult.length !== 0">
           <ul class="row g-3">
             <li v-for="item in searchResult" :key="item.id" class="col-lg-3 col-6 d-flex">
-              <product-card :item="item" data-aos="fade-up"></product-card>
+              <ProductCard :item="item" data-aos="fade-up" />
             </li>
           </ul>
         </template>
@@ -83,14 +82,10 @@
         <template v-if="!isEmptyResult && searchResult.length === 0">
           <ul class="row g-3">
             <li v-for="item in filterResult" :key="item.id" class="col-lg-3 col-6 d-flex">
-              <product-card :item="item" data-aos="fade-up"></product-card>
+              <ProductCard :item="item" data-aos="fade-up" />
             </li>
           </ul>
-          <Pagination
-            class="py-5"
-            :inner-pagination="pagination"
-            @emit-page="getProducts"
-          ></Pagination>
+          <Pagination class="py-5" :inner-pagination="pagination" @emit-page="getProducts" />
         </template>
 
         <div
@@ -105,7 +100,7 @@
               <template v-slot:text>瀏覽全部書籍</template></BtnMore
             >
           </div>
-          <img src="@/assets/img/noResult.png" alt="" class="img-fluid" />
+          <img src="@/assets/img/noResult.png" alt="查無結果" class="img-fluid" />
         </div>
       </div>
     </div>
@@ -119,7 +114,7 @@ import ProductCard from '@/components/user/ProductCard.vue'
 import Pagination from '@/components/Pagination.vue'
 
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 
 export default {
   components: {
@@ -130,7 +125,7 @@ export default {
   },
 
   computed: {
-    ...mapState(productStore, [
+    ...mapState(useProductStore, [
       'pagination',
       'filterResult',
       'searchResult',
@@ -143,11 +138,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(productStore, ['getProducts', 'filterProduct', 'getProductAll', 'sortProduct'])
+    ...mapActions(useProductStore, ['filterProduct', 'getProductAll', 'sortProduct'])
   },
 
   created() {
-    this.getProducts()
+    useProductStore().getProducts()
   }
 }
 </script>

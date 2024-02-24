@@ -24,8 +24,6 @@
           <li class="col-1"></li>
         </ul>
       </li>
-
-      <!-- :class="{ 'd-none': item.qty === 0 }" -->
       <li class="row border-bottom py-3" v-for="item in cartList.carts">
         <div class="col-lg-1 col-3">
           <img :src="item.product.imageUrl" alt="" class="img-fluid" />
@@ -115,32 +113,32 @@
     </div>
     <div class="row justify-content-between py-5" v-if="cartLength">
       <div class="col-lg-4 col-12">
-        <router-link
+        <RouterLink
           :to="{ name: 'products' }"
           class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           ><span class="btn-arrow btn-arrow-left me-2"></span>繼續逛逛
-        </router-link>
+        </RouterLink>
       </div>
       <div class="col-lg-4 col-12">
-        <router-link :to="{ name: 'pay' }" class="btn btn-secondary rounded-0 w-100 py-3">
+        <RouterLink :to="{ name: 'pay' }" class="btn btn-secondary rounded-0 w-100 py-3">
           前往結帳<span class="btn-arrow btn-arrow-right ms-2"></span
-        ></router-link>
+        ></RouterLink>
       </div>
     </div>
     <div class="row justify-content-between py-5" v-else>
       <div class="col-lg-4 mx-auto">
-        <router-link
+        <RouterLink
           :to="{ name: 'products' }"
           class="btn btn-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
           ><span class="me-2"></span>繼續逛逛
-        </router-link>
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { userCheckCoupon } from '@/utils/apis'
+import { userCheckCoupon } from '@/assets/js/apis'
 import toastMixin from '@/mixins/toastMixin.js'
 
 import { mapState, mapActions } from 'pinia'
@@ -174,17 +172,21 @@ export default {
           code: this.couponCode
         }
       }
-      userCheckCoupon(data).then((res) => {
-        if (res.data.success) {
-          this.hasCoupon = true
-          this.getCart()
-        }
-        const message = res.data.message
-        this.showToast({
-          title: message,
-          icon: 'info'
+      userCheckCoupon(data)
+        .then((res) => {
+          if (res.data.success) {
+            this.hasCoupon = true
+            this.getCart()
+          }
+          const message = res.data.message
+          this.showToast({
+            title: message,
+            icon: 'info'
+          })
         })
-      })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   },
   created() {

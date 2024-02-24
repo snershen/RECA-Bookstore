@@ -25,7 +25,6 @@
           <RouterLink
             class="nav-link"
             :to="{ name: item.name }"
-            :class="{ active: currentRoute === item.meta.title }"
             @click.prevent="currentRoute = item.meta.title"
             >{{ item.meta.title }}</RouterLink
           >
@@ -38,23 +37,23 @@
 </template>
 
 <script>
-import { apiLogout } from '@/utils/apis.js'
+import { apiLogout } from '@/assets/js/apis.js'
 import toastMixin from '@/mixins/toastMixin.js'
 
 export default {
   data() {
     return {
-      childrenRoute: [],
-      currentRoute: '產品管理'
+      childrenRoute: []
     }
   },
   mixins: [toastMixin],
   methods: {
     logout() {
       apiLogout()
-        .then((res) => {
+        .then(() => {
           this.$router.push({ name: 'admin-login' })
           this.showToast({ title: '已登出', icon: 'success' })
+          document.cookie = ''
         })
         .catch((err) => {
           console.error(err)
@@ -81,17 +80,7 @@ export default {
   border-radius: 4px;
   &.active {
     color: white;
-
     background: #000;
-    // &::after {
-    //   content: '';
-    //   position: absolute;
-    //   width: 4px;
-    //   height: 100%;
-    //   background: #c9a65c;
-    //   left: 0;
-    //   top: 0;
-    // }
   }
 }
 

@@ -31,8 +31,8 @@ ul {
 }
 
 input[type='number'] {
-  // -moz-appearance: textfield;
-  // -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
   line-height: 1px !important;
 }
 

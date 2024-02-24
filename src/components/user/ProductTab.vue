@@ -41,7 +41,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 
 export default {
   data() {
@@ -51,10 +51,10 @@ export default {
   },
 
   computed: {
-    ...mapState(productStore, ['singleProduct', 'singleProductId'])
+    ...mapState(useProductStore, ['singleProduct', 'singleProductId'])
   },
   methods: {
-    ...mapActions(productStore, ['getSingleProduct'])
+    ...mapActions(useProductStore, ['getSingleProduct'])
   },
   async created() {
     await this.getSingleProduct(this.$route.params.id)

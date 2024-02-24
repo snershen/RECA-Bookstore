@@ -12,14 +12,14 @@
         </div>
       </div>
       <div class="container py-4">
-        <RouterView :isLoading="isLoading" />
+        <RouterView />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { apiCheck } from '@/utils/apis.js'
+import { apiCheck } from '@/assets/js/apis.js'
 import Navbar from '@/components/admin/Navbar.vue'
 
 export default {

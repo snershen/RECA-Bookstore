@@ -41,14 +41,6 @@
   </footer>
 </template>
 
-<script>
-export default {
-  handleClick() {
-    console.log('已點擊')
-  }
-}
-</script>
-
 <style scoped>
 .social-link {
   width: 36px;

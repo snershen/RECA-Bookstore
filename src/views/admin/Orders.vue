@@ -2,7 +2,6 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fs-3 fw-bold font-sans">訂單管理</h1>
   </div>
-
   <div :class="{ isLoading: isLoading }" class="px-4 py-2 bg-white rounded-3">
     <div class="table-overflow">
       <table class="table table-hover mt-4 align-middle w-100">
@@ -28,7 +27,6 @@
             </td>
             <td>{{ order.user.name }}</td>
             <td>{{ order.total }}</td>
-
             <td>
               <div>
                 <button class="btn btn-dark btn-sm me-1" @click="openModal(order)">
@@ -41,34 +39,25 @@
             </td>
           </tr>
         </tbody>
-        <OrderModal ref="orderModal" :inner-order="tempOrder"></OrderModal>
+        <OrderModal ref="orderModal" :inner-order="tempOrder" />
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getOrder" class="py-5"></Pagination>
+    <Pagination :inner-pagination="pagination" @emit-page="getOrder" class="py-5" />
   </div>
 </template>
 
 <script>
-// import { adminGetOrder } from '@/utils/apis'
-import { deleteOrder } from '@/utils/apis'
-// import { admin_getProductAll } from '@/utils/apis.js'
-// import { admin_putProduct } from '@/utils/apis.js'
+import { deleteOrder } from '@/assets/js/apis'
 import OrderModal from '@/components/admin/OrderModal.vue'
 import Pagination from '@/components/Pagination.vue'
 
 import { mapState, mapActions } from 'pinia'
 import adminOrderStore from '@/stores/admin/order.js'
 
-import { timeFormat } from '@/utils/timeFormat'
-
 export default {
   data() {
     return {
-      // orderList: [],
-      // pagination: {},
       tempOrder: {}
-
-      // productSoldNum: {}
     }
   },
   components: {
@@ -80,60 +69,14 @@ export default {
   },
   methods: {
     ...mapActions(adminOrderStore, ['getOrder', 'getOrderAll']),
-    // getOrder(page = 1) {
-    //   this.isLoading = true
-    //   adminGetOrder(page).then((res) => {
-    //     this.orderList = res.data.orders
-    //     this.pagination = res.data.pagination
-    //     timeFormat(this.orderList)
-    //     this.isLoading = false
-    //     this.orderList.forEach((item) => {
-    //       item.total = Math.round(item.total)
-    //       timeFormat(item, 'create_at')
-    //       this.calculateSoldNum()
-    //     })
-    //   })
-    // },
-
-    // calculateSoldNum() {
-    //   const orderId = this.orderList.map((item) => {
-    //     return Object.keys(item.products)
-    //   })
-    //   let result = []
-    //   orderId.forEach((id, index) => {
-    //     id.forEach((item) => {
-    //       result.push(this.orderList[index].products[item])
-    //     })
-    //   })
-    //   let productSoldNum = {}
-    //   result.forEach((item) => {
-    //     if (!productSoldNum[item.product_id]) {
-    //       productSoldNum[item.product_id] = item.qty
-    //     } else {
-    //       productSoldNum[item.product_id] += item.qty
-    //     }
-    //   })
-    //   console.clear()
-    //   console.log(this.orderList)
-    //   console.log(productSoldNum)
-
-    //   // this.orderList.forEach((item) => {
-    //   //   console.log(item)
-    //   //   this.tempProduct = item
-    //   //   productSoldNum[item.id].qty
-    //   //   admin_putProduct({ data: this.tempOrder }, item.id).then((res) => {
-    //   //     if (res.data.success) {
-    //   //       this.showToast({ title: res.data.message, icon: 'success' })
-    //   //       this.getProducts(this.pagination.current_page)
-    //   //     }
-    //   //   })
-    //   // })
-    //   // this.tempProduct = item
-    // },
     delOrder(order) {
-      deleteOrder(order.id).then((res) => {
-        this.getOrder()
-      })
+      deleteOrder(order.id)
+        .then(() => {
+          this.getOrder()
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     openModal(item) {
       this.tempOrder = { ...item }
@@ -144,8 +87,6 @@ export default {
   created() {
     this.getOrder()
     this.getOrderAll()
-    // await this.calculateSoldNum()
-    // await this.getProductsAll()
   }
 }
 </script>

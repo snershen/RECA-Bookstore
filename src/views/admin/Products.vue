@@ -75,21 +75,21 @@
         </tbody>
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getProducts" class="py-5"></Pagination>
+    <Pagination :inner-pagination="pagination" @emit-page="getProducts" class="py-5" />
     <ProductModal
       ref="productModal"
       :product="tempProduct"
       :isNew="isNew"
       @update-product="updateProduct"
-    ></ProductModal>
+    />
   </div>
 </template>
 
 <script>
-import { admin_getProducts } from '@/utils/apis.js'
-import { admin_putProduct } from '@/utils/apis.js'
-import { admin_postProduct } from '@/utils/apis.js'
-import { admin_deleteProduct } from '@/utils/apis.js'
+import { admin_getProducts } from '@/assets/js/apis.js'
+import { admin_putProduct } from '@/assets/js/apis.js'
+import { admin_postProduct } from '@/assets/js/apis.js'
+import { admin_deleteProduct } from '@/assets/js/apis.js'
 
 import ProductModal from '@/components/admin/ProductModal.vue'
 import Pagination from '@/components/Pagination.vue'
@@ -116,13 +116,17 @@ export default {
   methods: {
     getProducts(page = 1) {
       this.isLoading = true
-      admin_getProducts(page).then((res) => {
-        this.isLoading = false
-        if (res.data.success) {
-          this.products = res.data.products
-          this.pagination = res.data.pagination
-        }
-      })
+      admin_getProducts(page)
+        .then((res) => {
+          this.isLoading = false
+          if (res.data.success) {
+            this.products = res.data.products
+            this.pagination = res.data.pagination
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     openModal(isNew, item) {
       if (isNew) {
@@ -135,67 +139,77 @@ export default {
       productComponent.showModal()
     },
     updateProduct(item) {
-      // let api = `${import.meta.env.VITE_API_URL}/api/${import.meta.env.VITE_API_PATH}/admin/product`
-      // let httpMethod = 'post'
       const productComponent = this.$refs.productModal
       this.tempProduct = item
       if (!this.isNew) {
-        admin_putProduct({ data: this.tempProduct }, item.id).then((res) => {
-          this.showToast({ title: res.data.message, icon: 'success' })
-          if (res.data.success) {
-            console.log(res)
+        admin_putProduct({ data: this.tempProduct }, item.id)
+          .then((res) => {
+            this.showToast({ title: res.data.message, icon: 'success' })
+            if (res.data.success) {
+              productComponent.hideModal()
+              this.getProducts(this.pagination.current_page)
+            }
+          })
+          .catch((err) => {
+            console.error(err)
+          })
+      } else {
+        admin_postProduct({ data: this.tempProduct })
+          .then((res) => {
+            this.showToast({ title: res.data.message, icon: 'success' })
             productComponent.hideModal()
             this.getProducts(this.pagination.current_page)
-          }
-        })
-        // api = `${import.meta.env.VITE_API_URL}/api/${import.meta.env.VITE_API_PATH}/admin/product/${
-        //   item.id
-        // }`
-        // httpMethod = 'put'
-      } else {
-        admin_postProduct({ data: this.tempProduct }).then((res) => {
-          this.showToast({ title: res.data.message, icon: 'success' })
-          productComponent.hideModal()
-          this.getProducts(this.pagination.current_page)
-        })
+          })
+          .catch((err) => {
+            console.error(err)
+          })
       }
-      // this.$http[httpMethod](api, { data: this.tempProduct }).then((res) => {
-      //   console.log(res)
-      //   productComponent.hideModal()
-      //   this.getProducts()
-      // })
     },
     updateIsAble(item) {
       this.tempProduct = item
       this.tempProduct.is_enabled = !this.tempProduct.is_enabled
-      admin_putProduct({ data: this.tempProduct }, item.id).then((res) => {
-        if (res.data.success) {
-          this.showToast({ title: res.data.message, icon: 'success' })
-          this.getProducts(this.pagination.current_page)
-        }
-      })
+      admin_putProduct({ data: this.tempProduct }, item.id)
+        .then((res) => {
+          if (res.data.success) {
+            this.showToast({ title: res.data.message, icon: 'success' })
+            this.getProducts(this.pagination.current_page)
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     updateIsFeature(item) {
       this.tempProduct = item
       this.tempProduct.is_feature = !this.tempProduct.is_feature
-      admin_putProduct({ data: this.tempProduct }, item.id).then((res) => {
-        if (res.data.success) {
-          this.showToast({ title: res.data.message, icon: 'success' })
-          this.getProducts(this.pagination.current_page)
-        }
-      })
+      admin_putProduct({ data: this.tempProduct }, item.id)
+        .then((res) => {
+          if (res.data.success) {
+            this.showToast({ title: res.data.message, icon: 'success' })
+            this.getProducts(this.pagination.current_page)
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     deleteProduct(item) {
-      this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true }).then(
-        (result) => {
+      this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true })
+        .then((result) => {
           if (result.isConfirmed) {
-            admin_deleteProduct(item.id).then((res) => {
-              this.getProducts(this.pagination.current_page)
-              this.showToast({ title: res.data.message, icon: 'success' })
-            })
+            admin_deleteProduct(item.id)
+              .then((res) => {
+                this.getProducts(this.pagination.current_page)
+                this.showToast({ title: res.data.message, icon: 'success' })
+              })
+              .catch((err) => {
+                console.error(err)
+              })
           }
-        }
-      )
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     toggleCheckbox() {
       this.productChecked = !this.productChecked
@@ -208,7 +222,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/mixin.scss';
+@import '@/assets/scss/mixin.scss';
 input[type='checkbox'] {
   height: 0;
   width: 0;

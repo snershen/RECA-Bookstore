@@ -1,4 +1,4 @@
-import './assets/main.scss'
+import './assets/scss/main.scss'
 
 import { createApp } from 'vue'
 
@@ -13,7 +13,6 @@ import { register } from 'swiper/element/bundle'
 
 // Import stylesheet
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
-// import 'vue3-lottie/dist/style.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {

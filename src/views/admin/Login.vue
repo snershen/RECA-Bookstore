@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { apiSignIn } from '@/utils/apis.js'
+import { apiSignIn } from '@/assets/js/apis.js'
 import toastMixin from '@/mixins/toastMixin'
 
 export default {
@@ -83,7 +83,7 @@ export default {
         }
       } catch (err) {
         this.showToast({ title: `請輸入正確的帳號和密碼`, icon: 'warning' })
-        console.log(err)
+        console.error(err)
       }
     }
   }

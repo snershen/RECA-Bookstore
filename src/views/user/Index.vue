@@ -1,12 +1,15 @@
 <template>
+  <LoadingComponent :isLoading="indexLoading" />
   <main>
     <section class="banner py-6 vh-100">
-      <h1 class="banner-title text-center fw-bold">踏上探索之旅<br />尋找屬於自己的命定之書</h1>
+      <h1 class="banner-title text-center fw-bold pt-lg-4">
+        踏上探索之旅<br />尋找屬於自己的命定之書
+      </h1>
       <p class="banner-subtitle text-center mt-2 fs-4 text-white">上萬本書籍等待你的閱讀</p>
       <div class="container">
         <swiper-container init="false" ref="bannerSwiper" class="container banner-swiper pt-5">
           <swiper-slide
-            v-for="item in featureList"
+            v-for="item in filterFeature"
             :key="`banner${item.id}`"
             class="h-auto d-flex justify-content-center"
             lazy="true"
@@ -33,7 +36,7 @@
       </div>
       <div class="position-relative">
         <swiper-container init="false" ref="todaySwiper" class="container swiper-today my-5">
-          <swiper-slide v-for="item in productList" :key="`today${item.id}`" class="h-auto">
+          <swiper-slide v-for="item in filterToday" :key="`today${item.id}`" class="h-auto">
             <div class="today-card">
               <div class="today-card-img mb-3">
                 <img
@@ -90,7 +93,7 @@
         </div>
       </div>
     </section>
-    {{ sortSoldNum }}
+
     <section class="container py-6">
       <h2 class="fw-bold fs-2 mb-5">暢銷排行</h2>
       <div class="row">
@@ -184,12 +187,13 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 import articleStore from '@/stores/article.js'
 import adminOrderStore from '@/stores/admin/order.js'
 
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
+import LoadingComponent from '@/components/Loading.vue'
 import Tabs from '@/components/user/Tabs.vue'
 import BtnMore from '@/components/user/BtnMore.vue'
 
@@ -201,8 +205,8 @@ import { Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Thumbs } from 's
 export default {
   data() {
     return {
-      featureList: [],
       soldList: [],
+      indexLoading: false,
       // modules: [Navigation, Pagination, Scrollbar, Autoplay, FreeMode],
       bannerSwiper: {
         spaceBetween: 60,
@@ -242,7 +246,6 @@ export default {
         scrollbar: true,
         navigation: true,
         loop: false,
-
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -259,7 +262,7 @@ export default {
         }
       },
       rankSwiper: {
-        slidesPerView: 5,
+        slidesPerView: 1,
         direction: 'vertical',
         watchSlidesProgress: true,
         autoScrollOffset: 1,
@@ -288,26 +291,31 @@ export default {
     ArticleCard,
     Tabs,
     BtnMore,
+    LoadingComponent,
     Swiper,
     SwiperSlide
   },
 
   computed: {
-    ...mapState(productStore, [
-      'productList',
-      'categoryList',
-      'filterResult',
-      'productAll',
-      'isLoading'
-    ]),
+    filterToday() {
+      return useProductStore().productAll.sort((a, b) => {
+        if (a.time && b.time) {
+          return b.time.localeCompare(a.time)
+        }
+      })
+    },
+    filterFeature() {
+      return useProductStore().productAll.filter((item) => {
+        return item.is_feature
+      })
+    },
+    ...mapState(useProductStore, ['productList', 'categoryList', 'filterResult', 'isLoading']),
     ...mapState(articleStore, ['articleList']),
     ...mapState(adminOrderStore, ['sortSoldNum'])
   },
 
   methods: {
-    ...mapActions(productStore, ['getProducts', 'getProductAll', 'filterProduct', 'sortProduct']),
     ...mapActions(articleStore, ['getArticles']),
-
     initializeSwiper(el, config) {
       const swiperEl = el
       const params = {
@@ -320,36 +328,29 @@ export default {
       }
       Object.assign(swiperEl, params)
       swiperEl.initialize()
-    },
-    filterFeature() {
-      this.featureList = this.productAll.filter((item) => {
-        return item.is_feature
-      })
     }
   },
 
-  async created() {
-    await this.getProducts()
-    this.getArticles()
-    await this.getProductAll()
-    this.filterFeature()
-  },
-  mounted() {
-    // setTimeout(() => {
+  async mounted() {
+    this.indexLoading = true
+    await Promise.all([
+      useProductStore().getProducts(),
+      this.getArticles(),
+      useProductStore().getProductAll()
+    ])
+    this.indexLoading = true
     this.initializeSwiper(this.$refs.bannerSwiper, this.bannerSwiper)
     this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)
     this.initializeSwiper(this.$refs.publishSwiper, this.publishSwiper)
-    // }, 500)
-    setTimeout(() => {
-      this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
-      this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
-    }, 1500)
+    this.initializeSwiper(this.$refs.rankSwiper, this.rankSwiper)
+    this.initializeSwiper(this.$refs.rankContentSwiper, this.rankContentSwiper)
+    this.indexLoading = false
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/mixin';
+@import '@/assets/scss/mixin';
 
 ::-webkit-scrollbar {
   display: none; /* Chrome Safari 兼容*/
@@ -385,15 +386,12 @@ export default {
 }
 
 :deep(.swiper-today) {
-  // padding-left: 60px;
-  // padding-right: 60px;
   .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
     transform-origin: bottom center;
     transition: 0.3s;
-    // padding-left: 30px;
   }
   .today-card {
     height: 500px;
@@ -425,7 +423,6 @@ export default {
     .today-card {
       display: flex;
       flex-direction: column;
-      // max-width: 240px;
       margin-right: 40px;
       margin-left: 40px;
       @include min-lg {
@@ -548,9 +545,7 @@ export default {
     transform: scale(0.95);
   }
   .rank-card {
-    // padding: 60px 0;
     height: 500px;
-
     @include min-lg {
       padding: 0;
     }

@@ -3,32 +3,20 @@
 // Required
 @import '../node_modules/bootstrap/scss/functions';
 
-@import '../assets/variable';
+@import 'variable';
 @import '../node_modules/bootstrap/scss/variables';
 @import '../node_modules/bootstrap/scss/bootstrap';
 @import 'bootstrap/scss/utilities';
 
-@import '../assets/helper';
+@import 'helper';
 @import 'bootstrap/scss/utilities/api';
-
-// @import 'swiper/css';
-// @import 'swiper/css/navigation';
-// @import 'swiper/css/pagination';
-// @import 'swiper/css/scrollbar';
-// @import 'swiper/css/effect-coverflow';
-// @import 'swiper/css/free-mode';
 
 @import 'swiper/css/thumbs';
 
 @import 'swiper/swiper-bundle.css';
 
-@import '../assets/mixin';
-@import '../assets/utils.scss';
-@import '../assets/base.scss';
-// @import '../assets/btn.scss';
+@import 'mixin';
+@import 'utils.scss';
+@import 'base.scss';
 
 @import '../node_modules/sweetalert2/src/sweetalert2.scss';
-
-* {
-  // outline: solid 1px;
-}

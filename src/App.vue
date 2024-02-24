@@ -1,3 +1,10 @@
+<template>
+  <header>
+    <div class="wrapper"></div>
+  </header>
+  <RouterView />
+</template>
+
 <script>
 import { RouterLink, RouterView } from 'vue-router'
 import AOS from 'aos'
@@ -14,13 +21,6 @@ export default {
 }
 </script>
 
-<template>
-  <header>
-    <div class="wrapper"></div>
-  </header>
-  <RouterView />
-</template>
 
-<style lang="scss">
-@import './assets/main.scss';
-</style>
+
+

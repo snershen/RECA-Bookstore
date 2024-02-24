@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
+  linkActiveClass: 'active',
   scrollBehavior() {
     return { top: 0, behavior: 'smooth' }
   },
@@ -59,7 +60,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      component: () => import('../views/user/User.vue'),
+      component: () => import('../views/user/UserLayout.vue'),
       children: [
         {
           path: '',
@@ -152,7 +153,7 @@ const router = createRouter({
     },
     {
       path: '/:pathMatch(.*)*',
-      component: () => import('../views/NotFound.vue'),
+      component: () => import('../views/NotFound.vue')
     }
   ]
 })

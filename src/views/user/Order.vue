@@ -6,7 +6,6 @@
     <div class="row">
       <div class="offset-lg-3 col-lg-6">
         <h2 class="text-center fw-bold mb-4">訂單明細</h2>
-
         <table class="w-100 mb-4">
           <tr class="border-bottom">
             <td class="fw-bold">訂單編號</td>
@@ -32,7 +31,7 @@
             <td class="fw-bold">訂購品項</td>
             <td>
               <ul class="list-unordered ps-3">
-                <li v-for="item in orderProductList" class="mb-1">
+                <li v-for="item in orderProductList" :key="item.id" class="mb-1">
                   <div class="row">
                     <span class="col-9 col-lg-10">
                       {{ item.product.title }}
@@ -43,7 +42,6 @@
               </ul>
             </td>
           </tr>
-
           <tr class="border-bottom">
             <td class="fw-bold">訂單留言</td>
             <td v-if="order.message">{{ order.message }}</td>
@@ -57,9 +55,6 @@
           v-if="!order.is_paid"
           >立刻付款</a
         >
-        <!-- <router-link :to="{ name: 'orders' }" class="btn btn-outline-secondary w-100 py-2"
-          >查看所有訂單</router-link
-        > -->
       </div>
     </div>
   </div>
@@ -89,7 +84,6 @@ export default {
         return this.order.products[item]
       })
       this.orderProductList = result
-      console.log(this.orderProductList)
     }
   },
   async created() {

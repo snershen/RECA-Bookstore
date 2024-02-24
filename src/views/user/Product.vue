@@ -3,10 +3,10 @@
     <Breadcrumb
       class="mb-4"
       :breadConfig="{ path: 'products', subNav: '書籍類別', title: '書籍介紹' }"
-    ></Breadcrumb>
+    />
     <div class="row">
       <div class="col-md-3 d-none d-md-block mb-5">
-        <ProductCategory></ProductCategory>
+        <ProductCategory />
       </div>
       <div class="col-md-9 col-12">
         <div class="row">
@@ -38,8 +38,8 @@
                 </li>
               </ul>
             </div>
-            <div class="row">
-              <div class="col-3 col-lg-2 order-1 order-lg-0">
+            <div class="row gx-2">
+              <div class="col-2 col-lg-2">
                 <a
                   href="#"
                   class="btn btn-gray w-100 py-3 rounded-2 border-0"
@@ -49,11 +49,9 @@
                   <span class="fa-lg text-white">
                     <font-awesome-icon :icon="icon" />
                   </span>
-                  <!-- <span v-if="isSolid">已加入收藏</span>
-                  <span v-else>加入收藏</span> -->
                 </a>
               </div>
-              <div class="col-lg-5 col-9 order-1 order-lg-0">
+              <div class="col-lg-5 col-5">
                 <a
                   href="#"
                   class="btn btn-gray text-white w-100 py-3 rounded-0 mb-lg-0 mb-0 rounded-2"
@@ -61,7 +59,7 @@
                   >加入購物車</a
                 >
               </div>
-              <div class="col-lg-5">
+              <div class="col-lg-5 col-5">
                 <RouterLink
                   :to="{ name: 'cart' }"
                   class="btn btn-primary text-white w-100 py-3 rounded-0 mb-lg-0 mb-2 rounded-2"
@@ -104,7 +102,7 @@ import Breadcrumb from '@/components/user/Breadcrumb.vue'
 
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 
 export default {
   data() {
@@ -132,7 +130,7 @@ export default {
   props: ['id'],
   components: { ProductCard, ProductTab, ProductCategory, Breadcrumb, Swiper, SwiperSlide },
   computed: {
-    ...mapState(productStore, [
+    ...mapState(useProductStore, [
       'singleProduct',
       'productList',
       'alikeProduct',
@@ -149,7 +147,7 @@ export default {
 
   methods: {
     ...mapActions(cartStore, ['getCart', 'addCart']),
-    ...mapActions(productStore, [
+    ...mapActions(useProductStore, [
       'getSingleProduct',
       'getProducts',
       'filterProduct',

@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { adminGetOrder } from '@/utils/apis'
-import { admin_getProducts } from '@/utils/apis.js'
+import { adminGetOrder } from '@/assets/js/apis'
+import { admin_getProducts } from '@/assets/js/apis.js'
 
-import { timeFormat } from '@/utils/timeFormat'
+import { timeFormat } from '@/assets/js/timeFormat'
 
 export default defineStore('adminOrderStore', {
   state: () => {
@@ -16,16 +16,6 @@ export default defineStore('adminOrderStore', {
     }
   },
   actions: {
-    // getProducts(page = 1) {
-    //   this.isLoading = true
-    //   admin_getProducts(page).then((res) => {
-    //     this.isLoading = false
-    //     if (res.data.success) {
-    //       this.products = res.data.products
-    //       this.pagination = res.data.pagination
-    //     }
-    //   })
-    // },
     getOrder(page = 1) {
       this.isLoading = true
       adminGetOrder(page).then((res) => {
@@ -40,7 +30,6 @@ export default defineStore('adminOrderStore', {
       })
     },
     async getOrderAll() {
-      console.clear()
       let paginationCopy = { ...this.pagination }
       this.orderAll = []
       //取得所有訂單
@@ -52,9 +41,8 @@ export default defineStore('adminOrderStore', {
             currentPage++
             const currentOrderList = res.data.orders
             this.orderAll.push(...currentOrderList)
-            console.log(this.orderAll)
           })
-          .catch((err) => console.log(err))
+          .catch((err) => console.error(err))
       }
     },
     async calcOrderNum() {
@@ -90,7 +78,6 @@ export default defineStore('adminOrderStore', {
         return b.qty - a.qty
       })
       this.sortSoldNum = this.sortSoldNum.slice(0, 10)
-      console.log(this.sortSoldNum)
     }
   }
 })

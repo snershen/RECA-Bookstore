@@ -261,7 +261,6 @@ import {
 export default {
   data() {
     return {
-      // products: [],
       newestProduct: [],
       slidesPerView: 6,
       bannerSlidesNum: 5,
@@ -424,9 +423,7 @@ export default {
   .swiper-slide {
     display: flex;
     align-items: center;
-    // transition: 0.2s;
     transform-origin: top center;
-    // opacity: 0;
     @include min-lg {
       transform: scale(1);
     }
@@ -455,10 +452,7 @@ export default {
     }
   }
   .swiper-slide-active {
-    // transition: 0.5s;
-    // transform: scale(1);
     width: 100% !important;
-    // opacity: 1;
     @include min-lg {
       width: 50% !important;
       height: 300px;

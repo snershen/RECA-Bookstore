@@ -20,7 +20,6 @@
           <tr v-for="article in articles" :key="article.id">
             <td>{{ article.create_at }}</td>
             <td>{{ article.title }}</td>
-
             <td class="text-right">{{ article.author }}</td>
             <td class="text-right">{{ article.tag }}</td>
             <td>
@@ -41,22 +40,22 @@
         </tbody>
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getProducts" class="py-5"></Pagination>
+    <Pagination :inner-pagination="pagination" @emit-page="getArticles" class="py-5" />
     <ArticleModal
       ref="ArticleModal"
       @update-article="updateArticle"
       :innerArticle="tempArticle"
       :innerNew="isNew"
-    ></ArticleModal>
+    />
   </div>
 </template>
 
 <script>
-import { adminGetArticle } from '@/utils/apis'
-import { adminGetSingleArticle } from '@/utils/apis'
-import { adminPostArticle } from '@/utils/apis'
-import { adminPutArticle } from '@/utils/apis'
-import { adminDeleteArticle } from '@/utils/apis'
+import { adminGetArticle } from '@/assets/js/apis'
+import { adminGetSingleArticle } from '@/assets/js/apis'
+import { adminPostArticle } from '@/assets/js/apis'
+import { adminPutArticle } from '@/assets/js/apis'
+import { adminDeleteArticle } from '@/assets/js/apis'
 
 import ArticleModal from '@/components/admin/ArticleModal.vue'
 import Pagination from '@/components/Pagination.vue'
@@ -82,24 +81,27 @@ export default {
   methods: {
     getArticles(page = 1) {
       this.isLoading = true
-      adminGetArticle(page).then((res) => {
-        this.isLoading = false
-        this.articles = res.data.articles
-        this.pagination = res.data.pagination
-        this.articles.forEach((item) => {
-          const year = new Date(item.create_at).getFullYear()
-          const month = new Date(item.create_at).getMonth() + 1
-          const day = new Date(item.create_at).getDate()
-          item.create_at = `${year}-${month}-${day}`
+      adminGetArticle(page)
+        .then((res) => {
+          this.isLoading = false
+          this.articles = res.data.articles
+          this.pagination = res.data.pagination
+          this.articles.forEach((item) => {
+            const year = new Date(item.create_at).getFullYear()
+            const month = new Date(item.create_at).getMonth() + 1
+            const day = new Date(item.create_at).getDate()
+            item.create_at = `${year}-${month}-${day}`
+          })
         })
-      })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     openModal(isNew, article) {
       if (isNew) {
         this.tempArticle = { isPublic: false }
       } else {
         adminGetSingleArticle(article.id).then((res) => {
-          console.log(res)
           this.tempArticle = res.data.article
         })
       }
@@ -111,9 +113,13 @@ export default {
       this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true }).then(
         (result) => {
           if (result.isConfirmed) {
-            adminDeleteArticle(article.id).then((res) => {
-              this.getArticles()
-            })
+            adminDeleteArticle(article.id)
+              .then((res) => {
+                this.getArticles()
+              })
+              .catch((err) => {
+                console.error(err)
+              })
           }
         }
       )
@@ -136,7 +142,7 @@ export default {
             }
           })
           .catch((err) => {
-            console.log(err)
+            console.error(err)
           })
           .finally(() => {
             this.isLoading = false
@@ -154,12 +160,11 @@ export default {
             }
           })
           .catch((err) => {
-            console.log(err)
+            console.error(err)
           })
       }
     }
   },
-
   created() {
     this.getArticles()
   }

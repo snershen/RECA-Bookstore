@@ -76,17 +76,17 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 
 export default {
   computed: {
-    ...mapState(productStore, ['categoryList', 'selectedCategory', 'singleProduct'])
+    ...mapState(useProductStore, ['categoryList', 'selectedCategory', 'singleProduct'])
   },
   methods: {
-    ...mapActions(productStore, ['filterProduct', 'getProductAll'])
+    ...mapActions(useProductStore, ['filterProduct'])
   },
   created() {
-    this.getProductAll()
+    useProductStore().getProductAll()
   }
 }
 </script>

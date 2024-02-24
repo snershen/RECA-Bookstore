@@ -10,7 +10,7 @@
               data-aos="fade-left"
               data-aos-duration="1000"
               :data-aos-delay="500 * index"
-            ></ArticleCard>
+            />
           </li>
         </ul>
         <div v-else-if="filterResult.length !== 0 && isSearch">
@@ -18,7 +18,7 @@
           <ul class="row">
             <li v-for="item in filterResult" class="col-12">
               <div>
-                <ArticleCard :article="item"></ArticleCard>
+                <ArticleCard :article="item" />
               </div>
             </li>
           </ul>
@@ -27,7 +27,7 @@
           <div class="px-3 py-2 text-center">
             <p class="fs-3 fw-bold mb-4">"{{ newSearchString }}" 搜尋結果</p>
             <p class="fs-5 fw-bold mb-5">查詢不到相關文章<br />看看其他文章吧</p>
-            <img src="@/assets/img/article-empty.png" alt="" class="img-fluid w-50" />
+            <img src="@/assets/img/article-empty.png" alt="查無文章" class="img-fluid w-50" />
           </div>
         </div>
       </div>

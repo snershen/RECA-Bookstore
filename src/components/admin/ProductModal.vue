@@ -204,7 +204,7 @@
 <script>
 import Modal from 'bootstrap/js/dist/modal'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { adminUploadImg } from '@/utils/apis'
+import { adminUploadImg } from '@/assets/js/apis'
 
 export default {
   data() {
@@ -242,11 +242,9 @@ export default {
     },
     uploadFile() {
       const uploadedFile = this.$refs.fileInput.files[0]
-      // console.dir(uploadedFile)
       const formData = new FormData()
       formData.append('file-to-upload', uploadedFile)
       adminUploadImg(formData).then((res) => {
-        console.log(res.data)
         if (res.data.success) {
           this.tempProduct.imageUrl = res.data.imageUrl
         }

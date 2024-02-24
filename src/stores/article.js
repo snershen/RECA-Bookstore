@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { userGetArticles } from '@/utils/apis'
-import { userGetSingleArticle } from '@/utils/apis'
-import { timeFormat } from '@/utils/timeFormat'
-import { textBreak } from '@/utils/textBreak'
+import { userGetArticles } from '@/assets/js/apis'
+import { userGetSingleArticle } from '@/assets/js/apis'
+import { timeFormat } from '@/assets/js/timeFormat'
+import { textBreak } from '@/assets/js/textBreak'
 
 export default defineStore('articleStore', {
   state: () => {

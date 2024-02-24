@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { userGetOrder } from '@/utils/apis'
-import { userSingleOrder } from '@/utils/apis'
-import { userPay } from '@/utils/apis'
-import { timeFormat } from '@/utils/timeFormat'
+import { userGetOrder } from '@/assets/js/apis'
+import { userSingleOrder } from '@/assets/js/apis'
+import { userPay } from '@/assets/js/apis'
+import { timeFormat } from '@/assets/js/timeFormat'
 
 export default defineStore('orderStore', {
   state: () => {
@@ -30,7 +30,7 @@ export default defineStore('orderStore', {
           })
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
         })
     },
 
@@ -45,7 +45,7 @@ export default defineStore('orderStore', {
           timeFormat(this.order, 'paid_date')
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
       } finally {
         this.isLoading = false
       }
@@ -56,7 +56,7 @@ export default defineStore('orderStore', {
           this.getSingleOrder(id)
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
         })
     },
     filterOrder(str) {

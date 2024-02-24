@@ -126,7 +126,6 @@ export default {
     }
   },
   watch: {
-    //監聽對象要和元件名稱相同
     innerCoupon() {
       this.tempCoupon = this.innerCoupon
     },

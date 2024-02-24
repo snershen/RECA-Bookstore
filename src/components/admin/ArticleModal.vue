@@ -132,7 +132,6 @@ export default {
     return {
       tempArticle: { tag: '' },
       isNew: true,
-
       editor: ClassicEditor,
       editorData: '<p>請輸入內容</p>',
       editorConfig: {}
@@ -154,7 +153,6 @@ export default {
     }
   },
   watch: {
-    //監聽對象要和元件名稱相同
     innerArticle() {
       this.tempArticle = this.innerArticle
     },

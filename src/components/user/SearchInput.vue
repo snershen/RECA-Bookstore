@@ -36,7 +36,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 
 export default {
   data() {
@@ -48,10 +48,10 @@ export default {
   },
 
   computed: {
-    ...mapState(productStore, ['searchResult', 'searchStr', 'selectedCategory', 'productAll'])
+    ...mapState(useProductStore, ['searchResult', 'searchStr', 'selectedCategory', 'productAll'])
   },
   methods: {
-    ...mapActions(productStore, ['getProducts', 'getProductAll', 'searchProduct']),
+    ...mapActions(useProductStore, ['getProducts', 'getProductAll', 'searchProduct']),
     handleHotSearch(item) {
       this.searchProduct(item)
       this.$emit('close-collapse')

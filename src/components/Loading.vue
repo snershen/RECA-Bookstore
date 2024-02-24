@@ -1,6 +1,6 @@
 <template>
   <Loading
-    :active="articleLoading || productLoading || orderLoading || cartLoading || isLoading"
+    :active="isLoading || articleLoading || productLoading || orderLoading || cartLoading"
     class="loading"
   >
     <div class="loading-box">
@@ -11,7 +11,7 @@
 
 <script>
 import { mapState } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 import articleStore from '@/stores/article.js'
 import orderStore from '@/stores/order.js'
 import cartStore from '@/stores/cart.js'
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapState(articleStore, { articleLoading: 'isLoading' }),
-    ...mapState(productStore, { productLoading: 'isLoading' }),
+    ...mapState(useProductStore, { productLoading: 'isLoading' }),
     ...mapState(orderStore, { orderLoading: 'isLoading' }),
     ...mapState(cartStore, { cartLoading: 'isLoading' })
   }

@@ -40,21 +40,21 @@
         </tbody>
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getCoupons" class="py-5"></Pagination>
+    <Pagination :inner-pagination="pagination" @emit-page="getCoupons" class="py-5" />
     <CouponModal
       ref="CouponModal"
       :inner-coupon="tempCoupon"
       :inner-new="isNew"
       @update-product="updateCoupon"
-    ></CouponModal>
+    />
   </div>
 </template>
 
 <script>
-import { adminGetCoupon } from '@/utils/apis'
-import { adminDeleteCoupon } from '@/utils/apis'
-import { adminPostCoupon } from '@/utils/apis'
-import { adminPutCoupon } from '@/utils/apis'
+import { adminGetCoupon } from '@/assets/js/apis'
+import { adminDeleteCoupon } from '@/assets/js/apis'
+import { adminPostCoupon } from '@/assets/js/apis'
+import { adminPutCoupon } from '@/assets/js/apis'
 
 import CouponModal from '@/components/admin/CouponModal.vue'
 import Pagination from '@/components/Pagination.vue'
@@ -62,7 +62,7 @@ import Pagination from '@/components/Pagination.vue'
 import toastMixin from '@/mixins/toastMixin'
 import alertMixin from '@/mixins/alertMixin'
 
-import { timeFormat } from '@/utils/timeFormat'
+import { timeFormat } from '@/assets/js/timeFormat'
 
 export default {
   data() {
@@ -79,33 +79,41 @@ export default {
   methods: {
     getCoupons(page = 1) {
       this.isLoading = true
-      adminGetCoupon(page).then((res) => {
-        console.log(res)
-        this.isLoading = false
-        this.coupons = res.data.coupons
-        this.pagination = res.data.pagination
-        timeFormat(this.coupons, 'due_date')
-        this.coupons.forEach((coupon) => {
-          if (coupon.percent % 10 === 0) {
-            coupon.percent = `${coupon.percent / 10} 折`
-          } else {
-            coupon.percent = `${coupon.percent} 折`
-          }
+      adminGetCoupon(page)
+        .then((res) => {
+          this.isLoading = false
+          this.coupons = res.data.coupons
+          this.pagination = res.data.pagination
+          timeFormat(this.coupons, 'due_date')
+          this.coupons.forEach((coupon) => {
+            if (coupon.percent % 10 === 0) {
+              coupon.percent = `${coupon.percent / 10} 折`
+            } else {
+              coupon.percent = `${coupon.percent} 折`
+            }
+          })
         })
-      })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     delCoupon(coupon) {
-      this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true }).then(
-        (result) => {
+      this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true })
+        .then((result) => {
           if (result.isConfirmed) {
-            adminDeleteCoupon(coupon.id).then((res) => {
-              console.log(res)
-              this.getCoupons()
-              this.showAlert({ icon: 'success', title: res.data.message })
-            })
+            adminDeleteCoupon(coupon.id)
+              .then((res) => {
+                this.getCoupons()
+                this.showAlert({ icon: 'success', title: res.data.message })
+              })
+              .catch((err) => {
+                console.error(err)
+              })
           }
-        }
-      )
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     updateCoupon(coupon) {
       const couponComponent = this.$refs.CouponModal
@@ -114,17 +122,23 @@ export default {
       this.tempCoupon.due_date = Number(new Date(this.tempCoupon.due_date).getTime())
 
       if (this.isNew) {
-        adminPostCoupon({ data: this.tempCoupon }).then((res) => {
-          this.getCoupons()
-          this.showToast({ title: res.data.message, icon: 'success' })
-          console.log(res)
-        })
+        adminPostCoupon({ data: this.tempCoupon })
+          .then((res) => {
+            this.getCoupons()
+            this.showToast({ title: res.data.message, icon: 'success' })
+          })
+          .catch((err) => {
+            console.error(err)
+          })
       } else {
-        adminPutCoupon({ data: this.tempCoupon }, this.tempCoupon.id).then((res) => {
-          this.getCoupons()
-          this.showToast({ title: res.data.message, icon: 'success' })
-          console.log(res)
-        })
+        adminPutCoupon({ data: this.tempCoupon }, this.tempCoupon.id)
+          .then((res) => {
+            this.getCoupons()
+            this.showToast({ title: res.data.message, icon: 'success' })
+          })
+          .catch((err) => {
+            console.error(err)
+          })
       }
       this.tempCoupon.percent = parseInt(this.tempCoupon.percent)
       couponComponent.hideModal()

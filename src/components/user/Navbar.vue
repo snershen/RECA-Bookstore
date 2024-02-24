@@ -25,14 +25,7 @@
         >
           <ul class="navbar-nav py-3 py-lg-1">
             <li class="nav-item">
-              <RouterLink
-                :to="{ name: 'products' }"
-                class="nav-link px-lg-3"
-                :class="{
-                  active: this.$route.name === 'products' || this.$route.name === 'product'
-                }"
-                >書籍類別</RouterLink
-              >
+              <RouterLink :to="{ name: 'products' }" class="nav-link px-lg-3">書籍類別</RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink
@@ -113,7 +106,7 @@ import SearchInput from './SearchInput.vue'
 
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 
 export default {
   data() {
@@ -127,10 +120,10 @@ export default {
   },
   computed: {
     ...mapState(cartStore, ['cartLength']),
-    ...mapState(productStore, ['collectList', 'collectStorage'])
+    ...mapState(useProductStore, ['collectList', 'collectStorage'])
   },
   methods: {
-    ...mapActions(productStore, ['getStorage']),
+    ...mapActions(useProductStore, ['getStorage']),
     toggleCollapse() {
       const searchComponent = this.$refs.SearchCollapse
       searchComponent.toggleCollapse()

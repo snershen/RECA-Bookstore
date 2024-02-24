@@ -34,7 +34,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 
 export default {
   data() {
@@ -50,10 +50,10 @@ export default {
     icon() {
       return this.isSolid ? ['fas', 'heart'] : ['far', 'heart']
     },
-    ...mapState(productStore, ['collectList', 'collectStorage', 'singleSelected'])
+    ...mapState(useProductStore, ['collectList', 'collectStorage', 'singleSelected'])
   },
   methods: {
-    ...mapActions(productStore, ['addOrRemoveCollect', 'getStorage']),
+    ...mapActions(useProductStore, ['addOrRemoveCollect', 'getStorage']),
 
     changeCollectIcon() {
       this.isSolid = !this.isSolid
@@ -71,7 +71,6 @@ export default {
     }
   },
   created() {
-    // localStorage.clear()
     this.getStorage()
     this.initializeIsSolid()
   },

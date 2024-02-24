@@ -123,8 +123,7 @@
 </template>
 
 <script>
-// import { userGetCart } from '@/utils/apis'
-import { userPostOrder } from '@/utils/apis'
+import { userPostOrder } from '@/assets/js/apis'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import toastMixin from '@/mixins/toastMixin'
 
@@ -154,10 +153,14 @@ export default {
       this.$router.push({ name: 'cart' })
     },
     sendOrder() {
-      userPostOrder(this.orderData).then((res) => {
-        const orderId = res.data.orderId
-        this.$router.push(`/orders/${orderId}`)
-      })
+      userPostOrder(this.orderData)
+        .then((res) => {
+          const orderId = res.data.orderId
+          this.$router.push(`/orders/${orderId}`)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     async submitForm() {
       const isValid = await this.$refs.form.validate()
