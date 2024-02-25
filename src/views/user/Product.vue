@@ -21,15 +21,19 @@
               <ul>
                 <li class="mb-3 row">
                   <div class="col-lg-1 col-2 text-nowrap">作者：</div>
-                  <div class="col-6 ms-3">{{ singleProduct.author }}</div>
+                  <div class="col-6 ms-5">{{ singleProduct.author }}</div>
                 </li>
                 <li class="mb-3 row">
                   <div class="col-lg-1 col-2 text-nowrap">出版社：</div>
-                  <div class="col-6 ms-3">{{ singleProduct.publish }}</div>
+                  <div class="col-6 ms-5">{{ singleProduct.publish }}</div>
+                </li>
+                <li class="mb-3 row">
+                  <div class="col-lg-1 col-2 text-nowrap">出版日期：</div>
+                  <div class="col-6 ms-5">{{ singleProduct.time }}</div>
                 </li>
                 <li class="mb-2 align-items-center row">
                   <div class="col-lg-1 col-2 text-nowrap">價格：</div>
-                  <div class="col-6 ms-3 d-flex align-items-center">
+                  <div class="col-6 ms-5 d-flex align-items-center">
                     <p class="fs-3 fw-bold me-2">${{ singleProduct.price }}</p>
                     <p class="fs-7 text-gray text-decoration-line-through">
                       ${{ singleProduct.origin_price }}
@@ -38,7 +42,7 @@
                 </li>
               </ul>
             </div>
-            <div class="row gx-2">
+            <div class="row gx-2 d-lg-flex d-none">
               <div class="col-2 col-lg-2">
                 <a
                   href="#"
@@ -63,6 +67,38 @@
                 <RouterLink
                   :to="{ name: 'cart' }"
                   class="btn btn-primary text-white w-100 py-3 rounded-0 mb-lg-0 mb-2 rounded-2"
+                  @click.prevent="addCart(singleProduct.id)"
+                  >立即購買</RouterLink
+                >
+              </div>
+            </div>
+            <div
+              class="z-1000 row gx-2 position-fixed bottom-0 start-0 end-0 d-flex d-lg-none border-top py-2 px-2 bg-white shadow"
+            >
+              <div class="col-2 col-lg-2 order-1">
+                <a
+                  href="#"
+                  class="btn btn-gray w-100 py-2 rounded-2 border-0"
+                  :class="{ 'bg-danger ': isSolid }"
+                  @click.prevent="handleCollectBtn(singleProduct)"
+                >
+                  <span class="fa-lg text-white">
+                    <font-awesome-icon :icon="icon" />
+                  </span>
+                </a>
+              </div>
+              <div class="col-lg-5 col-5">
+                <a
+                  href="#"
+                  class="btn btn-gray text-white w-100 py-2 rounded-0 mb-lg-0 mb-0 rounded-2"
+                  @click.prevent="addCart(singleProduct.id)"
+                  >加入購物車</a
+                >
+              </div>
+              <div class="col-lg-5 col-5">
+                <RouterLink
+                  :to="{ name: 'cart' }"
+                  class="btn btn-primary text-white w-100 py-2 rounded-0 mb-lg-0 rounded-2"
                   @click.prevent="addCart(singleProduct.id)"
                   >立即購買</RouterLink
                 >
@@ -206,5 +242,8 @@ export default {
 <style scoped>
 .book-img {
   width: 70%;
+}
+.z-1000 {
+  z-index: 1000;
 }
 </style>

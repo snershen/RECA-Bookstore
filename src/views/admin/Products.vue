@@ -60,13 +60,10 @@
             </td>
             <td>
               <div>
-                <button
-                  class="btn btn-dark btn-sm me-1 mb-xxl-0"
-                  @click="openModal(false, product)"
-                >
+                <button class="btn btn-dark btn-sm me-1 mb-1" @click="openModal(false, product)">
                   編輯
                 </button>
-                <button class="btn btn-outline-danger btn-sm" @click="deleteProduct(product)">
+                <button class="btn btn-outline-danger btn-sm mb-1" @click="deleteProduct(product)">
                   刪除
                 </button>
               </div>
@@ -91,6 +88,8 @@ import { admin_putProduct } from '@/assets/js/apis.js'
 import { admin_postProduct } from '@/assets/js/apis.js'
 import { admin_deleteProduct } from '@/assets/js/apis.js'
 
+import { mapState, mapActions } from 'pinia'
+
 import ProductModal from '@/components/admin/ProductModal.vue'
 import Pagination from '@/components/Pagination.vue'
 
@@ -108,6 +107,7 @@ export default {
       isLoading: false
     }
   },
+
   components: {
     ProductModal,
     Pagination

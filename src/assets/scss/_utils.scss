@@ -52,7 +52,7 @@
     overflow: initial;
   }
   .table {
-    height: 100vh;
+    // height: 100vh;
     width: 100vw;
     @include min-lg {
       height: auto;

@@ -15,7 +15,12 @@
             <th width="10%">編輯</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="orderList.length === 0">
+          <tr>
+            <td colspan="6" class="text-center">目前無訂單</td>
+          </tr>
+        </tbody>
+        <tbody v-else>
           <tr v-for="order in orderList">
             <td>{{ order.id }}</td>
             <td class="text-right">{{ order.create_at }}</td>
@@ -68,7 +73,7 @@ export default {
     ...mapState(adminOrderStore, ['orderList', 'pagination', 'isLoading'])
   },
   methods: {
-    ...mapActions(adminOrderStore, ['getOrder', 'getOrderAll']),
+    ...mapActions(adminOrderStore, ['getOrder', 'getOrderAll', 'sendRankInfo', 'calcOrderNum']),
     delOrder(order) {
       deleteOrder(order.id)
         .then(() => {
@@ -84,9 +89,13 @@ export default {
       orderComponent.showModal()
     }
   },
-  created() {
-    this.getOrder()
-    this.getOrderAll()
+  async created() {
+    await this.getOrder()
+    await this.getOrderAll()
+    await this.calcOrderNum()
+  },
+  mounted() {
+    this.sendRankInfo()
   }
 }
 </script>

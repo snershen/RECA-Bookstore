@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <div class="mb-3 ps-2">
+    <div class="ps-1">
       <h1
         class="fw-bold"
         v-if="selectedCategory === '全部' && searchResult.length === 0 && !isEmptyResult"
@@ -47,18 +47,6 @@
           >
             價格
             <template v-if="sortTarget === 'price'">
-              <span v-if="!sortStatus">由高到低</span>
-              <span v-else>由低到高 </span>
-            </template>
-          </button>
-          <button
-            type="button"
-            class="sort-btn btn border-0"
-            @click="sortProduct('soldNum')"
-            :class="{ active: sortTarget === 'soldNum' }"
-          >
-            暢銷度
-            <template v-if="sortTarget === 'soldNum'">
               <span v-if="!sortStatus">由高到低</span>
               <span v-else>由低到高 </span>
             </template>
@@ -138,7 +126,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(useProductStore, ['filterProduct', 'getProductAll', 'sortProduct'])
+    ...mapActions(useProductStore, ['getProducts', 'filterProduct', 'getProductAll', 'sortProduct'])
   },
 
   created() {

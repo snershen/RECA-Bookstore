@@ -2,7 +2,7 @@
   <header class="position-fixed top-0 w-100">
     <nav class="navbar navbar-expand-lg bg-white position-relative border-bottom">
       <div class="container">
-        <RouterLink :to="{ name: 'index' }" class="me-4">
+        <RouterLink :to="{ name: 'index' }" class="me-4 logo">
           <img src="@/assets/img/logo.svg" alt="" class="px-2 img-fluid"
         /></RouterLink>
 
@@ -152,6 +152,13 @@ export default {
 <style lang="scss" scoped>
 header {
   z-index: 50;
+}
+
+.logo {
+  width: 130px;
+  @media (min-width: 992px) {
+    width: 140px;
+  }
 }
 
 .button-count {

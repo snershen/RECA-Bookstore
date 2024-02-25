@@ -98,60 +98,126 @@
       <h2 class="fw-bold fs-2 mb-5">暢銷排行</h2>
       <div class="row">
         <div class="col-lg-3">
-          <swiper-container
-            class="container rank-swiper"
-            init="false"
-            ref="rankSwiper"
-            thumbs-swiper="#rank-thumbs"
-          >
-            <swiper-slide
-              v-for="(item, index) in productList"
-              :key="`publish${index}`"
-              :data-index="index + 1"
+          <template v-if="rankList.length > 9">
+            <swiper-container
+              class="container rank-swiper"
+              init="false"
+              ref="rankSwiper"
+              thumbs-swiper="#rank-thumbs"
             >
-              <div class="border-bottom py-2 text-truncate">
-                <span class="me-2 rank-number">{{ index + 1 }}</span>
-                {{ item.title }}
-              </div>
-            </swiper-slide>
-          </swiper-container>
+              <swiper-slide
+                v-for="(item, index) in rankList"
+                :key="`publish${index}`"
+                :data-index="index + 1"
+              >
+                <div class="border-bottom py-2 text-truncate">
+                  <span class="me-2 rank-number">{{ index + 1 }}</span>
+                  {{ item.product.title }}
+                </div>
+              </swiper-slide>
+            </swiper-container>
+          </template>
+          <template v-else>
+            <swiper-container
+              class="container rank-swiper"
+              init="false"
+              ref="rankSwiper"
+              thumbs-swiper="#rank-thumbs"
+            >
+              <swiper-slide
+                v-for="(item, index) in productList"
+                :key="`publish${index}`"
+                :data-index="index + 1"
+              >
+                <div class="border-bottom py-2 text-truncate">
+                  <span class="me-2 rank-number">{{ index + 1 }}</span>
+                  {{ item.title }}
+                </div>
+              </swiper-slide>
+            </swiper-container>
+          </template>
         </div>
 
         <div class="col-lg-9">
-          <swiper-container
-            init="false"
-            ref="rankContentSwiper"
-            class="container rank-content-swiper"
-            id="rank-thumbs"
-          >
-            <swiper-slide v-for="(item, index) in productList">
-              <div
-                class="rank-card d-flex flex-column flex-md-row position-relative text-center text-lg-start"
-              >
-                <div class="rank-card-img mb-3 mb-lg-0">
-                  <img :src="item.imageUrl" :alt="item.title" class="w-100 object-fit-contain" />
-                </div>
-                <div class="flex-grow-1 w-100">
-                  <h4
-                    class="fs-4 fs-lg-3 rank-card-title fw-bold text-overflow-2 flex-grow-1 text-center text-md-start"
-                  >
-                    {{ item.title }}
-                  </h4>
-                  <div
-                    class="rank-card-price align-items-center align-items-md-start justify-content-center justify-content-lg-start flex-column mb-3"
-                  >
-                    <p class="text-gray mb-1">{{ item.author }}</p>
-                    <div class="d-flex align-items-center">
-                      <p class="fw-bold me-2 fs-3">${{ item.price }}</p>
-                      <del class="fs-7 text-gray"> ${{ item.origin_price }} </del>
-                    </div>
+          <template v-if="rankList.length > 9">
+            <swiper-container
+              init="false"
+              ref="rankContentSwiper"
+              class="container rank-content-swiper"
+              id="rank-thumbs"
+            >
+              <swiper-slide v-for="(item, index) in rankList">
+                <div
+                  class="rank-card d-flex flex-column flex-md-row position-relative text-center text-lg-start"
+                >
+                  <div class="rank-card-img mb-3 mb-lg-0">
+                    <img
+                      :src="item.product.imageUrl"
+                      :alt="item.product.title"
+                      class="w-100 object-fit-contain"
+                    />
                   </div>
-                  <p class="today-card-content text-overflow-4" v-html="item.content"></p>
-                  <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
+                  <div class="flex-grow-1 w-100">
+                    <h4
+                      class="fs-4 fs-lg-3 rank-card-title fw-bold text-overflow-2 flex-grow-1 text-center text-md-start"
+                    >
+                      {{ item.product.title }}
+                    </h4>
+                    <div
+                      class="rank-card-price align-items-center align-items-md-start justify-content-center justify-content-lg-start flex-column mb-3"
+                    >
+                      <p class="text-gray mb-1">{{ item.product.author }}</p>
+                      <div class="d-flex align-items-center">
+                        <p class="fw-bold me-2 fs-3">${{ item.product.price }}</p>
+                        <del class="fs-7 text-gray"> ${{ item.product.origin_price }} </del>
+                      </div>
+                    </div>
+                    <p class="today-card-content text-overflow-4" v-html="item.product.content"></p>
+                    <RouterLink
+                      :to="`/products/${item.product.id}`"
+                      class="stretched-link"
+                    ></RouterLink>
+                  </div>
                 </div>
-              </div>
-            </swiper-slide>
-          </swiper-container>
+              </swiper-slide>
+            </swiper-container>
+          </template>
+          <template v-else>
+            <swiper-container
+              init="false"
+              ref="rankContentSwiper"
+              class="container rank-content-swiper"
+              id="rank-thumbs"
+            >
+              <swiper-slide v-for="(item, index) in productList">
+                <div
+                  class="rank-card d-flex flex-column flex-md-row position-relative text-center text-lg-start"
+                >
+                  <div class="rank-card-img mb-3 mb-lg-0">
+                    <img :src="item.imageUrl" :alt="item.title" class="w-100 object-fit-contain" />
+                  </div>
+                  <div class="flex-grow-1 w-100">
+                    <h4
+                      class="fs-4 fs-lg-3 rank-card-title fw-bold text-overflow-2 flex-grow-1 text-center text-md-start"
+                    >
+                      {{ item.title }}
+                    </h4>
+                    <div
+                      class="rank-card-price align-items-center align-items-md-start justify-content-center justify-content-lg-start flex-column mb-3"
+                    >
+                      <p class="text-gray mb-1">{{ item.author }}</p>
+                      <div class="d-flex align-items-center">
+                        <p class="fw-bold me-2 fs-3">${{ item.price }}</p>
+                        <del class="fs-7 text-gray"> ${{ item.origin_price }} </del>
+                      </div>
+                    </div>
+                    <p class="today-card-content text-overflow-4" v-html="item.content"></p>
+                    <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
+                  </div>
+                </div>
+              </swiper-slide>
+            </swiper-container>
+          </template>
         </div>
       </div>
     </section>
@@ -190,6 +256,7 @@ import { mapState, mapActions } from 'pinia'
 import { useProductStore } from '@/stores/product.js'
 import articleStore from '@/stores/article.js'
 import adminOrderStore from '@/stores/admin/order.js'
+import { userGetSingleArticle } from '@/assets/js/apis'
 
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
@@ -205,7 +272,7 @@ import { Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Thumbs } from 's
 export default {
   data() {
     return {
-      soldList: [],
+      rankList: [],
       indexLoading: false,
       // modules: [Navigation, Pagination, Scrollbar, Autoplay, FreeMode],
       bannerSwiper: {
@@ -328,16 +395,33 @@ export default {
       }
       Object.assign(swiperEl, params)
       swiperEl.initialize()
+    },
+    async getRankArticle() {
+      try {
+        const res = await userGetSingleArticle('-NrQ8wc--1weD4FTHjHH')
+        const content = res.data.article.content
+        const result = JSON.parse(content)
+        this.rankList = result
+      } catch (err) {
+        console.error(err)
+        this.rankList = this.productList
+      }
     }
   },
 
   async mounted() {
     this.indexLoading = true
-    await Promise.all([
-      useProductStore().getProducts(),
-      this.getArticles(),
-      useProductStore().getProductAll()
-    ])
+    try {
+      await Promise.all([
+        useProductStore().getProducts(),
+        this.getArticles(),
+        useProductStore().getProductAll(),
+        this.getRankArticle()
+      ])
+    } catch (error) {
+      console.error('An error occurred during Promise.all:', error)
+    }
+
     this.indexLoading = true
     this.initializeSwiper(this.$refs.bannerSwiper, this.bannerSwiper)
     this.initializeSwiper(this.$refs.todaySwiper, this.todaySwiper)

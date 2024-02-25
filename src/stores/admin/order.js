@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { adminGetOrder } from '@/assets/js/apis'
-import { admin_getProducts } from '@/assets/js/apis.js'
+import { adminPutArticle } from '@/assets/js/apis.js'
+import { adminGetSingleArticle } from '@/assets/js/apis.js'
 
 import { timeFormat } from '@/assets/js/timeFormat'
+import Swal from 'sweetalert2'
 
 export default defineStore('adminOrderStore', {
   state: () => {
@@ -16,6 +18,16 @@ export default defineStore('adminOrderStore', {
     }
   },
   actions: {
+    showToast(options) {
+      Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        ...options
+      }).fire()
+    },
     getOrder(page = 1) {
       this.isLoading = true
       adminGetOrder(page).then((res) => {
@@ -31,15 +43,25 @@ export default defineStore('adminOrderStore', {
     },
     async getOrderAll() {
       let paginationCopy = { ...this.pagination }
+
       this.orderAll = []
       //取得所有訂單
       let currentPage = paginationCopy.current_page
+      if (!paginationCopy.has_next) {
+        await adminGetOrder(currentPage)
+          .then((res) => {
+            const currentOrderList = res.data.orders
+            this.orderAll.push(...currentOrderList)
+          })
+          .catch((err) => console.error(err))
+      }
       while (paginationCopy.has_next) {
         await adminGetOrder(currentPage)
           .then((res) => {
             paginationCopy = res.data.pagination
             currentPage++
             const currentOrderList = res.data.orders
+
             this.orderAll.push(...currentOrderList)
           })
           .catch((err) => console.error(err))
@@ -48,6 +70,7 @@ export default defineStore('adminOrderStore', {
     async calcOrderNum() {
       //獲取訂單裡的產品 id
       await this.getOrderAll()
+
       const orderId = this.orderAll.map((order) => {
         return Object.keys(order.products)
       })
@@ -77,7 +100,29 @@ export default defineStore('adminOrderStore', {
       this.sortSoldNum = Object.values(this.productSoldNum).sort((a, b) => {
         return b.qty - a.qty
       })
-      this.sortSoldNum = this.sortSoldNum.slice(0, 10)
+      if (this.sortSoldNum.length > 10) {
+        this.sortSoldNum = this.sortSoldNum.slice(0, 10)
+      }
+    },
+    async sendRankInfo() {
+      const rankId = '-NrQ8wc--1weD4FTHjHH'
+      adminGetSingleArticle(rankId)
+        .then((res) => {
+          this.calcOrderNum()
+
+          const rankArticle = res.data.article
+          rankArticle.content = JSON.stringify(this.sortSoldNum)
+          return rankArticle
+        })
+        .then((res) => {
+          adminPutArticle(rankId, { data: res })
+            .then((res) => {
+              this.showToast({ title: '已更新排行榜', icon: 'success' })
+            })
+            .catch((err) => {
+              console.error(err)
+            })
+        })
     }
   }
 })

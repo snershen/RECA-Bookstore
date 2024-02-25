@@ -31,14 +31,14 @@ import BtnMore from '@/components/user/BtnMore.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 
 import { mapState, mapActions } from 'pinia'
-import productStore from '@/stores/product.js'
+import { useProductStore } from '@/stores/product.js'
 export default {
   computed: {
-    ...mapState(productStore, ['collectStorage'])
+    ...mapState(useProductStore, ['collectStorage'])
   },
   components: { ProductCard, BtnMore },
   methods: {
-    ...mapActions(productStore, ['getStorage'])
+    ...mapActions(useProductStore, ['getStorage'])
   },
   created() {
     this.getStorage()

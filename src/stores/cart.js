@@ -46,26 +46,34 @@ export default defineStore('cartStore', {
       })
     },
     getCart() {
-      userGetCart().then((res) => {
-        this.cartList = res.data.data
+      userGetCart()
+        .then((res) => {
+          this.cartList = res.data.data
 
-        this.cartList.carts.forEach((item) => {
-          item.final_total = addThousandsSeparator(item.final_total)
-          item.total = addThousandsSeparator(item.total)
+          this.cartList.carts.forEach((item) => {
+            item.final_total = addThousandsSeparator(item.final_total)
+            item.total = addThousandsSeparator(item.total)
+          })
+
+          this.cartList.final_total = Math.round(this.cartList.final_total)
+          this.cartLength = res.data.data.carts.length
+          this.saveMoney = Math.round(res.data.data.total - res.data.data.final_total)
+          this.saveMoney = addThousandsSeparator(this.saveMoney)
+          this.cartList.final_total = addThousandsSeparator(this.cartList.final_total)
+          this.cartList.total = addThousandsSeparator(this.cartList.total)
         })
-
-        this.cartList.final_total = Math.round(this.cartList.final_total)
-        this.cartLength = res.data.data.carts.length
-        this.saveMoney = Math.round(res.data.data.total - res.data.data.final_total)
-        this.saveMoney = addThousandsSeparator(this.saveMoney)
-        this.cartList.final_total = addThousandsSeparator(this.cartList.final_total)
-        this.cartList.total = addThousandsSeparator(this.cartList.total)
-      })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     deleteCart(id) {
-      userDeleteCart(id).then((res) => {
-        this.getCart()
-      })
+      userDeleteCart(id)
+        .then((res) => {
+          this.getCart()
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     editCart(item, isPlus) {
       this.productCount = item.qty
@@ -77,23 +85,27 @@ export default defineStore('cartStore', {
         }
       }
       const info = { data: { product_id: item.product_id, qty: this.productCount } }
-      userPutCart(item.id, info).then((res) => {
-        item.qty = this.productCount
+      userPutCart(item.id, info)
+        .then((res) => {
+          item.qty = this.productCount
 
-        if (item.qty === 0) {
-          this.showAlert({
-            title: '確定要移除該商品嗎？',
-            showCancelButton: true,
-            icon: 'info'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.deleteCart(item.id)
-              this.getCart()
-            }
-          })
-        }
-        this.getCart()
-      })
+          if (item.qty === 0) {
+            this.showAlert({
+              title: '確定要移除該商品嗎？',
+              showCancelButton: true,
+              icon: 'info'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.deleteCart(item.id)
+                this.getCart()
+              }
+            })
+          }
+          this.getCart()
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     changeCartNum(item) {
       this.productCount = item.qty
@@ -119,23 +131,31 @@ export default defineStore('cartStore', {
           showDenyButton: true,
           icon: 'info',
           denyButtonText: `保留`
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.deleteCart(item.id)
-            this.getCart()
-            return
-          } else if (result.isDenied) {
-            item.qty = 1
-          }
         })
+          .then((result) => {
+            if (result.isConfirmed) {
+              this.deleteCart(item.id)
+              this.getCart()
+              return
+            } else if (result.isDenied) {
+              item.qty = 1
+            }
+          })
+          .catch((err) => {
+            console.error(err)
+          })
 
         return
       }
 
       let info = { data: { product_id: item.product_id, qty: this.productCount } }
-      userPutCart(item.id, info).then((res) => {
-        this.getCart()
-      })
+      userPutCart(item.id, info)
+        .then((res) => {
+          this.getCart()
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
 
     deleteAllCart() {
@@ -143,14 +163,18 @@ export default defineStore('cartStore', {
         title: '確定要移除購物車所有商品嗎？',
         showCancelButton: true,
         icon: 'info'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          userDeleteCartAll().then((res) => {
-            this.isLoading = false
-            this.getCart()
-          })
-        }
       })
+        .then((result) => {
+          if (result.isConfirmed) {
+            userDeleteCartAll().then((res) => {
+              this.isLoading = false
+              this.getCart()
+            })
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     addCart(id) {
       const target = {
@@ -159,13 +183,17 @@ export default defineStore('cartStore', {
           qty: 1
         }
       }
-      userPostCart(target).then((res) => {
-        this.showToast({
-          title: '成功加入購物車',
-          icon: 'success'
+      userPostCart(target)
+        .then((res) => {
+          this.showToast({
+            title: '成功加入購物車',
+            icon: 'success'
+          })
+          this.getCart()
         })
-        this.getCart()
-      })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 })

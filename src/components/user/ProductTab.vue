@@ -3,7 +3,7 @@
     <template v-if="singleProduct.content">
       <li class="nav-item" @click.prevent="content = singleProduct.content">
         <a
-          class="nav-link fs-5"
+          class="nav-link fs-6 ps-2"
           aria-current="page"
           href="#"
           :class="{ active: content === singleProduct.content }"
@@ -14,7 +14,7 @@
     <template v-if="singleProduct.author_content">
       <li class="nav-item">
         <a
-          class="nav-link fs-5"
+          class="nav-link fs-6"
           href="#"
           :class="{ active: content === singleProduct.author_content }"
           @click.prevent="content = singleProduct.author_content"
@@ -25,7 +25,7 @@
     <template v-if="singleProduct.description">
       <li class="nav-item">
         <a
-          class="nav-link fs-5"
+          class="nav-link fs-6"
           href="#"
           :class="{ active: content === singleProduct.description }"
           @click.prevent="content = singleProduct.description"

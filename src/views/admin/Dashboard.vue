@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex bg-light min-height-100">
+  <div class="d-flex bg-light min-height-100 pt-5 pt-lg-0">
     <Navbar class="border-end" />
     <div class="view-area ms-auto">
       <div class="border-bottom py-3 bg-white">
@@ -50,6 +50,9 @@ export default {
 
 <style lang="scss" scoped>
 .view-area {
-  width: calc(100% - 240px);
+  width: 100%;
+  @media (min-width: 992px) {
+    width: calc(100% - 240px);
+  }
 }
 </style>
