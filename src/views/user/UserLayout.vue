@@ -1,22 +1,22 @@
 <template>
   <LoadingComponent />
   <div class="main-content">
-    <Navbar />
+    <NavbarComponent />
     <RouterView :key="$route.fullPath" class="mt-5" />
   </div>
-  <Footer />
+  <FooterComponent />
 </template>
 
 <script>
-import Navbar from '@/components/user/Navbar.vue'
-import Footer from '@/components/user/Footer.vue'
-import LoadingComponent from '@/components/Loading.vue'
+import NavbarComponent from '@/components/user/NavbarComponent.vue'
+import FooterComponent from '@/components/user/FooterComponent.vue'
+import LoadingComponent from '@/components/LoadingComponent.vue'
 
 import { mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
 
 export default {
-  components: { Navbar, Footer, LoadingComponent },
+  components: { NavbarComponent, FooterComponent, LoadingComponent },
   methods: {
     ...mapActions(cartStore, ['getCart'])
   },

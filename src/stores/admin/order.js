@@ -1,10 +1,7 @@
 import { defineStore } from 'pinia'
-import { adminGetOrder } from '@/assets/js/apis'
-import { adminPutArticle } from '@/assets/js/apis.js'
-import { adminGetSingleArticle } from '@/assets/js/apis.js'
-
+import { adminGetOrder, adminPutArticle, adminGetSingleArticle  } from '@/assets/js/apis.js'
 import { timeFormat } from '@/assets/js/timeFormat'
-import Swal from 'sweetalert2'
+import { showToast } from '@/mixins/toastMixin'
 
 export default defineStore('adminOrderStore', {
   state: () => {
@@ -18,16 +15,6 @@ export default defineStore('adminOrderStore', {
     }
   },
   actions: {
-    showToast(options) {
-      Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true,
-        ...options
-      }).fire()
-    },
     getOrder(page = 1) {
       this.isLoading = true
       adminGetOrder(page).then((res) => {
@@ -45,7 +32,7 @@ export default defineStore('adminOrderStore', {
       let paginationCopy = { ...this.pagination }
 
       this.orderAll = []
-      //取得所有訂單
+      // 取得所有訂單
       let currentPage = paginationCopy.current_page
       if (!paginationCopy.has_next) {
         await adminGetOrder(currentPage)
@@ -68,23 +55,23 @@ export default defineStore('adminOrderStore', {
       }
     },
     async calcOrderNum() {
-      //獲取訂單裡的產品 id
+      // 獲取訂單裡的產品 id
       await this.getOrderAll()
 
       const orderId = this.orderAll.map((order) => {
         return Object.keys(order.products)
       })
 
-      //紀錄訂單裡的產品內容
-      let result = []
+      // 紀錄訂單裡的產品內容
+      const result = []
       orderId.forEach((id, index) => {
         id.forEach((item) => {
-          //在每筆訂單裡取得 products 屬性裡的資料，即購買的產品內容
+          // 在每筆訂單裡取得 products 屬性裡的資料，即購買的產品內容
           result.push(this.orderAll[index].products[item])
         })
       })
 
-      //計算每個商品售出的數量
+      // 計算每個商品售出的數量
       this.productSoldNum = []
       result.forEach((item) => {
         if (!this.productSoldNum[item.id]) {
@@ -96,7 +83,7 @@ export default defineStore('adminOrderStore', {
         }
       })
 
-      //以降序排列
+      // 以降序排列
       this.sortSoldNum = Object.values(this.productSoldNum).sort((a, b) => {
         return b.qty - a.qty
       })
@@ -116,8 +103,8 @@ export default defineStore('adminOrderStore', {
         })
         .then((res) => {
           adminPutArticle(rankId, { data: res })
-            .then((res) => {
-              this.showToast({ title: '已更新排行榜', icon: 'success' })
+            .then(() => {
+              showToast({ title: '已更新排行榜', icon: 'success' })
             })
             .catch((err) => {
               console.error(err)

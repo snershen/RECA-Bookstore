@@ -13,7 +13,7 @@
           >全部</RouterLink
         >
       </li>
-      <li v-for="item in categoryList">
+      <li v-for="item in categoryList" :key="item">
         <RouterLink
           :to="{ name: 'products' }"
           class="px-4 py-lg-3 py-2 w-100 fs-6"
@@ -55,7 +55,7 @@
             >全部</RouterLink
           >
         </li>
-        <li v-for="item in categoryList">
+        <li v-for="item in categoryList" :key="item">
           <RouterLink
             :to="{ name: 'products' }"
             class="px-3 py-lg-3 py-2 w-100 fs-6"

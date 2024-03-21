@@ -133,13 +133,11 @@ export default {
   created() {
     this.getStorage()
   },
-
   watch: {
     $route(to, from) {
       this.headerCollapse.hide()
     }
   },
-
   mounted() {
     this.headerCollapse = new Collapse(this.$refs.headerCollapse)
     setTimeout(() => {

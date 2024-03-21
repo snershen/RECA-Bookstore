@@ -41,7 +41,7 @@
   </footer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .social-link {
   width: 36px;
   height: 36px;
@@ -51,11 +51,10 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-}
-
-.social-link:hover {
-  color: white;
-  background: none;
-  outline: solid 2px white;
+  &:hover {
+    color: white;
+    background: none;
+    outline: solid 2px white;
+  }
 }
 </style>

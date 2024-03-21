@@ -73,7 +73,7 @@
               <ProductCard :item="item" data-aos="fade-up" />
             </li>
           </ul>
-          <Pagination class="py-5" :inner-pagination="pagination" @emit-page="getProducts" />
+          <PaginationComponent class="py-5" :inner-pagination="pagination" @emit-page="getProducts" />
         </template>
 
         <div
@@ -99,7 +99,7 @@
 import ProductCategory from '@/components/user/ProductCategory.vue'
 import BtnMore from '@/components/user/BtnMore.vue'
 import ProductCard from '@/components/user/ProductCard.vue'
-import Pagination from '@/components/Pagination.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 
 import { mapState, mapActions } from 'pinia'
 import { useProductStore } from '@/stores/product.js'
@@ -108,7 +108,7 @@ export default {
   components: {
     ProductCategory,
     ProductCard,
-    Pagination,
+    PaginationComponent,
     BtnMore
   },
 

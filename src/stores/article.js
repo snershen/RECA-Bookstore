@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { userGetArticles } from '@/assets/js/apis'
-import { userGetSingleArticle } from '@/assets/js/apis'
+import { userGetArticles, userGetSingleArticle } from '@/assets/js/apis'
 import { timeFormat } from '@/assets/js/timeFormat'
 
 export default defineStore('articleStore', {

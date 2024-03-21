@@ -40,7 +40,7 @@
         </tbody>
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getArticles" class="py-5" />
+    <PaginationComponent :inner-pagination="pagination" @emit-page="getArticles" class="py-5" />
     <ArticleModal
       ref="ArticleModal"
       @update-article="updateArticle"
@@ -51,14 +51,10 @@
 </template>
 
 <script>
-import { adminGetArticle } from '@/assets/js/apis'
-import { adminGetSingleArticle } from '@/assets/js/apis'
-import { adminPostArticle } from '@/assets/js/apis'
-import { adminPutArticle } from '@/assets/js/apis'
-import { adminDeleteArticle } from '@/assets/js/apis'
+import { adminGetArticle, adminGetSingleArticle, adminPostArticle, adminPutArticle, adminDeleteArticle } from '@/assets/js/apis'
 
 import ArticleModal from '@/components/admin/ArticleModal.vue'
-import Pagination from '@/components/Pagination.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 
 import toastMixin from '@/mixins/toastMixin'
 import alertMixin from '@/mixins/alertMixin'
@@ -75,7 +71,7 @@ export default {
   },
   components: {
     ArticleModal,
-    Pagination
+    PaginationComponent
   },
   mixins: [toastMixin, alertMixin],
   methods: {

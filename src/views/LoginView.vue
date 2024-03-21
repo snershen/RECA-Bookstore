@@ -73,7 +73,7 @@ export default {
         if (res.data.success) {
           const { token, expired } = res.data
           sessionStorage.setItem('username', this.user.username)
-          //取得的 token 存到 cookie
+          // 取得的 token 存到 cookie
           document.cookie = `bookstoreAPI=${token}; expires=${new Date(expired)}`
           this.$router.push({ name: 'admin-products' })
           this.showToast({

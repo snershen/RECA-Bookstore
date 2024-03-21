@@ -14,9 +14,10 @@
 @import 'swiper/css/thumbs';
 
 @import 'swiper/swiper-bundle.css';
+@import '../node_modules/sweetalert2/src/sweetalert2.scss';
 
 @import 'mixin';
 @import 'utils.scss';
 @import 'base.scss';
+@import 'vendor.scss';
 
-@import '../node_modules/sweetalert2/src/sweetalert2.scss';

@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="coupon in coupons">
+          <tr v-for="coupon in coupons" :key="coupon.code">
             <td>{{ coupon.code }}</td>
             <td>{{ coupon.title }}</td>
             <td class="text-right">{{ coupon.percent }}</td>
@@ -40,7 +40,7 @@
         </tbody>
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getCoupons" class="py-5" />
+    <PaginationComponent :inner-pagination="pagination" @emit-page="getCoupons" class="py-5" />
     <CouponModal
       ref="CouponModal"
       :inner-coupon="tempCoupon"
@@ -51,13 +51,10 @@
 </template>
 
 <script>
-import { adminGetCoupon } from '@/assets/js/apis'
-import { adminDeleteCoupon } from '@/assets/js/apis'
-import { adminPostCoupon } from '@/assets/js/apis'
-import { adminPutCoupon } from '@/assets/js/apis'
+import { adminGetCoupon , adminDeleteCoupon , adminPostCoupon , adminPutCoupon } from '@/assets/js/apis'
 
 import CouponModal from '@/components/admin/CouponModal.vue'
-import Pagination from '@/components/Pagination.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 
 import toastMixin from '@/mixins/toastMixin'
 import alertMixin from '@/mixins/alertMixin'
@@ -74,7 +71,7 @@ export default {
       isNew: true
     }
   },
-  components: { CouponModal, Pagination },
+  components: { CouponModal, PaginationComponent },
   mixins: [toastMixin, alertMixin],
   methods: {
     getCoupons(page = 1) {
@@ -118,9 +115,8 @@ export default {
     updateCoupon(coupon) {
       const couponComponent = this.$refs.CouponModal
       this.tempCoupon = coupon
-      //將日期轉換為時間戳記
+      // 將日期轉換為時間戳記
       this.tempCoupon.due_date = Number(new Date(this.tempCoupon.due_date).getTime())
-
       if (this.isNew) {
         adminPostCoupon({ data: this.tempCoupon })
           .then((res) => {
@@ -148,7 +144,7 @@ export default {
         this.tempCoupon = { is_enabled: 0 }
       } else {
         this.tempCoupon = { ...coupon }
-        let percent = parseInt(this.tempCoupon.percent)
+        const percent = parseInt(this.tempCoupon.percent)
         if (percent / 10 < 1) {
           this.tempCoupon.percent = percent * 10
         } else {

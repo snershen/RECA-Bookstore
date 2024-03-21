@@ -21,9 +21,6 @@
         </div>
       </div>
     </template>
-    <!-- <div v-if="isValidURL(article.image)">
-      <img :src="article.image" alt="" height="500" class="w-100 object-fit-cover mb-lg-5" />
-    </div> -->
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -37,7 +34,7 @@
           <div class="col-lg-10">
             <h3 class="fs-2 fw-bold mb-4">更多文章</h3>
             <ul class="row">
-              <li v-for="item in articleList" class="col-lg-4">
+              <li v-for="item in articleList" :key="item.title" class="col-lg-4">
                 <div class="mb-3">
                   <ArticleCard :article="item" />
                 </div>
@@ -51,11 +48,10 @@
 </template>
 
 <script>
-import Breadcrumb from '@/components/user/Breadcrumb.vue'
-import ArticleCard from '@/components/user/ArticleCard.vue'
-
 import { mapState, mapActions } from 'pinia'
 import articleStore from '@/stores/article.js'
+import Breadcrumb from '@/components/user/Breadcrumb.vue'
+import ArticleCard from '@/components/user/ArticleCard.vue'
 
 export default {
   computed: {
@@ -64,12 +60,10 @@ export default {
   components: { Breadcrumb, ArticleCard },
   methods: {
     ...mapActions(articleStore, ['getArticles', 'getSingleArticle']),
-
     isValidURL(str) {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
-      return urlPattern.test(str) ? true : false
+      return !!urlPattern.test(str)
     },
-
     updateDocumentTitle() {
       document.title = `${this.article.title}｜RECA BOOKSTORE`
     }
@@ -80,7 +74,6 @@ export default {
     await this.getArticles()
     this.updateDocumentTitle()
   },
-
   watch: {
     'article.title': 'updateDocumentTitle'
   }

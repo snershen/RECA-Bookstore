@@ -15,7 +15,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.$router.push('/')
-    }, 3000)
+    }, 2000)
   }
 }
 </script>

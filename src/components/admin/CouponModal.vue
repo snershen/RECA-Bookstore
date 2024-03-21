@@ -1,5 +1,4 @@
 <template>
-  <!-- Modal -->
   <div
     class="modal fade"
     id="exampleModal"
@@ -29,7 +28,7 @@
               <div class="mb-3">
                 <label for="price" class="form-label">折扣碼</label>
                 <input
-                  type="text"
+                  type="price"
                   class="form-control"
                   id="unit"
                   placeholder="請輸入折扣碼"

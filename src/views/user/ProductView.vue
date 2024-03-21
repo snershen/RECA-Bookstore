@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'swiper/vue'
+import { SwiperSlide } from 'swiper/vue'
 
 import ProductCard from '@/components/user/ProductCard.vue'
 import ProductCategory from '@/components/user/ProductCategory.vue'
@@ -164,7 +164,7 @@ export default {
     }
   },
   props: ['id'],
-  components: { ProductCard, ProductTab, ProductCategory, Breadcrumb, Swiper, SwiperSlide },
+  components: { ProductCard, ProductTab, ProductCategory, Breadcrumb,  SwiperSlide },
   computed: {
     ...mapState(useProductStore, [
       'singleProduct',
@@ -197,7 +197,7 @@ export default {
         (storedItem) => storedItem.id === this.singleProduct.id
       )
       if (storedItem.length > 0) {
-        this.isSolid = storedItem[0].isSolid ? true : false
+        this.isSolid = !!storedItem[0].isSolid
       }
     },
     changeCollectIcon() {
@@ -231,7 +231,7 @@ export default {
     setTimeout(() => {
       this.initializeIsSolid()
       this.initializeSwiper(this.$refs.relatedSwiper, this.relatedSwiper)
-    }, 500)
+    }, 1000)
   },
   watch: {
     'singleProduct.title': 'updateDocumentTitle'

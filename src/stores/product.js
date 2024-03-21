@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia'
-import Swal from 'sweetalert2'
+import { showToast } from '@/mixins/toastMixin'
 
-import { userGetProduct } from '@/assets/js/apis'
-import { userGetSingleProduct } from '@/assets/js/apis'
-import { userGetProductAll } from '@/assets/js/apis'
+import { userGetProduct , userGetSingleProduct , userGetProductAll } from '@/assets/js/apis'
 
 export const useProductStore = defineStore('productStore', {
   state: () => {
@@ -12,26 +10,27 @@ export const useProductStore = defineStore('productStore', {
       productAll: [],
       pagination: {},
       singleProduct: {},
-      //篩選：分類
+      // 篩選：分類
       categoryList: [],
       filterResult: [],
       selectedCategory: '全部',
       sortStatus: false,
       sortTarget: '',
-      //篩選：文字搜尋
+      // 篩選：文字搜尋
       searchString: '',
       searchResult: [],
       isEmptyResult: false,
-      //更多類似產品
+      // 更多類似產品
       alikeProduct: [],
       isLoading: false,
-      //收藏列表
+      // 收藏列表
       collectList: [],
       collectStorage: []
     }
   },
   getters: {
     filterToday: (state) =>
+      // eslint-disable-next-line array-callback-return
       state.productAll.sort((a, b) => {
         if (a.time && b.time) {
           return b.time.localeCompare(a.time)
@@ -39,16 +38,6 @@ export const useProductStore = defineStore('productStore', {
       })
   },
   actions: {
-    showToast(options) {
-      Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true,
-        ...options
-      }).fire()
-    },
     async getProductAll() {
       this.isLoading = true
       try {
@@ -132,7 +121,7 @@ export const useProductStore = defineStore('productStore', {
         throw error
       }
     },
-    //搜尋
+    // 搜尋
     async searchProduct(searchStr) {
       try {
         this.isEmptyResult = false
@@ -152,20 +141,20 @@ export const useProductStore = defineStore('productStore', {
       }
     },
 
-    //相關產品
+    // 相關產品
     showAlikeProduct(target) {
+      // eslint-disable-next-line array-callback-return
       const result = this.productAll.filter((item) => {
         if (item.id !== target.id) return item.category === target.category
       })
       this.alikeProduct = result
     },
 
-    //收藏
+    // 收藏
     getStorage() {
       if (localStorage.getItem('collectList')) {
         this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
       }
-      return
     },
     addOrRemoveCollect(item, isSolid) {
       if (!localStorage.getItem('collectList')) {
@@ -173,7 +162,7 @@ export const useProductStore = defineStore('productStore', {
           this.collectList.push({ ...item, isSolid })
           localStorage.setItem('collectList', JSON.stringify(this.collectList))
           this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
-          this.showToast({
+          showToast({
             title: '收藏成功',
             icon: 'success'
           })
@@ -190,7 +179,7 @@ export const useProductStore = defineStore('productStore', {
           return
         }
         this.collectList.push({ ...item, isSolid })
-        this.showToast({
+        showToast({
           title: '收藏成功',
           icon: 'success'
         })
@@ -202,14 +191,14 @@ export const useProductStore = defineStore('productStore', {
         })
         this.collectList.splice(index, 1)
         localStorage.setItem('collectList', JSON.stringify(this.collectList))
-        this.showToast({
+        showToast({
           title: `已取消收藏`,
           icon: 'info'
         })
         this.collectStorage = JSON.parse(localStorage.getItem('collectList'))
       }
     },
-    //排序
+    // 排序
     sortProduct(sort) {
       if (sort === 'price') {
         this.sortTarget = 'price'
@@ -218,9 +207,9 @@ export const useProductStore = defineStore('productStore', {
       } else if (sort === 'soldNum') {
         this.sortTarget = 'soldNum'
       }
-
       if (sort === 'time') {
         if (!this.sortStatus) {
+          // eslint-disable-next-line array-callback-return
           this.filterResult = [...this.filterResult].sort((a, b) => {
             if (a.time && b.time) {
               return a.time.localeCompare(b.time)
@@ -228,6 +217,7 @@ export const useProductStore = defineStore('productStore', {
           })
           this.sortStatus = !this.sortStatus
         } else {
+          // eslint-disable-next-line array-callback-return
           this.filterResult = [...this.filterResult].sort((a, b) => {
             if (a.time && b.time) {
               return b.time.localeCompare(a.time)
@@ -251,6 +241,7 @@ export const useProductStore = defineStore('productStore', {
       }
     },
     sortTimeLower() {
+      // eslint-disable-next-line array-callback-return
       this.filterResult = [...this.filterResult].sort((a, b) => {
         if (a.time && b.time) {
           return b.time.localeCompare(a.time)

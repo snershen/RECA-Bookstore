@@ -54,7 +54,6 @@ export default {
   },
   methods: {
     ...mapActions(useProductStore, ['addOrRemoveCollect', 'getStorage']),
-
     changeCollectIcon() {
       this.isSolid = !this.isSolid
     },
@@ -66,7 +65,7 @@ export default {
       const copyCollectList = Array.from(this.collectStorage)
       const storedItem = copyCollectList.filter((storedItem) => storedItem.id === this.item.id)
       if (storedItem.length > 0) {
-        this.isSolid = storedItem[0].isSolid ? true : false
+        this.isSolid = !!storedItem[0].isSolid
       }
     }
   },
@@ -88,26 +87,24 @@ export default {
 .product-card {
   transition: 0.5s;
   border-radius: 8px;
-}
-
-.product-card:hover {
-  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
+  &:hover {
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
+  }
 }
 
 .like-btn {
   z-index: 10;
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+  }
 }
 
 .category {
   display: none;
-}
-
-.like-btn span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 35px;
-  height: 35px;
 }
 
 .index-card-style {

@@ -1,5 +1,4 @@
 <template>
-  <!-- Modal -->
   <div
     class="modal fade"
     id="exampleModal"
@@ -160,7 +159,6 @@ export default {
       this.isNew = this.innerNew
     }
   },
-
   created() {
     this.tempArticle.isPublic = false
   }

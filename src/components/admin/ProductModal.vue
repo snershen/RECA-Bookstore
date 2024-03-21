@@ -1,5 +1,4 @@
 <template>
-  <!-- Modal -->
   <div
     class="modal fade"
     id="exampleModal"
@@ -81,8 +80,8 @@
                     id="category"
                     v-model="tempProduct.category"
                   >
-                    <option disabled selected>選擇分類</option>
-                    <option value="文學小說">文學小說</option>
+                    <option disabled value="">選擇分類</option>
+                    <option>文學小說</option>
                     <option>社會科學</option>
                     <option>商業理財</option>
                     <option>勵志成長</option>
@@ -93,7 +92,7 @@
                   </select>
                 </div>
                 <div class="mb-3 col-md-6">
-                  <label for="price" class="form-label">單位</label>
+                  <label for="unit" class="form-label">單位</label>
                   <input
                     type="text"
                     class="form-control"
@@ -210,7 +209,7 @@ export default {
   data() {
     return {
       modal: {},
-      tempProduct: {},
+      tempProduct: { category: ""},
       editor: ClassicEditor,
       editorData: '<p>請輸入內容</p>',
       editorConfig: {}

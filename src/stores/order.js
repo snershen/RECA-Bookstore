@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
-import { userGetOrder } from '@/assets/js/apis'
-import { userSingleOrder } from '@/assets/js/apis'
-import { userPay } from '@/assets/js/apis'
+import { userGetOrder, userSingleOrder, userPay } from '@/assets/js/apis'
 import { timeFormat } from '@/assets/js/timeFormat'
 
 export default defineStore('orderStore', {
@@ -52,7 +50,7 @@ export default defineStore('orderStore', {
     },
     payMoney(id) {
       userPay(id)
-        .then((res) => {
+        .then(() => {
           this.getSingleOrder(id)
         })
         .catch((err) => {

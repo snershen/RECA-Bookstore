@@ -21,7 +21,7 @@
           </tr>
         </tbody>
         <tbody v-else>
-          <tr v-for="order in orderList">
+          <tr v-for="order in orderList" :key="order.id">
             <td>{{ order.id }}</td>
             <td class="text-right">{{ order.create_at }}</td>
             <td>
@@ -47,17 +47,17 @@
         <OrderModal ref="orderModal" :inner-order="tempOrder" />
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getOrder" class="py-5" />
+    <PaginationComponent :inner-pagination="pagination" @emit-page="getOrder" class="py-5" />
   </div>
 </template>
 
 <script>
-import { deleteOrder } from '@/assets/js/apis'
-import OrderModal from '@/components/admin/OrderModal.vue'
-import Pagination from '@/components/Pagination.vue'
-
 import { mapState, mapActions } from 'pinia'
 import adminOrderStore from '@/stores/admin/order.js'
+
+import { deleteOrder } from '@/assets/js/apis'
+import OrderModal from '@/components/admin/OrderModal.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 
 export default {
   data() {
@@ -67,7 +67,7 @@ export default {
   },
   components: {
     OrderModal,
-    Pagination
+    PaginationComponent
   },
   computed: {
     ...mapState(adminOrderStore, ['orderList', 'pagination', 'isLoading'])

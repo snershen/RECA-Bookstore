@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-lg-8 order-1 order-lg-0 overflow-hidden">
         <ul class="row" v-if="filterResult.length === 0 && !isSearch">
-          <li v-for="(item, index) in articleList" class="col-12">
+          <li v-for="(item, index) in articleList" :key="`article${index}`" class="col-12">
             <ArticleCard
               :article="item"
               data-aos="fade-left"
@@ -14,9 +14,9 @@
           </li>
         </ul>
         <div v-else-if="filterResult.length !== 0 && isSearch">
-          <p class="fs-3 fw-bold">"{{ newSearchString }}" 搜尋結果</p>
+          <p class="fs-3 fw-bold">"{{ searchString }}" 搜尋結果</p>
           <ul class="row">
-            <li v-for="item in filterResult" class="col-12">
+            <li v-for="item in filterResult" :key="item.title" class="col-12">
               <div>
                 <ArticleCard :article="item" />
               </div>
@@ -42,7 +42,7 @@
               type="text"
               placeholder="搜尋文章"
               class="d-block w-100 ps-5 form-control"
-              v-model="searchString"
+              v-model.trim="searchString"
             />
           </div>
           <button type="button" class="btn btn-dark text-nowrap" @click.prevent="filterArticle">
@@ -57,12 +57,11 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import articleStore from '@/stores/article.js'
-
 import ArticleCard from '@/components/user/ArticleCard.vue'
 
 export default {
   data() {
-    return { filterResult: [], searchString: '', isSearch: false, newSearchString: '' }
+    return { filterResult: [], searchString: '', isSearch: false, newSearchString:'' }
   },
   components: { ArticleCard },
   computed: {
@@ -72,12 +71,10 @@ export default {
     ...mapActions(articleStore, ['getArticles']),
     filterArticle() {
       this.isSearch = true
-      const newStr = this.searchString.trim()
-      this.newSearchString = newStr
+      this.newSearchString = this.searchString
       const result = this.articleList.filter((item) => {
-        return item.title.includes(newStr)
+        return item.title.includes(this.searchString)
       })
-
       this.filterResult = result
     }
   },

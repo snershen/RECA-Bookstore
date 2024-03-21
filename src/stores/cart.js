@@ -1,12 +1,9 @@
 import { defineStore } from 'pinia'
-import Swal from 'sweetalert2'
+import { showToast } from '@/mixins/toastMixin'
+import { showAlert } from '@/mixins/alertMixin'
 import { addThousandsSeparator } from '@/assets/js/thousandNumber.js'
 
-import { userGetCart } from '@/assets/js/apis'
-import { userDeleteCart } from '@/assets/js/apis'
-import { userPutCart } from '@/assets/js/apis'
-import { userPostCart } from '@/assets/js/apis'
-import { userDeleteCartAll } from '@/assets/js/apis'
+import { userGetCart, userPostCart, userPutCart, userDeleteCart,userDeleteCartAll } from '@/assets/js/apis'
 
 export default defineStore('cartStore', {
   state: () => {
@@ -16,40 +13,21 @@ export default defineStore('cartStore', {
       saveMoney: 0,
       productCount: 0,
       toastContent: {},
-
       isLoading: false
     }
   },
 
   getters: {
     getCartSort: (cartList) => {
-      cartList.sort((item) => a.price - b.price)
+      cartList.sort((a, b) => a.price - b.price)
     }
   },
 
   actions: {
-    showToast(options) {
-      Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true,
-        ...options
-      }).fire()
-    },
-    showAlert(options) {
-      return Swal.fire({
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
-        ...options
-      })
-    },
     getCart() {
       userGetCart()
         .then((res) => {
           this.cartList = res.data.data
-
           this.cartList.carts.forEach((item) => {
             item.final_total = addThousandsSeparator(item.final_total)
             item.total = addThousandsSeparator(item.total)
@@ -68,7 +46,7 @@ export default defineStore('cartStore', {
     },
     deleteCart(id) {
       userDeleteCart(id)
-        .then((res) => {
+        .then(() => {
           this.getCart()
         })
         .catch((err) => {
@@ -86,11 +64,10 @@ export default defineStore('cartStore', {
       }
       const info = { data: { product_id: item.product_id, qty: this.productCount } }
       userPutCart(item.id, info)
-        .then((res) => {
+        .then(() => {
           item.qty = this.productCount
-
           if (item.qty === 0) {
-            this.showAlert({
+            showAlert({
               title: '確定要移除該商品嗎？',
               showCancelButton: true,
               icon: 'info'
@@ -110,7 +87,7 @@ export default defineStore('cartStore', {
     changeCartNum(item) {
       this.productCount = item.qty
       if (!Number(item.qty) && item.qty !== 0) {
-        this.showToast({
+        showToast({
           title: '數量必須為數字',
           icon: 'error'
         })
@@ -120,13 +97,13 @@ export default defineStore('cartStore', {
       if (item.qty < 0) {
         item.qty = 1
         this.productCount = item.qty
-        let info = { data: { product_id: item.product_id, qty: this.productCount } }
+        const info = { data: { product_id: item.product_id, qty: this.productCount } }
         userPutCart(item.id, info).then((res) => {
           this.getCart()
         })
         return
       } else if (item.qty === 0) {
-        this.showAlert({
+        showAlert({
           title: '確定要移除該商品嗎？',
           showDenyButton: true,
           icon: 'info',
@@ -136,7 +113,7 @@ export default defineStore('cartStore', {
             if (result.isConfirmed) {
               this.deleteCart(item.id)
               this.getCart()
-              return
+              
             } else if (result.isDenied) {
               item.qty = 1
             }
@@ -148,7 +125,7 @@ export default defineStore('cartStore', {
         return
       }
 
-      let info = { data: { product_id: item.product_id, qty: this.productCount } }
+      const info = { data: { product_id: item.product_id, qty: this.productCount } }
       userPutCart(item.id, info)
         .then((res) => {
           this.getCart()
@@ -159,7 +136,7 @@ export default defineStore('cartStore', {
     },
 
     deleteAllCart() {
-      this.showAlert({
+      showAlert({
         title: '確定要移除購物車所有商品嗎？',
         showCancelButton: true,
         icon: 'info'
@@ -185,7 +162,7 @@ export default defineStore('cartStore', {
       }
       userPostCart(target)
         .then((res) => {
-          this.showToast({
+          showToast({
             title: '成功加入購物車',
             icon: 'success'
           })

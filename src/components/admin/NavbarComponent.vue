@@ -29,7 +29,7 @@
         </div>
         <div class="offcanvas-body px-0">
           <ul class="navbar-nav justify-content-end flex-grow-1">
-            <li class="nav-item" v-for="item in childrenRoute">
+            <li class="nav-item" v-for="item in childrenRoute" :key="item.name">
               <RouterLink
                 class="nav-link rounded-0"
                 :to="{ name: item.name }"
@@ -66,7 +66,7 @@
       ref="navbarCollapse"
     >
       <ul class="navbar-nav flex-column w-100">
-        <li class="nav-item" v-for="item in childrenRoute">
+        <li class="nav-item" v-for="item in childrenRoute" :key="item.name">
           <RouterLink class="nav-link" :to="{ name: item.name }">{{ item.meta.title }}</RouterLink>
         </li>
       </ul>
@@ -95,7 +95,7 @@ export default {
         .then(() => {
           this.$router.push({ name: 'admin-login' })
           this.showToast({ title: '已登出', icon: 'success' })
-          document.cookie = ''
+          document.cookie = `bookstoreAPI=; expires=/`
         })
         .catch((err) => {
           console.error(err)
@@ -123,6 +123,7 @@ export default {
 .dashboard {
   background: #1a1a1a;
 }
+
 .nav-link {
   color: rgb(163, 163, 163);
   position: relative;

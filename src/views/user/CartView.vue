@@ -24,7 +24,7 @@
           <li class="col-1"></li>
         </ul>
       </li>
-      <li class="row border-bottom py-3" v-for="item in cartList.carts">
+      <li class="row border-bottom py-3" v-for="item in cartList.carts" :key="item.id">
         <div class="col-lg-1 col-3">
           <img :src="item.product.imageUrl" alt="" class="img-fluid" />
         </div>
@@ -89,11 +89,12 @@
               type="button"
               class="btn btn-secondary text-nowrap"
               @click.prevent="checkCoupon"
+              :disabled="couponCode.length === 0"
             >
               套用
             </button>
           </div>
-          <p v-if="this.hasCoupon" class="text-end">已套用優惠券：{{ this.couponCode }}</p>
+          <p v-if="this.hasCoupon" class="text-end text-success fw-normal">已套用優惠券：{{ this.couponCode }}</p>
         </div>
         <div class="row mb-4 pb-4 px-4 fs-6 fw-bold border-bottom">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">折扣</div>
@@ -116,17 +117,17 @@
         <RouterLink
           :to="{ name: 'products' }"
           class="btn btn-outline-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
-          ><span class="btn-arrow btn-arrow-left me-2"></span>繼續逛逛
-        </RouterLink>
+          >繼續逛逛</RouterLink
+        >
       </div>
       <div class="col-lg-4 col-12">
         <RouterLink :to="{ name: 'pay' }" class="btn btn-secondary rounded-0 w-100 py-3">
-          前往結帳<span class="btn-arrow btn-arrow-right ms-2"></span
-        ></RouterLink>
+          前往結帳</RouterLink
+        >
       </div>
     </div>
     <div class="row justify-content-between py-5" v-else>
-      <div class="col-lg-4 mx-auto">
+      <div class="col-lg-4 col-12 mx-auto">
         <RouterLink
           :to="{ name: 'products' }"
           class="btn btn-secondary rounded-0 w-100 py-3 mb-3 mb-lg-0"
@@ -139,10 +140,10 @@
 
 <script>
 import { userCheckCoupon } from '@/assets/js/apis'
-import toastMixin from '@/mixins/toastMixin.js'
-
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
+import toastMixin from '@/mixins/toastMixin.js'
+import alertMixin from '@/mixins/alertMixin.js'
 
 export default {
   data() {
@@ -151,12 +152,10 @@ export default {
       hasCoupon: false
     }
   },
-
-  mixins: [toastMixin],
+  mixins: [toastMixin, alertMixin],
   computed: {
     ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength'])
   },
-
   methods: {
     ...mapActions(cartStore, [
       'getCart',
@@ -181,10 +180,11 @@ export default {
           const message = res.data.message
           this.showToast({
             title: message,
-            icon: 'info'
+            icon: 'success'
           })
         })
         .catch((err) => {
+          this.showToast({ title: err.response.data.message, icon: 'error' })
           console.error(err)
         })
     }
@@ -195,10 +195,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/scss/mixin.scss';
+
 .product-name {
   width: 55%;
-  @media (min-width: 768px) {
+  @include min-md {
     width: 35%;
   }
 }

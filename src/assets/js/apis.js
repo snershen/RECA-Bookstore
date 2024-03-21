@@ -1,14 +1,13 @@
-const domain = import.meta.env.VITE_API_URL
-const apiPath = import.meta.env.VITE_API_PATH
-
 import axios from 'axios'
 
+const { VITE_API_URL, VITE_API_PATH } = import.meta.env
+
 const loginRequest = axios.create({
-  baseURL: `${domain}`
+  baseURL: VITE_API_URL
 })
 
 const adminRequest = axios.create({
-  baseURL: `${domain}/api/${apiPath}/admin/`
+  baseURL: `${VITE_API_URL}/api/${VITE_API_PATH}/admin/`
 })
 
 export const apiSignIn = (data) => {
@@ -20,40 +19,40 @@ export const apiLogout = () => {
 }
 
 export const apiCheck = () => {
-  //從 cookie 中取出 token
+  // 從 cookie 中取出 token
   const token = document.cookie.replace(/(?:(?:^|.*;\s*)bookstoreAPI\s*=\s*([^;]*).*$)|^.*$/, '$1')
-  //將 token 放在請求的 header 中一併送出
-  loginRequest.defaults.headers.common['Authorization'] = token
-  adminRequest.defaults.headers.common['Authorization'] = token
+  // 將 token 放在請求的 header 中一併送出
+  loginRequest.defaults.headers.common.Authorization = token
+  adminRequest.defaults.headers.common.Authorization = token
   return loginRequest.post(`/api/user/check`)
 }
 
 const userRequest = axios.create({
-  baseURL: `${domain}/api/${apiPath}/`
+  baseURL: `${VITE_API_URL}/api/${VITE_API_PATH}/`
 })
 
-//產品列表
-export const admin_getProductAll = () => {
+// 產品列表
+export const adminGetProductAll = () => {
   return adminRequest.get(`/products/all`)
 }
 
-export const admin_getProducts = (page) => {
+export const adminGetProducts = (page) => {
   return adminRequest.get(`/products?page=${page}`)
 }
 
-export const admin_postProduct = (data) => {
+export const adminPostProduct = (data) => {
   return adminRequest.post('/product', data)
 }
 
-export const admin_putProduct = (data, id) => {
+export const adminPutProduct = (data, id) => {
   return adminRequest.put(`/product/${id}`, data)
 }
 
-export const admin_deleteProduct = (id) => {
+export const adminDeleteProduct = (id) => {
   return adminRequest.delete(`/product/${id}`)
 }
 
-//訂單
+// 訂單
 export const adminGetOrder = (page) => {
   return adminRequest.get(`/orders/?page=${page}`)
 }
@@ -62,7 +61,7 @@ export const deleteOrderAll = () => {
   return adminRequest.delete(`/order/all`)
 }
 
-export const admin_putOrder = (id) => {
+export const adminPutOrder = (id) => {
   return adminRequest.put(`/order/${id}`)
 }
 
@@ -70,7 +69,7 @@ export const deleteOrder = (id) => {
   return adminRequest.delete(`/order/${id}`)
 }
 
-//優惠券
+// 優惠券
 export const adminGetCoupon = (page) => {
   return adminRequest.get(`/coupons/?page=${page}`)
 }
@@ -87,7 +86,7 @@ export const adminDeleteCoupon = (id) => {
   return adminRequest.delete(`/coupon/${id}`)
 }
 
-//文章
+// 文章
 export const adminPostArticle = (data) => {
   return adminRequest.post(`/article`, data)
 }
@@ -108,14 +107,14 @@ export const adminDeleteArticle = (id) => {
   return adminRequest.delete(`/article/${id}`)
 }
 
-//上傳圖片
+// 上傳圖片
 export const adminUploadImg = (data) => {
   return adminRequest.post(`/upload`, data)
 }
 
-//=========== user ============
+// =========== user ============
 
-//商品列表
+// 商品列表
 export const userGetProduct = (page, category = '') => {
   let url = `/products?page=${page}`
   if (category !== '') {
@@ -133,7 +132,7 @@ export const userGetSingleProduct = (id) => {
   return userRequest.get(`/product/${id}`)
 }
 
-//購物車
+// 購物車
 export const userPostCart = (data) => {
   return userRequest.post(`/cart`, data)
 }
@@ -154,7 +153,7 @@ export const userGetCart = () => {
   return userRequest.get(`/cart`)
 }
 
-//訂單
+// 訂單
 export const userPostOrder = (data) => {
   return userRequest.post(`/order`, data)
 }
@@ -167,7 +166,7 @@ export const userSingleOrder = (id) => {
   return userRequest.get(`/order/${id}`)
 }
 
-//文章列表
+// 文章列表
 export const userGetArticles = () => {
   return userRequest.get(`/articles`)
 }
@@ -176,12 +175,12 @@ export const userGetSingleArticle = (id) => {
   return userRequest.get(`/article/${id}`)
 }
 
-//優惠券
+// 優惠券
 export const userCheckCoupon = (data) => {
   return userRequest.post(`/coupon`, data)
 }
 
-//結帳
+// 結帳
 export const userPay = (id) => {
   return userRequest.post(`/pay/${id}`)
 }

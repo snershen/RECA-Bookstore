@@ -79,7 +79,7 @@
             <BtnMore />
           </RouterLink>
         </div>
-        <Tabs />
+        <TabsComponent />
         <div class="position-relative">
           <swiper-container init="false" ref="publishSwiper" class="container px-5">
             <swiper-slide
@@ -146,7 +146,7 @@
               class="container rank-content-swiper"
               id="rank-thumbs"
             >
-              <swiper-slide v-for="(item, index) in rankList">
+              <swiper-slide v-for="(item, index) in rankList" :key="`rand${index}`">
                 <div
                   class="rank-card d-flex flex-column flex-md-row position-relative text-center text-lg-start"
                 >
@@ -189,7 +189,7 @@
               class="container rank-content-swiper"
               id="rank-thumbs"
             >
-              <swiper-slide v-for="(item, index) in productList">
+              <swiper-slide v-for="(item, index) in productList" :key="`rank${index}`">
                 <div
                   class="rank-card d-flex flex-column flex-md-row position-relative text-center text-lg-start"
                 >
@@ -260,14 +260,14 @@ import { userGetSingleArticle } from '@/assets/js/apis'
 
 import ProductCard from '@/components/user/ProductCard.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
-import LoadingComponent from '@/components/Loading.vue'
-import Tabs from '@/components/user/Tabs.vue'
+import LoadingComponent from '@/components/LoadingComponent.vue'
+import TabsComponent from '@/components/user/TabsComponent.vue'
 import BtnMore from '@/components/user/BtnMore.vue'
 
 // import SwiperCore from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/vue'
+import { SwiperSlide } from 'swiper/vue'
 // import { Thumbs } from 'swiper/modules'
-import { Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Thumbs } from 'swiper/modules'
+import { Thumbs } from 'swiper/modules'
 
 export default {
   data() {
@@ -356,15 +356,16 @@ export default {
   components: {
     ProductCard,
     ArticleCard,
-    Tabs,
+    TabsComponent,
     BtnMore,
     LoadingComponent,
-    Swiper,
+    // Swiper,
     SwiperSlide
   },
 
   computed: {
     filterToday() {
+      // eslint-disable-next-line array-callback-return
       return useProductStore().productAll.sort((a, b) => {
         if (a.time && b.time) {
           return b.time.localeCompare(a.time)
@@ -437,7 +438,7 @@ export default {
 @import '@/assets/scss/mixin';
 
 ::-webkit-scrollbar {
-  display: none; /* Chrome Safari 兼容*/
+  display: none;
 }
 
 .banner {

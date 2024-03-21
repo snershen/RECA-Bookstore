@@ -1,12 +1,12 @@
 <template>
-  <Loading
+  <LoadingComponent
     :active="isLoading || articleLoading || productLoading || orderLoading || cartLoading"
     class="loading"
-  >
+>
     <div class="loading-box">
       <Vue3Lottie :animationData="BarLoaderJSON" :height="150" :width="150" />
     </div>
-  </Loading>
+  </LoadingComponent>
 </template>
 
 <script>

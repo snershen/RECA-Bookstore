@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex bg-light min-height-100 pt-5 pt-lg-0">
-    <Navbar class="border-end" />
+    <NavbarComponent class="border-end" />
     <div class="view-area ms-auto">
       <div class="border-bottom py-3 bg-white">
         <div class="container d-flex align-items-center justify-content-between">
@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="container py-4">
-        <RouterView />
+        <RouterView v-if="checkSuccess"/>
       </div>
     </div>
   </div>
@@ -20,30 +20,55 @@
 
 <script>
 import { apiCheck } from '@/assets/js/apis.js'
-import Navbar from '@/components/admin/Navbar.vue'
+import NavbarComponent from '@/components/admin/NavbarComponent.vue'
+import toastMixin from '@/mixins/toastMixin.js'
 
 export default {
   data() {
     return {
-      username: ''
+      username: '',
+      checkSuccess: false,
     }
   },
   components: {
-    Navbar
+    NavbarComponent
   },
-  created() {
+  mixins: [ toastMixin ],
+  methods:{
+    checkLogin(){
     apiCheck()
       .then((res) => {
-        this.$router.push({ name: 'admin-products' })
-        this.username = sessionStorage.getItem('username')
         if (!res.data.success) {
           this.$router.push({ name: 'admin-login' })
+          this.showToast({
+            title: '登入失敗',
+            icon: 'error',
+            position: 'top'
+          })
+          return 
         }
+        this.$router.push({ name: 'admin-products' })
+        this.username = sessionStorage.getItem('username')
+        this.checkSuccess = true;
+        this.showToast({
+          title: '登入成功',
+          position: 'top',
+          icon: 'success',
+        })
       })
       .catch((err) => {
         this.$router.push({ name: 'admin-login' })
         console.error(err)
+        this.showToast({
+          title: '登入失敗',
+          icon: 'error',
+          position: 'top'
+        })
       })
+      }
+  },
+  created() {
+    this.checkLogin()
   }
 }
 </script>

@@ -72,7 +72,7 @@
         </tbody>
       </table>
     </div>
-    <Pagination :inner-pagination="pagination" @emit-page="getProducts" class="py-5" />
+    <PaginationComponent :inner-pagination="pagination" @emit-page="getProducts" class="py-5" />
     <ProductModal
       ref="productModal"
       :product="tempProduct"
@@ -83,15 +83,10 @@
 </template>
 
 <script>
-import { admin_getProducts } from '@/assets/js/apis.js'
-import { admin_putProduct } from '@/assets/js/apis.js'
-import { admin_postProduct } from '@/assets/js/apis.js'
-import { admin_deleteProduct } from '@/assets/js/apis.js'
-
-import { mapState, mapActions } from 'pinia'
+import { adminGetProducts, adminPostProduct, adminPutProduct, adminDeleteProduct } from '@/assets/js/apis.js'
 
 import ProductModal from '@/components/admin/ProductModal.vue'
-import Pagination from '@/components/Pagination.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 
 import toastMixin from '@/mixins/toastMixin'
 import alertMixin from '@/mixins/alertMixin'
@@ -102,21 +97,20 @@ export default {
     return {
       products: [],
       pagination: {},
-      tempProduct: {},
+      tempProduct: { category: ''},
       isNew: true,
       isLoading: false
     }
   },
-
   components: {
     ProductModal,
-    Pagination
+    PaginationComponent
   },
   mixins: [toastMixin, alertMixin, loadingMixin],
   methods: {
     getProducts(page = 1) {
       this.isLoading = true
-      admin_getProducts(page)
+      adminGetProducts(page)
         .then((res) => {
           this.isLoading = false
           if (res.data.success) {
@@ -130,7 +124,7 @@ export default {
     },
     openModal(isNew, item) {
       if (isNew) {
-        this.tempProduct = {}
+        this.tempProduct = { category: '' }
       } else {
         this.tempProduct = { ...item }
       }
@@ -142,7 +136,7 @@ export default {
       const productComponent = this.$refs.productModal
       this.tempProduct = item
       if (!this.isNew) {
-        admin_putProduct({ data: this.tempProduct }, item.id)
+        adminPutProduct({ data: this.tempProduct }, item.id)
           .then((res) => {
             this.showToast({ title: res.data.message, icon: 'success' })
             if (res.data.success) {
@@ -154,7 +148,7 @@ export default {
             console.error(err)
           })
       } else {
-        admin_postProduct({ data: this.tempProduct })
+        adminPostProduct({ data: this.tempProduct })
           .then((res) => {
             this.showToast({ title: res.data.message, icon: 'success' })
             productComponent.hideModal()
@@ -168,7 +162,7 @@ export default {
     updateIsAble(item) {
       this.tempProduct = item
       this.tempProduct.is_enabled = !this.tempProduct.is_enabled
-      admin_putProduct({ data: this.tempProduct }, item.id)
+      adminPutProduct({ data: this.tempProduct }, item.id)
         .then((res) => {
           if (res.data.success) {
             this.showToast({ title: res.data.message, icon: 'success' })
@@ -182,7 +176,7 @@ export default {
     updateIsFeature(item) {
       this.tempProduct = item
       this.tempProduct.is_feature = !this.tempProduct.is_feature
-      admin_putProduct({ data: this.tempProduct }, item.id)
+      adminPutProduct({ data: this.tempProduct }, item.id)
         .then((res) => {
           if (res.data.success) {
             this.showToast({ title: res.data.message, icon: 'success' })
@@ -197,7 +191,7 @@ export default {
       this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true })
         .then((result) => {
           if (result.isConfirmed) {
-            admin_deleteProduct(item.id)
+            adminDeleteProduct(item.id)
               .then((res) => {
                 this.getProducts(this.pagination.current_page)
                 this.showToast({ title: res.data.message, icon: 'success' })

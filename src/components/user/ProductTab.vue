@@ -49,7 +49,6 @@ export default {
       content: ''
     }
   },
-
   computed: {
     ...mapState(useProductStore, ['singleProduct', 'singleProductId'])
   },
