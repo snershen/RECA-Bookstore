@@ -50,7 +50,7 @@ export default {
         this.username = sessionStorage.getItem('username')
         this.checkSuccess = true;
         this.showToast({
-          title: '登入成功',
+          title: '登入驗證成功',
           position: 'top',
           icon: 'success',
         })

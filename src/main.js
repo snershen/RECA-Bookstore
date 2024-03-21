@@ -27,14 +27,16 @@ import {
   faArrowLeft,
   faArrowRight,
   faUser,
-  faCircleArrowLeft
+  faCircleArrowLeft,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
   faClipboard,
   faFileLines,
   faStar,
-  faHeart as farHeart
+  faHeart as farHeart,
+  faCopy,
 } from '@fortawesome/free-regular-svg-icons'
 
 import { faInstagram, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -72,6 +74,8 @@ library.add(faArrowLeft)
 library.add(faArrowRight)
 library.add(faCircleArrowLeft)
 library.add(fasStar)
+library.add(faCopy)
+library.add(faCheck)
 
 // defineRule('required', (value) => {
 //   if (!value || !value.length) {

@@ -80,7 +80,10 @@ export default {
       adminGetArticle(page)
         .then((res) => {
           this.isLoading = false
-          this.articles = res.data.articles
+          const articlesResult = res.data.articles.filter(item=>{
+            return item.author !== "系統"
+          })
+          this.articles = articlesResult
           this.pagination = res.data.pagination
           this.articles.forEach((item) => {
             const year = new Date(item.create_at).getFullYear()

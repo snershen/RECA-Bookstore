@@ -238,8 +238,8 @@
       </div>
     </section>
 
-    <div class="bookstore-bg text-center">
-      <h3 class="fs-1 fw-bold text-primary mb-4">開啟屬於你的閱讀旅程</h3>
+    <section class="bookstore-bg text-center">
+      <h3 class="fs-1 fw-bold text-primary mb-3">開啟屬於你的閱讀旅程</h3>
       <router-link
         :to="{ name: 'products' }"
         class="btn btn-outline-light rounded-pill fs-6 px-4 py-2"
@@ -247,7 +247,7 @@
         探索書店
         <font-awesome-icon :icon="['fas', 'chevron-right']" class="ms-2 fa-sm" />
       </router-link>
-    </div>
+    </section>
   </main>
 </template>
 

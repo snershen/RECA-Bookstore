@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { adminGetOrder, adminPutArticle, adminGetSingleArticle  } from '@/assets/js/apis.js'
 import { timeFormat } from '@/assets/js/timeFormat'
-import { showToast } from '@/mixins/toastMixin'
 
 export default defineStore('adminOrderStore', {
   state: () => {
@@ -104,7 +103,7 @@ export default defineStore('adminOrderStore', {
         .then((res) => {
           adminPutArticle(rankId, { data: res })
             .then(() => {
-              showToast({ title: '已更新排行榜', icon: 'success' })
+              // showToast({ title: '已更新排行榜', icon: 'success' })
             })
             .catch((err) => {
               console.error(err)

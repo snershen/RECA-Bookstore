@@ -53,7 +53,11 @@
                 @blur.prevent="changeCartNum(item)"
                 style="width: 70px"
               />
-              <button @click="editCart(item, true)" class="btn ps-3 py-3 border-0" :class="{ 'disabled opacity-25': isClicked }">
+              <button
+                @click="editCart(item, true)"
+                class="btn ps-3 py-3 border-0"
+                :class="{ 'disabled opacity-25': isClicked }"
+              >
                 <font-awesome-icon :icon="['fas', 'plus']" />
               </button>
             </div>
@@ -70,6 +74,31 @@
             >
           </li>
         </ul>
+      </li>
+      <li class="border-bottom py-2 text-primary">
+        <p class="text-nowrap w-100 d-flex align-items-center">
+          神秘購物金來囉！
+          <input
+            type="text"
+            value="new_member"
+            class="rounded-0 border-0 d-inline-block text-primary"
+            style="width: 100px"
+            disabled
+          />
+          <button
+            type="button"
+            class="btn border-white rounded-2 fs-7 d-flex align-items-center justify-content-center"
+            @click="copyCoupon"
+            style="width: 30px; height: 30px"
+          >
+            <span v-show="!isCopied">
+              <font-awesome-icon :icon="['far', 'copy']" />
+            </span>
+            <span v-show="isCopied">
+              <font-awesome-icon :icon="['fas', 'check']" />
+            </span>
+          </button>
+        </p>
       </li>
       <li>
         <div class="row bg-light py-4 mb-4 px-4 fs-6 fw-bold">
@@ -94,7 +123,9 @@
               套用
             </button>
           </div>
-          <p v-if="this.hasCoupon" class="text-end text-success fw-normal">已套用優惠券：{{ this.couponCode }}</p>
+          <p v-if="this.hasCoupon" class="text-end text-success fw-normal">
+            已套用優惠券：{{ this.couponCode }}
+          </p>
         </div>
         <div class="row mb-4 pb-4 px-4 fs-6 fw-bold border-bottom">
           <div class="offset-lg-8 col-lg-1 col-6 text-start">折扣</div>
@@ -150,11 +181,13 @@ export default {
     return {
       couponCode: '',
       hasCoupon: false,
+      couponText: 'new_member',
+      isCopied: false
     }
   },
   mixins: [toastMixin, alertMixin],
   computed: {
-    ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength','isClicked'])
+    ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength', 'isClicked'])
   },
   methods: {
     ...mapActions(cartStore, [
@@ -186,6 +219,17 @@ export default {
         .catch((err) => {
           this.showToast({ title: err.response.data.message, icon: 'error' })
           console.error(err)
+        })
+    },
+    copyCoupon() {
+      navigator.clipboard
+        .writeText(this.couponText)
+        .then(() => {
+          console.log('Text copied to clipboard')
+          this.isCopied = true
+        })
+        .catch((err) => {
+          console.error('Unable to copy text to clipboard: ', err)
         })
     }
   },
