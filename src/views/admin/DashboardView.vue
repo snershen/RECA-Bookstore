@@ -47,7 +47,6 @@ export default {
           })
           return 
         }
-        this.$router.push({ name: 'admin-products' })
         this.username = sessionStorage.getItem('username')
         this.checkSuccess = true;
         this.showToast({

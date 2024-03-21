@@ -188,7 +188,7 @@ export default {
         })
     },
     deleteProduct(item) {
-      this.showAlert({ title: '確定刪除嗎?', icon: 'warning', showCancelButton: true })
+      this.showAlert({ title: `確定刪除「${item.title}」嗎?`, icon: 'warning', showCancelButton: true })
         .then((result) => {
           if (result.isConfirmed) {
             adminDeleteProduct(item.id)

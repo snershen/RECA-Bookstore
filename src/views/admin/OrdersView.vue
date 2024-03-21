@@ -44,7 +44,7 @@
             </td>
           </tr>
         </tbody>
-        <OrderModal ref="orderModal" :inner-order="tempOrder" />
+        <OrderModal ref="orderModal" :inner-order="tempOrder" @change-pay="updateOrder" />
       </table>
     </div>
     <PaginationComponent :inner-pagination="pagination" @emit-page="getOrder" class="py-5" />
@@ -54,8 +54,10 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import adminOrderStore from '@/stores/admin/order.js'
+import alertMixin from '@/mixins/alertMixin'
+import toastMixin from '@/mixins/toastMixin'
 
-import { deleteOrder } from '@/assets/js/apis'
+import { adminPutOrder, adminDeleteOrder } from '@/assets/js/apis'
 import OrderModal from '@/components/admin/OrderModal.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 
@@ -69,19 +71,47 @@ export default {
     OrderModal,
     PaginationComponent
   },
+  mixins: [alertMixin, toastMixin],
   computed: {
     ...mapState(adminOrderStore, ['orderList', 'pagination', 'isLoading'])
   },
   methods: {
     ...mapActions(adminOrderStore, ['getOrder', 'getOrderAll', 'sendRankInfo', 'calcOrderNum']),
-    delOrder(order) {
-      deleteOrder(order.id)
+    updateOrder(order) {
+      const paid = { is_paid: order.is_paid }
+      adminPutOrder(
+        {
+          data: paid
+        },
+        order.id
+      )
         .then(() => {
+          this.showToast({
+            title: '已更新訂單資訊',
+            icon: 'success'
+          })
           this.getOrder()
         })
         .catch((err) => {
           console.error(err)
         })
+    },
+    delOrder(order) {
+      this.showAlert({
+        title: `確定刪除訂單 ${order.id} 嗎?`,
+        icon: 'warning',
+        showCancelButton: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          adminDeleteOrder(order.id)
+            .then(() => {
+              this.getOrder()
+            })
+            .catch((err) => {
+              console.error(err)
+            })
+        }
+      })
     },
     openModal(item) {
       this.tempOrder = { ...item }

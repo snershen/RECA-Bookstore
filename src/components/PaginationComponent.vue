@@ -57,6 +57,10 @@ export default {
   methods: {
     updatePage(page) {
       this.$emit('emit-page', page)
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      })
     }
   },
   watch: {

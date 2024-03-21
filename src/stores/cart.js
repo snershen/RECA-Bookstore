@@ -3,7 +3,13 @@ import { showToast } from '@/mixins/toastMixin'
 import { showAlert } from '@/mixins/alertMixin'
 import { addThousandsSeparator } from '@/assets/js/thousandNumber.js'
 
-import { userGetCart, userPostCart, userPutCart, userDeleteCart,userDeleteCartAll } from '@/assets/js/apis'
+import {
+  userGetCart,
+  userPostCart,
+  userPutCart,
+  userDeleteCart,
+  userDeleteCartAll
+} from '@/assets/js/apis'
 
 export default defineStore('cartStore', {
   state: () => {
@@ -13,7 +19,8 @@ export default defineStore('cartStore', {
       saveMoney: 0,
       productCount: 0,
       toastContent: {},
-      isLoading: false
+      isLoading: false,
+      isClicked: false
     }
   },
 
@@ -55,6 +62,7 @@ export default defineStore('cartStore', {
     },
     editCart(item, isPlus) {
       this.productCount = item.qty
+      this.isClicked = true
       if (isPlus) {
         this.productCount++
       } else {
@@ -82,6 +90,9 @@ export default defineStore('cartStore', {
         })
         .catch((err) => {
           console.error(err)
+        })
+        .finally(() => {
+          this.isClicked = false
         })
     },
     changeCartNum(item) {
@@ -113,7 +124,6 @@ export default defineStore('cartStore', {
             if (result.isConfirmed) {
               this.deleteCart(item.id)
               this.getCart()
-              
             } else if (result.isDenied) {
               item.qty = 1
             }

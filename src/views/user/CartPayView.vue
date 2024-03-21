@@ -146,11 +146,11 @@
 import { Form as VForm, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
 import * as AllRules from '@vee-validate/rules'
 import { localize } from '@vee-validate/i18n'
-// import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 import { userPostOrder } from '@/assets/js/apis'
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
 import toastMixin from '@/mixins/toastMixin'
+import alertMixin from '@/mixins/alertMixin'
 
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule])
@@ -177,7 +177,7 @@ export default {
     Field,
     ErrorMessage
   },
-  mixins: [toastMixin],
+  mixins: [toastMixin, alertMixin],
   computed: {
     ...mapState(cartStore, ['saveMoney', 'cartList'])
   },
@@ -197,14 +197,24 @@ export default {
       this.$router.push({ name: 'cart' })
     },
     sendOrder() {
-      userPostOrder(this.orderData)
-        .then((res) => {
-          const orderId = res.data.orderId
-          this.$router.push(`/orders/${orderId}`)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      this.showAlert({ title: '確定送出訂單嗎?', icon: 'warning', showCancelButton: true }).then(
+        (result) => {
+          if (result.isConfirmed) {
+            userPostOrder(this.orderData)
+              .then((res) => {
+                const orderId = res.data.orderId
+                this.showToast({
+                  title: '訂單已成立',
+                  icon: 'success'
+                })
+                this.$router.push(`/orders/${orderId}`)
+              })
+              .catch((err) => {
+                console.error(err)
+              })
+          }
+        }
+      )
     },
     async submitForm() {
       const isValid = await this.$refs.form.validate()

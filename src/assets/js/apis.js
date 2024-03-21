@@ -61,11 +61,11 @@ export const deleteOrderAll = () => {
   return adminRequest.delete(`/order/all`)
 }
 
-export const adminPutOrder = (id) => {
-  return adminRequest.put(`/order/${id}`)
+export const adminPutOrder = (data, id) => {
+  return adminRequest.put(`/order/${id}`,data)
 }
 
-export const deleteOrder = (id) => {
+export const adminDeleteOrder = (id) => {
   return adminRequest.delete(`/order/${id}`)
 }
 

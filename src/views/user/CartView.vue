@@ -41,7 +41,7 @@
               <button
                 @click="editCart(item, false)"
                 class="btn pe-3 py-3 border-0"
-                :class="{ 'disabled opacity-25': item.qty <= 1 }"
+                :class="{ 'disabled opacity-25': item.qty <= 1 || isClicked }"
               >
                 <font-awesome-icon :icon="['fas', 'minus']" />
               </button>
@@ -53,7 +53,7 @@
                 @blur.prevent="changeCartNum(item)"
                 style="width: 70px"
               />
-              <button @click="editCart(item, true)" class="btn ps-3 py-3 border-0">
+              <button @click="editCart(item, true)" class="btn ps-3 py-3 border-0" :class="{ 'disabled opacity-25': isClicked }">
                 <font-awesome-icon :icon="['fas', 'plus']" />
               </button>
             </div>
@@ -149,12 +149,12 @@ export default {
   data() {
     return {
       couponCode: '',
-      hasCoupon: false
+      hasCoupon: false,
     }
   },
   mixins: [toastMixin, alertMixin],
   computed: {
-    ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength'])
+    ...mapState(cartStore, ['cartList', 'saveMoney', 'cartLength','isClicked'])
   },
   methods: {
     ...mapActions(cartStore, [
