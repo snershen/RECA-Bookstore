@@ -13,13 +13,14 @@
 - 全站書籍搜尋
 - 書籍分類
 - 購物車、結帳功能
-- 文章搜尋
 - 收藏書籍：透過 localStorage 儲存使用者喜愛書籍清單
+- 文章搜尋
 
-![搜尋功能 + 購物車功能](https://media.discordapp.net/attachments/1221698590099898391/1221815574007644251/frontend-1.gif?ex=6613f36d&is=66017e6d&hm=25f48c303404e85efce84dfc0b1e311710cdebc66678cbab763823bc331a48dc&=&width=1870&height=936)
+![搜尋功能](https://media.discordapp.net/attachments/1221698590099898391/1221821912410357930/2024-03-25_10.03.41.png?ex=6613f954&is=66018454&hm=be7bd03fc9ea5ff7f5f6616540ce26da1b5165e3be3e0f94d6e4c2ee5d5d1e20&=&format=webp&quality=lossless&width=1766&height=936)
 
-![分類 + 收藏功能](https://media.discordapp.net/attachments/1221698590099898391/1221815574930133002/frontend-2.gif?ex=6613f36d&is=66017e6d&hm=10cd8ca8251acb0e9785ded8f8ab6b7f1c9bae7e060bcbdb5adad6a976eb3a7b&=&width=1870&height=936)
+![產品列表](https://media.discordapp.net/attachments/1221698590099898391/1221821913588957245/2024-03-25_10.02.04.png?ex=6613f954&is=66018454&hm=9eea9025ed136244466d93d198dd5b7c11af073210a6cca64f5ae76c1f744e5b&=&format=webp&quality=lossless&width=1828&height=936)
 
+![產品列表](https://media.discordapp.net/attachments/1221698590099898391/1221821913102553088/2024-03-25_10.02.24.png?ex=6613f954&is=66018454&hm=17b3f3b16687a453d6587d134b0cfa81e6f9784c910f9e69f96e29cc17a5a6fa&=&format=webp&quality=lossless&width=1762&height=936)
 
 ### 後台
 
