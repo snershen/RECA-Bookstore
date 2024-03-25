@@ -239,7 +239,7 @@
     </section>
 
     <section class="bookstore-bg text-center">
-      <h3 class="fs-1 fw-bold text-primary mb-3">開啟屬於你的閱讀旅程</h3>
+      <h3 class="fs-lg-1 fs-2 fw-bold text-primary mb-3">開啟屬於你的閱讀旅程</h3>
       <router-link
         :to="{ name: 'products' }"
         class="btn btn-outline-light rounded-pill fs-6 px-4 py-2"

@@ -81,15 +81,14 @@
           <input
             type="text"
             value="new_member"
-            class="rounded-0 border-0 d-inline-block text-primary"
-            style="width: 100px"
+            class="rounded-0 border-0 text-primary bg-white opacity-100"
+            style="width: 120px"
             disabled
           />
           <button
             type="button"
             class="btn border-white rounded-2 fs-7 d-flex align-items-center justify-content-center"
             @click="copyCoupon"
-            style="width: 30px; height: 30px"
           >
             <span v-show="!isCopied">
               <font-awesome-icon :icon="['far', 'copy']" />

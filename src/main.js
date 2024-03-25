@@ -48,8 +48,6 @@ import CKEditor from '@ckeditor/ckeditor5-vue'
 import App from './App.vue'
 import router from './router'
 
-// import { defineRule } from 'vee-validate'
-
 library.add(fasHeart)
 library.add(farHeart)
 library.add(faStar)
@@ -76,29 +74,6 @@ library.add(faCircleArrowLeft)
 library.add(fasStar)
 library.add(faCopy)
 library.add(faCheck)
-
-// defineRule('required', (value) => {
-//   if (!value || !value.length) {
-//     return '必填'
-//   }
-//   return true
-// })
-// defineRule('email', (value) => {
-//   if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
-//     return '請填入有效的信箱格式'
-//   }
-//   return true
-// })
-
-// defineRule('phone', (value, args) => {
-//   const length = parseInt(args[0], 10)
-//   if (isNaN(Number(value))) {
-//     return `請輸入數字`
-//   } else if (!value || value.length !== length) {
-//     return `請輸入正確的手機格式`
-//   }
-//   return true
-// })
 
 const app = createApp(App)
 const pinia = createPinia()
