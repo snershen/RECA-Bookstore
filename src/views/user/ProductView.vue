@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <Breadcrumb
+    <BreadcrumbComponent
       class="mb-4"
       :breadConfig="{ path: 'products', subNav: '書籍類別', title: '書籍介紹' }"
     />
@@ -134,7 +134,7 @@ import { SwiperSlide } from 'swiper/vue'
 import ProductCard from '@/components/user/ProductCard.vue'
 import ProductCategory from '@/components/user/ProductCategory.vue'
 import ProductTab from '@/components/user/ProductTab.vue'
-import Breadcrumb from '@/components/user/Breadcrumb.vue'
+import BreadcrumbComponent from '@/components/user/BreadcrumbComponent.vue'
 
 import { mapState, mapActions } from 'pinia'
 import cartStore from '@/stores/cart.js'
@@ -164,7 +164,7 @@ export default {
     }
   },
   props: ['id'],
-  components: { ProductCard, ProductTab, ProductCategory, Breadcrumb,  SwiperSlide },
+  components: { ProductCard, ProductTab, ProductCategory, BreadcrumbComponent,  SwiperSlide },
   computed: {
     ...mapState(useProductStore, [
       'singleProduct',

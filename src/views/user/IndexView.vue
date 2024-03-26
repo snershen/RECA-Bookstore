@@ -138,7 +138,7 @@
           </template>
         </div>
 
-        <div class="col-lg-9">
+        <div class="col-lg-9 rank-outer">
           <template v-if="rankList.length > 9">
             <swiper-container
               init="false"
@@ -172,7 +172,7 @@
                         <del class="fs-7 text-gray"> ${{ item.product.origin_price }} </del>
                       </div>
                     </div>
-                    <p class="today-card-content text-overflow-4" v-html="item.product.content"></p>
+                    <p class="today-card-content text-overflow-4 text-center text-md-start" v-html="item.product.content"></p>
                     <RouterLink
                       :to="`/products/${item.product.id}`"
                       class="stretched-link"
@@ -211,7 +211,7 @@
                         <del class="fs-7 text-gray"> ${{ item.origin_price }} </del>
                       </div>
                     </div>
-                    <p class="today-card-content text-overflow-4" v-html="item.content"></p>
+                    <p class="today-card-content text-overflow-4 text-center text-md-start" v-html="item.content"></p>
                     <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
                   </div>
                 </div>
@@ -586,6 +586,12 @@ export default {
   }
 }
 
+.rank-outer{
+  @include min-lg{
+    height: 300px;
+  }
+}
+
 .rank-content-swiper {
   &::before,
   &::after {
@@ -601,9 +607,9 @@ export default {
   }
   &::before {
     top: 0px;
-    left: 0px;
+    left: -20px;
     @include min-lg {
-      top: -40px;
+      top: -60px;
       left: -20px;
     }
   }
@@ -613,8 +619,7 @@ export default {
     animation-delay: 1s;
 
     @include min-lg {
-      bottom: -40px;
-      left: 32%;
+      left: 35%;
     }
   }
 

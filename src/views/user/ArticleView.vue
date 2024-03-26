@@ -3,7 +3,7 @@
     <template v-if="isValidURL(article.image)">
       <div class="article-banner" :style="{ backgroundImage: `url(${article.image})` }">
         <div class="container py-lg-5 pb-5 pt-4 article-content">
-          <Breadcrumb :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: '文章' }" />
+          <BreadcrumbComponent :breadConfig="{ path: 'articles', subNav: '編輯推薦', title: '文章' }" />
           <div class="row justify-content-center">
             <div class="col-lg-10">
               <div class="text-center">
@@ -50,14 +50,14 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import articleStore from '@/stores/article.js'
-import Breadcrumb from '@/components/user/Breadcrumb.vue'
+import BreadcrumbComponent from '@/components/user/BreadcrumbComponent.vue'
 import ArticleCard from '@/components/user/ArticleCard.vue'
 
 export default {
   computed: {
     ...mapState(articleStore, ['articleList', 'article'])
   },
-  components: { Breadcrumb, ArticleCard },
+  components: { BreadcrumbComponent, ArticleCard },
   methods: {
     ...mapActions(articleStore, ['getArticles', 'getSingleArticle']),
     isValidURL(str) {
