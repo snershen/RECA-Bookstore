@@ -9,18 +9,12 @@
       <div class="container">
         <swiper-container init="false" ref="bannerSwiper" class="container banner-swiper pt-5">
           <swiper-slide
-            v-for="item in filterFeature"
-            :key="`banner${item.id}`"
+            v-for="(item, index) in filterFeature"
+            :key="`banner${item.id}-${index}`"
             class="h-auto d-flex justify-content-center"
-            lazy="true"
           >
             <RouterLink :to="`/products/${item.id}`">
-              <img
-                :src="item.imageUrl"
-                :alt="item.title"
-                class="w-100 h-100 object-fit-contain"
-                loading="lazy"
-              />
+              <img :src="item.imageUrl" :alt="item.title" class="w-100 h-100 object-fit-contain" />
             </RouterLink>
           </swiper-slide>
         </swiper-container>
@@ -109,10 +103,15 @@
                 v-for="(item, index) in rankList"
                 :key="`publish${index}`"
                 :data-index="index + 1"
+                @click="slideToRank(index)"
+                style="cursor: pointer"
               >
-                <div class="border-bottom py-2 text-truncate">
+                <div
+                  class="border-bottom py-2 text-truncate"
+                  :class="{ 'fw-bold text-primary active': activeRankIndex === index }"
+                >
                   <span class="me-2 rank-number">{{ index + 1 }}</span>
-                  {{ item.product.title }}
+                  {{ item.product?.title || item.title }}
                 </div>
               </swiper-slide>
             </swiper-container>
@@ -128,8 +127,13 @@
                 v-for="(item, index) in productList"
                 :key="`publish${index}`"
                 :data-index="index + 1"
+                @click="slideToRank(index)"
+                style="cursor: pointer"
               >
-                <div class="border-bottom py-2 text-truncate">
+                <div
+                  class="border-bottom py-2 text-truncate"
+                  :class="{ 'fw-bold text-primary active': activeRankIndex === index }"
+                >
                   <span class="me-2 rank-number">{{ index + 1 }}</span>
                   {{ item.title }}
                 </div>
@@ -145,6 +149,7 @@
               ref="rankContentSwiper"
               class="container rank-content-swiper"
               id="rank-thumbs"
+              @swiperslidechange="onRankContentSlideChange"
             >
               <swiper-slide v-for="(item, index) in rankList" :key="`rand${index}`">
                 <div
@@ -152,9 +157,10 @@
                 >
                   <div class="rank-card-img mb-3 mb-lg-0">
                     <img
-                      :src="item.product.imageUrl"
-                      :alt="item.product.title"
+                      :src="item.product?.imageUrl || item.imageUrl || item.product?.imagesUrl?.[0]"
+                      :alt="item.product?.title || item.title"
                       class="w-100 object-fit-contain"
+                      @error="handleImgError($event, item)"
                     />
                   </div>
                   <div class="flex-grow-1 w-100">
@@ -172,7 +178,10 @@
                         <del class="fs-7 text-gray"> ${{ item.product.origin_price }} </del>
                       </div>
                     </div>
-                    <p class="today-card-content text-overflow-4 text-center text-md-start" v-html="item.product.content"></p>
+                    <p
+                      class="today-card-content text-overflow-4 text-center text-md-start"
+                      v-html="item.product.content"
+                    ></p>
                     <RouterLink
                       :to="`/products/${item.product.id}`"
                       class="stretched-link"
@@ -194,7 +203,12 @@
                   class="rank-card d-flex flex-column flex-md-row position-relative text-center text-lg-start"
                 >
                   <div class="rank-card-img mb-3 mb-lg-0">
-                    <img :src="item.imageUrl" :alt="item.title" class="w-100 object-fit-contain" />
+                    <img
+                      :src="item.imageUrl || item.imagesUrl?.[0]"
+                      :alt="item.title"
+                      class="w-100 object-fit-contain"
+                      @error="handleImgError($event, item)"
+                    />
                   </div>
                   <div class="flex-grow-1 w-100">
                     <h4
@@ -211,7 +225,10 @@
                         <del class="fs-7 text-gray"> ${{ item.origin_price }} </del>
                       </div>
                     </div>
-                    <p class="today-card-content text-overflow-4 text-center text-md-start" v-html="item.content"></p>
+                    <p
+                      class="today-card-content text-overflow-4 text-center text-md-start"
+                      v-html="item.content"
+                    ></p>
                     <RouterLink :to="`/products/${item.id}`" class="stretched-link"></RouterLink>
                   </div>
                 </div>
@@ -273,11 +290,14 @@ export default {
   data() {
     return {
       rankList: [],
+      activeRankIndex: 0,
       indexLoading: false,
       // modules: [Navigation, Pagination, Scrollbar, Autoplay, FreeMode],
       bannerSwiper: {
         spaceBetween: 60,
         centeredSlides: true,
+        loopAdditionalSlides: 5,
+        watchSlidesProgress: true,
         breakpoints: {
           576: {
             slidesPerView: 1
@@ -373,9 +393,15 @@ export default {
       })
     },
     filterFeature() {
-      return useProductStore().productAll.filter((item) => {
-        return item.is_feature
-      })
+      const list = useProductStore().productAll.filter((item) => item.is_feature)
+      if (list.length > 0 && list.length < 10) {
+        let repeated = []
+        while (repeated.length < 10) {
+          repeated = [...repeated, ...list]
+        }
+        return repeated
+      }
+      return list
     },
     ...mapState(useProductStore, ['productList', 'categoryList', 'filterResult', 'isLoading']),
     ...mapState(articleStore, ['articleList']),
@@ -400,13 +426,75 @@ export default {
     async getRankArticle() {
       try {
         const res = await userGetSingleArticle('-NrQ8wc--1weD4FTHjHH')
-        const content = res.data.article.content
-        const result = JSON.parse(content)
-        this.rankList = result
+        const result = JSON.parse(res.data.article.content)
+
+        // 取得最新全站商品
+        const productAll = useProductStore().productAll
+
+        // 用最新商品資料同步 rankList，防止舊文章快照包含死鏈圖片
+        this.rankList = result.map((item) => {
+          const realProduct = productAll.find((p) => p.id === (item.product?.id || item.id))
+          return {
+            ...item,
+            product: realProduct || item.product || item
+          }
+        })
       } catch (err) {
         console.error(err)
-        this.rankList = this.productList
+        const list = useProductStore().productAll.length
+          ? useProductStore().productAll
+          : this.productList
+        this.rankList = list.map((product) => ({ product }))
       }
+    },
+    slideToRank(index) {
+      this.activeRankIndex = index
+
+      const rankSwiper = this.$refs.rankSwiper?.swiper
+      if (rankSwiper) {
+        if (typeof rankSwiper.slideToLoop === 'function') {
+          rankSwiper.slideToLoop(index)
+        } else {
+          rankSwiper.slideTo(index)
+        }
+      }
+
+      const contentSwiper = this.$refs.rankContentSwiper?.swiper
+      if (contentSwiper) {
+        if (typeof contentSwiper.slideToLoop === 'function') {
+          contentSwiper.slideToLoop(index)
+        } else {
+          contentSwiper.slideTo(index)
+        }
+      }
+    },
+    onRankContentSlideChange(e) {
+      const swiper = e.detail?.[0]
+      if (swiper) {
+        const realIndex = swiper.realIndex ?? swiper.activeIndex
+        this.activeRankIndex = realIndex
+        const rankSwiper = this.$refs.rankSwiper?.swiper
+        if (rankSwiper) {
+          if (typeof rankSwiper.slideToLoop === 'function') {
+            rankSwiper.slideToLoop(realIndex)
+          } else {
+            rankSwiper.slideTo(realIndex)
+          }
+        }
+      }
+    },
+    handleImgError(e, item) {
+      const p = item?.product || item
+      if (
+        Array.isArray(p?.imagesUrl) &&
+        p.imagesUrl.length > 0 &&
+        e.target.src !== p.imagesUrl[0]
+      ) {
+        e.target.src = p.imagesUrl[0]
+        return
+      }
+      e.target.src =
+        'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22400%22%20viewBox%3D%220%200%20300%20400%22%3E%3Crect%20fill%3D%22%23f8f9fa%22%20width%3D%22300%22%20height%3D%22400%22%2F%3E%3Ctext%20fill%3D%22%23c9a65c%22%20font-family%3D%22sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22bold%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%3ERECA%20BOOK%3C%2Ftext%3E%3C%2Fsvg%3E'
     }
   },
 
@@ -416,9 +504,9 @@ export default {
       await Promise.all([
         useProductStore().getProducts(),
         this.getArticles(),
-        useProductStore().getProductAll(),
-        this.getRankArticle()
+        useProductStore().getProductAll()
       ])
+      await this.getRankArticle()
     } catch (error) {
       console.error('An error occurred during Promise.all:', error)
     }
@@ -586,8 +674,8 @@ export default {
   }
 }
 
-.rank-outer{
-  @include min-lg{
+.rank-outer {
+  @include min-lg {
     height: 300px;
   }
 }
